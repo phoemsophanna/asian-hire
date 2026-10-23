@@ -165,7 +165,7 @@ function Hero({
           {/* Main message */}
           <p className="mx-auto mt-3 max-w-3xl text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl lg:text-4xl">
             Millions of jobs,{" "}
-            <span className="bg-gradient-to-r from-blue-300 to-white bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-500 to-white bg-clip-text text-transparent">
               find the one that&apos;s right for you
             </span>
           </p>
@@ -192,7 +192,7 @@ function Hero({
               <a
                 key={keyword}
                 href="#featured-jobs"
-                className="rounded-full border border-white/20 bg-white/[0.08] px-3 py-1.5 text-xs font-medium text-white/90 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-300/70 hover:bg-white/15 hover:text-white sm:px-4 sm:py-2 sm:text-sm"
+                className="rounded-full border border-white/10 bg-white/[0.08] px-3 py-1.5 text-xs font-medium text-white/90 backdrop-blur-[2px] transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-300/70 hover:bg-white/15 hover:text-white sm:px-4 sm:py-2 sm:text-sm"
               >
                 {keyword}
               </a>
@@ -275,7 +275,7 @@ function HowItWorks() {
         <SectionHeading
           description="Find your next opportunity from hand-picked roles at companies that are going places."
 
-          title="How It Works"
+          title="Easiest Way to Find a Job"
         />
         <div className="grid gap-8 min-[560px]:grid-cols-3 lg:gap-6">
           {steps.map(({ number, title, text, icon: Icon }, index) => (
@@ -314,7 +314,7 @@ function NewsSection() {
           title="The latest from Asian Hire"
         />
         <div className="grid gap-4 sm:gap-5 lg:grid-cols-[1.1fr_1fr]">
-          <a className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-[0_8px_28px_rgba(22,47,89,0.045)] transition hover:shadow-[0_16px_38px_rgba(22,47,89,0.1)]" href="#news">
+          <Link className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_8px_28px_rgba(22,47,89,0.045)] transition hover:shadow-[0_16px_38px_rgba(22,47,89,0.1)]" href="/blogs/1">
             <div
               aria-label="Colleagues collaborating in a meeting"
               className="min-h-[190px] flex-1 bg-cover bg-center transition duration-500 group-hover:scale-[1.02] sm:min-h-[330px]"
@@ -335,17 +335,17 @@ function NewsSection() {
                 Read article <ArrowRight aria-hidden="true" className="size-4" />
               </span>
             </div>
-          </a>
+          </Link>
           <div className="grid gap-4 min-[480px]:grid-cols-2 sm:gap-5">
             {smallerArticles.map((article) => (
-              <a
-                className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-[0_8px_28px_rgba(22,47,89,0.045)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(22,47,89,0.1)]"
-                href="#news"
+              <Link
+                className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_8px_28px_rgba(22,47,89,0.045)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(22,47,89,0.1)]"
+                href="/blogs/1"
                 key={article.title}
               >
                 <div
                   aria-label={article.title}
-                  className="h-36 bg-cover bg-center transition duration-500 group-hover:scale-[1.02] sm:h-40"
+                  className="h-50 md:h-36 bg-cover bg-center transition duration-500 group-hover:scale-[1.02] sm:h-40"
                   role="img"
                   style={{ backgroundImage: `url('${article.image}')` }}
                 />
@@ -359,7 +359,7 @@ function NewsSection() {
                     {article.title}
                   </h3>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </div>

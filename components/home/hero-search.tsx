@@ -50,7 +50,7 @@ export default function HeroSearch({
   return (
     <div className={className}>
       <form
-        className={`grid gap-2 rounded-2xl p-2 md:grid-cols-[1.35fr_1fr_1fr] ${
+        className={`grid gap-2 rounded-2xl p-2.5 md:grid-cols-[1.35fr_1fr_1fr] ${
           isLight
             ? "border border-slate-200 bg-slate-50 shadow-sm"
             : "border border-white/10 bg-white/15 shadow-[0_20px_55px_rgba(12,36,75,0.2)]"
@@ -62,10 +62,10 @@ export default function HeroSearch({
         }}
       >
         <label
-          className={`flex min-h-14 items-center gap-3 rounded-xl border p-2 px-3 ${
+          className={`flex min-h-14 items-center relative gap-3 rounded-xl border p-2 px-3 ${
             isLight
               ? "border-slate-200 bg-white focus-within:border-[#485ea8] focus-within:ring-2 focus-within:ring-[#485ea8]/10"
-              : "border-white/10 bg-white/10 pr-10 backdrop-blur-[5px]"
+              : "border-white/10 bg-white/80 pr-10"
           }`}
         >
           <Search
@@ -78,14 +78,14 @@ export default function HeroSearch({
           <input
             className={`min-w-0 flex-1 bg-transparent text-sm outline-none ${
               isLight
-                ? "text-slate-900 placeholder:text-slate-400"
-                : "text-slate-100 placeholder:text-slate-300"
+                ? "text-[#485ea8] placeholder:text-[#485ea8]"
+                : "text-[#485ea8] placeholder:text-[#485ea8]"
             }`}
             defaultValue={onKeywordChange ? undefined : filters.keyword}
             value={onKeywordChange ? filters.keyword : undefined}
             onChange={(event) => onKeywordChange?.(event.target.value)}
             name="keyword"
-            placeholder="Job title or keyword"
+            placeholder="Job title here"
           />
         </label>
         <IndustryDropdown
@@ -104,7 +104,7 @@ export default function HeroSearch({
           type="submit"
         >
           <Search aria-hidden="true" className="size-4" />
-          Search jobs
+          Search Jobs
         </button>
       </form>
       {/* <p aria-live="polite" className="mt-3 min-h-5 text-sm text-white/90">

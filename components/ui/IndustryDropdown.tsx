@@ -69,7 +69,7 @@ export default function IndustryDropdown({
         className={`flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border px-3 py-2 transition-all duration-300 ${
           isLight
             ? "border-slate-200 bg-white hover:border-[#485ea8]/50 hover:bg-slate-50"
-            : "border-white/15 bg-white/10 backdrop-blur-[5px] hover:bg-white/[0.12]"
+            : "border-white/15 bg-white/80"
         }`}
       >
         <SlidersHorizontal
@@ -82,11 +82,11 @@ export default function IndustryDropdown({
           className={`flex-1 truncate text-left text-sm ${
             isLight
               ? selectedIndustry
-                ? "text-slate-900"
-                : "text-slate-400"
+                ? "text-[#485ea8]"
+                : "text-[#485ea8]"
               : selectedIndustry
-                ? "text-white"
-                : "text-slate-300"
+                ? "text-[#485ea8]"
+                : "text-[#485ea8]"
           }`}
         >
           {selectedIndustry || "Choose industry"}
@@ -94,7 +94,7 @@ export default function IndustryDropdown({
 
         <ChevronDown
           className={`size-4 shrink-0 transition-transform ${
-            isLight ? "text-slate-500" : "text-slate-400"
+            isLight ? "text-[#485ea8]" : "text-[#485ea8]"
           } ${
             isOpen ? "rotate-180" : ""
           }`}
@@ -107,7 +107,7 @@ export default function IndustryDropdown({
                 transition-all duration-200 ${
                 isLight
                     ? "border-slate-200 bg-white"
-                    : "border-black/5 bg-black/20 backdrop-blur-[5px]"
+                    : "border-slate-200 bg-white"
                 } ${
                 isOpen
                     ? "visible translate-y-0 opacity-100"
@@ -130,11 +130,11 @@ export default function IndustryDropdown({
                         ${
                             selectedIndustry === industry
                             ? isLight
-                              ? "bg-blue-50 font-medium text-[#485ea8]"
-                              : "bg-blue-500/15 font-medium text-white"
+                              ? "text-slate-700 hover:bg-[#485ea8]/10"
+                              : "text-slate-700 hover:bg-[#485ea8]/10"
                             : isLight
-                              ? "text-slate-700 hover:bg-slate-50"
-                              : "text-white/90 hover:bg-blue-500/15"
+                              ? "text-slate-700 hover:bg-[#485ea8]/10"
+                              : "text-slate-700 hover:bg-[#485ea8]/10"
                         }`}
                     >
                         <span>{industry}</span>

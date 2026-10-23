@@ -249,7 +249,7 @@ export default function SiteFooter() {
                     href="tel:+85517824919"
                     className="group flex items-start justify-start gap-3 text-left md:gap-4"
                   >
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#485ea8] to-[#344780] text-white shadow-lg shadow-blue-900/20 transition-transform duration-300 group-hover:-translate-y-1 md:size-12 md:rounded-2xl">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#485ea8] to-[#344780] text-white shadow-lg shadow-blue-900/20 transition-transform duration-300 md:size-12 md:rounded-2xl">
                       <Phone className="size-[18px] md:size-5" />
                     </span>
 
@@ -268,7 +268,7 @@ export default function SiteFooter() {
                     href="mailto:info@asianhire.com.kh"
                     className="group flex items-start justify-start gap-3 text-left md:gap-4"
                   >
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#485ea8] to-[#344780] text-white shadow-lg shadow-blue-900/20 transition-transform duration-300 group-hover:-translate-y-1 md:size-12 md:rounded-2xl">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#485ea8] to-[#344780] text-white shadow-lg shadow-blue-900/20 transition-transform duration-300 md:size-12 md:rounded-2xl">
                       <Mail className="size-[18px] md:size-5" />
                     </span>
 
@@ -302,12 +302,12 @@ export default function SiteFooter() {
           </div>
 
           {/* Copyright */}
-          <div className="flex flex-col items-center gap-2 border-t border-white/10 py-5 text-center text-xs leading-6 text-slate-400 sm:gap-3 sm:py-6 sm:text-sm md:flex-row md:justify-between md:text-left">
+          <div className="flex flex-col items-center gap-2 border-t border-white/10 py-5 text-center text-sm sm:text-base leading-6 text-slate-400 sm:gap-3 sm:py-6 md:flex-row md:justify-between md:text-left">
             <p>
               © Copyright 2026{" "}
               <a
                 href="https://www.asianhire.com.kh/job-postings"
-                className="font-semibold text-[#485ea8] transition-colors hover:text-blue-300"
+                className="font-semibold hover:text-[#485ea8] transition-colors"
               >
                 Asian Hire
               </a>{" "}
@@ -320,7 +320,7 @@ export default function SiteFooter() {
                 href="https://www.camgotech.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-[#485ea8] transition-colors hover:text-blue-300"
+                className="font-medium hover:text-[#485ea8] transition-colors"
               >
                 www.camgotech.com
               </a>

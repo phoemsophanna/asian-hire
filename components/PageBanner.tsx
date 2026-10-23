@@ -13,7 +13,7 @@ export default function PageBanner({title}:any){
             />
 
             {/* Dark overlay */}
-            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#101b46]/90 via-[#101b46]/75 to-[#101b46]/50" />
+            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#101b46]/60 via-[#101b46]/45 to-[#101b46]/30" />
 
             {/* Decorative circles */}
             <div className="absolute -right-24 -top-32 -z-10 size-96 rounded-full border border-white/10" />

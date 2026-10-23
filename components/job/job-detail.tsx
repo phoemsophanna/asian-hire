@@ -21,6 +21,7 @@ import {
 } from "react-icons/fa";
 import PageBanner from "../PageBanner";
 import JobContentTabs from "./job-content";
+import { useEffect, useState } from "react";
 
 const job = {
   id: 1,
@@ -69,10 +70,13 @@ const job = {
 
 export default function JobDetail() {
   // Replace this with your actual job ID or slug.
-  const applyUrl = `mailto:info@camgotech.com`;
+  const [currentUrl, setCurrentUrl] = useState("");
 
-  const currentUrl =
-    typeof window !== "undefined" ? window.location.href : "";
+  useEffect(() => {
+    setCurrentUrl(window.location.href);
+  }, []);
+
+  const applyUrl = "mailto:info@camgotech.com";
 
   const shareUrl = encodeURIComponent(currentUrl);
   const shareTitle = encodeURIComponent(job.title);
@@ -160,15 +164,15 @@ export default function JobDetail() {
 
                 <InfoItem
                   icon={<FaCalendarAlt />}
-                  label="Application deadline"
-                  value={job.deadline}
-                  highlight
+                  label="Expected start date"
+                  value={job.startDate}
                 />
 
                 <InfoItem
                   icon={<FaCalendarAlt />}
-                  label="Expected start date"
-                  value={job.startDate}
+                  label="Application deadline"
+                  value={job.deadline}
+                  highlight
                 />
               </div>
             </section>
@@ -307,20 +311,6 @@ export default function JobDetail() {
 
               <div className="mt-5 space-y-5">
                 <div className="flex items-start gap-3">
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-600">
-                    <FaCalendarAlt />
-                  </span>
-                  <div>
-                    <p className="text-xs text-slate-500">
-                      Application deadline
-                    </p>
-                    <p className="mt-1 text-sm font-bold text-slate-900">
-                      {job.deadline}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#485ea8]">
                     <FaClock />
                   </span>
@@ -330,6 +320,19 @@ export default function JobDetail() {
                     </p>
                     <p className="mt-1 text-sm font-bold text-slate-900">
                       {job.startDate}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-600">
+                    <FaCalendarAlt />
+                  </span>
+                  <div>
+                    <p className="text-xs text-slate-500">
+                      Application deadline
+                    </p>
+                    <p className="mt-1 text-sm font-bold text-slate-900">
+                      {job.deadline}
                     </p>
                   </div>
                 </div>

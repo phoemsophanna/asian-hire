@@ -57,7 +57,7 @@ export default function ServiceSection ({ services }:any) {
                                     href={service.href}
                                     className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-[#485ea8] transition-all hover:gap-3"
                                 >
-                                    Learn More
+                                    Read More
                                     <FaArrowRight className="text-xs" />
                                 </Link>
                             </div>

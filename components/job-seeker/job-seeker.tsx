@@ -97,29 +97,44 @@ const industries = [
 
 const faqs = [
   {
-    question: "How do I apply for a job through Asian Hire?",
-    answer:
-      "Explore our available job opportunities, select a role that matches your experience, and follow the application instructions on the job listing. You can also send your resume to our recruitment team.",
+    question: "1. What is a 482 or 494 visa in Australia?",
+    answer: `<p><strong>* For 482 Visa Applicant</strong>:&ZeroWidthSpace; this visa is&nbsp;for skilled workers nominated by employers who have a Labour Agreement. It lets you live and work in Australia temporarily. Labour agreements are developed between the Australian Government (represented by the Department) and employers.</p>
+    <p><strong>* For 494 Visa Applicant:</strong>&nbsp;the subclass 494 visa is&nbsp;a provisional residency visa available to skilled workers. It is available both to skilled workers who are already living and working in Australia as temporary residents, and to skilled workers living outside Australia.</p>`,
   },
   {
-    question: "What should I include in my resume?",
-    answer:
-      "Include your contact details, professional summary, employment history, relevant skills, qualifications, and references where appropriate. Keep your information accurate and up to date.",
+    question: "2.  Can a 482 or 494 visa holder get permanent residence?",
+    answer: `<p><strong>* For 482 Visa Holder:</strong>&nbsp;an applicant first need to obtain temporary visa (subclass 482) and work in Australia for at least 3 years for your sponsoring employer and then apply for a permanent visa. in some cases, candidates can apply directly for permanent residence (186 visa), however, employers prefer the 482 visa pathway.</p>
+    <p><strong>* For 494 Visa Holder:</strong></p>
+    <p>The Regional 494 Visa provides a direct pathway to Permanent Residence (PR) through the Subclass 191 Visa after 3 years of regional work. This is a key benefit compared to the limited PR pathways available through the 482 TSS Visa program.</p>`
   },
   {
-    question: "Can I submit my resume if there are no suitable jobs?",
-    answer:
-      "Yes. Send your resume to our recruitment team with your occupation in the email subject line. We can review your details when considering suitable opportunities.",
+    question: "3. How long after permanent residency can I apply for Australian citizenship ?",
+    answer: `<p>Any adult who became a permanent resident on or after 1 July 2007 must have been lawfully residing in Australia for four years immediately before applying for Australian citizenship. This includes:&nbsp;<strong>12 months as a permanent resident</strong>.</p>`
   },
   {
-    question: "Do I need Australian work rights to apply?",
-    answer:
-      "Work-rights requirements vary by role and employer. Review each job advertisement carefully and make sure you meet the relevant eligibility requirements before applying.",
+    question: "4.  What is the English requirement for 482 and 494 visa?",
+    answer: `<p><strong>* For 482 Visa Applicant:</strong>&nbsp; you need to obtain an equivalent English IELTS score of at least 5.0 in each component.</p>
+    <p><strong>* For 494 Visa Applicant:</strong></p>
+    <p><strong>-&nbsp;</strong>Employer Sponsored Stream,&nbsp;primary applicants must have competent english or higher (IELTS 6.0) and must pass&nbsp;a positive skill assessment in the nominated occupation. Also, their dependent family members over 18 years of age have at least Functional English, IELTS 4.5.&nbsp;</p>
+    <p>-&nbsp;Labour Agreement Stream, primary applicants must have the level of English as specified in the labour agreement.</p>`
   },
   {
-    question: "How will I know if my application is successful?",
-    answer:
-      "If your experience matches a vacancy, our recruitment team may contact you to discuss your application and possible next steps. Response times can vary depending on the role.",
+    question: "5. How much work experience is required for 482 or 494 visa?",
+    answer: `<p>482 visa applicants are required to have worked in the nominated occupation, or a closely related occupation, for at least 2 years full-time&ZeroWidthSpace;&ZeroWidthSpace; jobs&ZeroWidthSpace; and 3 years for 494 visa applicants.</p>`
+  },
+  {
+    question: "6. How long can I stay on a 482 or 494 visa?",
+    answer: `<p>You can stay for&nbsp;up to 4 years&ZeroWidthSpace; for 482 visa holder and 5 years for 494 visa holder.</p>`
+  },
+  {
+    question: "7. Is a 482 or 494 visa holders eligible for Medicare?",
+    answer: `<p><strong>* For 482 Visa Holder: i</strong>f you are applying for or holding a 482 visa, you are responsible for all your health costs while you are in Australia and you need to maintain adequate health insurance.&nbsp;You will not be covered by Australia's national health scheme (Medicare) unless your country has a reciprocal health care agreement with Australia.</p>
+    <p><strong>* For 494 Visa Holder:</strong>&nbsp;holders of the new regional provisional 494 visas will be covered by Australia's national health scheme (Medicare).</p>
+    <p>&nbsp;</p>`
+  },
+  {
+    question: "8. How much is health insurance for 482 visa holder?",
+    answer: `<p>From AU$ &ZeroWidthSpace;125 per month&ZeroWidthSpace; onward.</p>`
   },
 ];
 
@@ -251,7 +266,7 @@ export default function JobSeeker() {
           </div>
 
           {/* Blue industries panel with online background image */}
-          <div className="relative isolate overflow-hidden rounded-3xl bg-[#485ea8] p-7 text-white sm:p-10 lg:p-12">
+          <div className="relative isolate overflow-hidden rounded-3xl bg-[#485ea8] p-4 text-white sm:p-6 lg:p-7">
             <Image
               src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=85"
               alt=""

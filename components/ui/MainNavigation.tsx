@@ -25,12 +25,12 @@ const navItems = [
 ];
 
 const mobileNavItems = [
-  { label: "About Us", href: "/about-us", icon: Info },
-  { label: "News & Blogs", href: "/blogs", icon: Newspaper },
-  { label: "Contact Us", href: "/contact-us", icon: Mail },
   { label: "Job Search", href: "/jobs", icon: Search },
   { label: "Job Seeker", href: "/job-seeker", icon: UserRound },
   { label: "Employers", href: "/employers", icon: Building2 },
+  { label: "About Us", href: "/about-us", icon: Info },
+  { label: "News & Blogs", href: "/blogs", icon: Newspaper },
+  { label: "Contact Us", href: "/contact-us", icon: Mail },
 ];
 
 export default function MainNavigation({
