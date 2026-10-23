@@ -18,7 +18,6 @@ import {
   FaUserTie,
 } from "react-icons/fa";
 import PageBanner from "../PageBanner";
-import SectionHeading from "../ui/SectionHeader";
 import ServiceSection from "../ui/ServiceSection";
 import FaqSection from "../ui/FaqSection";
 
@@ -138,18 +137,18 @@ export default function JobSeeker() {
       <PageBanner title="Job Seekers" />
       {/* Hero */}
       <section className="relative">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-10 sm:px-8 sm:py-16 lg:grid-cols-2 lg:gap-16">
-          <div className="relative z-10">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 text-sm font-semibold text-[#485ea8] shadow-sm">
+        <div className="mx-auto grid max-w-7xl items-center gap-8 md:gap-12 px-5 py-10 sm:px-8 sm:py-16 lg:grid-cols-2 lg:gap-16">
+          <div className="relative z-10 order-2 md:order-1">
+            <div className="mb-4 md:mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 text-sm font-semibold text-[#485ea8] shadow-sm">
               <span className="h-2 w-2 rounded-full bg-[#485ea8]" />
               Your career. Your future.
             </div>
 
-            <h1 className="max-w-2xl text-4xl font-extrabold leading-[1.15] tracking-tight text-[#10264b]">
+            <h1 className="max-w-2xl text-2xl md:text-4xl font-extrabold leading-[1.15] tracking-tight text-[#10264b]">
               Build Your Future: Skilled Job Opportunities in Australia
             </h1>
 
-            <p className="mt-5 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
+            <p className="mt-3 md:mt-5 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
               Your next career opportunity starts here. Connect with our
               recruitment team, explore opportunities across key industries,
               and take the next step toward your professional future in
@@ -174,7 +173,7 @@ export default function JobSeeker() {
             </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
+          <div className="relative mx-auto order-1 md:order-2 w-full max-w-xl lg:max-w-none">
             <div className="absolute -right-5 -top-5 h-36 w-36 rounded-full bg-blue-200/50 blur-3xl" />
             <div className="absolute -bottom-6 -left-6 h-40 w-40 rounded-full bg-sky-200/50 blur-3xl" />
 
@@ -203,11 +202,11 @@ export default function JobSeeker() {
               Support at every step
             </span>
 
-            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[#10264b] sm:text-4xl">
+            <h2 className="mt-3 md:mt-4 text-2xl font-extrabold tracking-tight text-[#10264b] sm:text-4xl">
               Dedicated Recruiters, Focused on Your Future
             </h2>
 
-            <p className="mt-5 leading-8 text-slate-600">
+            <p className="mt-3 md:mt-5 leading-8 text-slate-600">
               Finding the right job is about more than matching a resume to a
               vacancy. Our recruitment team helps you understand opportunities,
               highlight your strengths, and navigate the application process

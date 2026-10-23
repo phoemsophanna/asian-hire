@@ -15,7 +15,6 @@ export default function ServiceSection ({ services }:any) {
                 {/* Section Heading */}
                 <SectionHeading
                     description="From language preparation to career guidance, discover the support you need to take your next step with confidence."
-                    eyebrow="Explore opportunities"
                     title="Our Services"
                 />
 
@@ -47,7 +46,7 @@ export default function ServiceSection ({ services }:any) {
                             {/* Card Content */}
                             <div className="p-4">
                                 <h3 className="text-lg font-bold leading-[1.2] text-[#10264b] transition-colors group-hover:text-[#485ea8]">
-                                    {service.title}
+                                    <Link href={service.href}>{service.title}</Link>
                                 </h3>
 
                                 <p className="mt-2 text-sm line-clamp-2 leading-[1.6] text-slate-600">

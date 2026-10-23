@@ -1,12 +1,14 @@
-
+"use client";
 import {
   ShieldCheck,
   Phone,
   Mail,
   MapPin,
-  Send,
   ChevronRight,
+  Minus,
+  Plus,
 } from "lucide-react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -61,6 +63,9 @@ const socialLinks = [
 ];
 
 export default function SiteFooter() {
+  const [isQuickLinksOpen, setIsQuickLinksOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
+
   return (
     <>
       {/* Disclaimer */}
@@ -97,21 +102,27 @@ export default function SiteFooter() {
 
         <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
           {/* Footer columns */}
-          <div className="grid grid-cols-1 gap-10 py-10 md:grid-cols-2 md:gap-12 lg:grid-cols-[1fr_1fr_1fr] lg:py-12">
+          <div className="grid grid-cols-1 gap-[10px] pb-0 py-7 md:grid-cols-2 md:gap-12 md:pb-10 md:py-10 lg:grid-cols-[1fr_1fr_1fr] lg:pb-12 lg:py-12">
             {/* Brand and Social Media */}
-            <div>
-              <a href="/" className="group inline-flex items-center gap-3">
-                <Image src={`/images/logo_en.png`} alt="" width={500} height={500} />
-              </a>
+            <div className="text-center mb-6 md:mb-0 md:text-left">
+              <Link href="/" className="group inline-flex items-center gap-3">
+                <Image
+                  src="/images/logo_en.png"
+                  alt=""
+                  width={500}
+                  height={500}
+                  className="w-56"
+                />
+              </Link>
 
-              <p className="mt-4 max-w-sm text-sm leading-7 text-slate-400 sm:text-base">
+              <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-slate-400 sm:text-base sm:leading-7 md:mx-0">
                 Your trusted platform to find the right opportunities
                 and build a better tomorrow. Connecting talented people
                 with great companies across Asia.
               </p>
 
               {/* Social icons */}
-              <div className="mt-7 flex flex-wrap items-center gap-3">
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-3 md:mt-7 md:justify-start">
                 {socialLinks.map((social) => {
                     const Icon = social.icon;
                     return (
@@ -126,7 +137,7 @@ export default function SiteFooter() {
                             transition-all duration-300 hover:-translate-y-1
                             hover:border-transparent ${social.color}`}
                         >
-                        <Icon size={19} />
+                          <Icon size={19} />
                         </a>
                     );
                 })}
@@ -134,66 +145,112 @@ export default function SiteFooter() {
             </div>
 
             {/* Quick Links */}
-            <div className="pt-8 md:border-t-0 md:pt-0 lg:border-white/10 lg:pl-10">
+            <div className="border-y border-white/10 py-3 md:border-y-0 md:py-0 lg:border-white/10 lg:pl-10">
                 <h3
+                    id="footer-quick-links-heading"
                     className="
-                        mb-6 w-fit text-lg font-bold text-white
+                        mb-6 hidden w-fit text-lg font-bold text-white
                         after:mt-1 after:block after:h-[3px]
                         after:w-12 after:rounded-full
                         after:bg-gradient-to-r
                         after:from-[#485ea8] after:to-[#344780]
                         after:content-['']
-                        sm:text-xl
+                        sm:text-xl md:block
                     "
                 >
                     Quick Links
                 </h3>
+                <button
+                  type="button"
+                  aria-expanded={isQuickLinksOpen}
+                  aria-controls="footer-quick-links"
+                  onClick={() => setIsQuickLinksOpen((open) => !open)}
+                  className="flex w-full items-center justify-between py-2 text-left text-base font-bold text-white md:hidden"
+                >
+                  Quick Links
+                  {isQuickLinksOpen ? (
+                    <Minus aria-hidden="true" className="size-5 text-white/80" />
+                  ) : (
+                    <Plus aria-hidden="true" className="size-5 text-white/80" />
+                  )}
+                </button>
 
-              <nav aria-label="Footer navigation">
-                <ul className="space-y-4">
-                  {footerLinks.map((link) => (
-                    <li key={link.label}>
-                        <Link 
-                            href={link.href} 
-                            className="group flex items-center justify-between gap-3 text-sm transition-colors duration-200 hover:text-[#485ea8] sm:text-base"
-                        >
-                            <span>{link.label}</span>
-                            <ChevronRight
-                            size={18}
-                            className="shrink-0 text-slate-500 transition-all duration-200 group-hover:translate-x-1 group-hover:text-[#485ea8]"
-                            />
-                        </Link>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
+              <div
+                id="footer-quick-links"
+                className={`grid transition-[grid-template-rows] duration-300 ease-in-out md:grid-rows-[1fr] ${
+                  isQuickLinksOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                }`}
+              >
+                <nav
+                  aria-label="Quick links"
+                  className="overflow-hidden"
+                >
+                  <ul className="space-y-2 pb-2 pt-2 md:space-y-4 md:pb-0 md:pt-0">
+                    {footerLinks.map((link) => (
+                      <li key={link.label}>
+                          <Link
+                              href={link.href}
+                              className="group flex items-center justify-between gap-3 py-1 text-sm transition-colors duration-200 hover:text-[#485ea8] sm:text-base"
+                          >
+                              <span>{link.label}</span>
+                              <ChevronRight
+                              size={18}
+                              className="shrink-0 text-slate-500 transition-all duration-200 group-hover:translate-x-1 group-hover:text-[#485ea8]"
+                              />
+                          </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
+              </div>
             </div>
 
             {/* Contact Us */}
-            <div className="pt-8 md:col-span-2 md:grid md:grid-cols-2 md:gap-8 lg:col-span-1 lg:block lg:pt-0 lg:pl-10">
+            <div className="py-0 text-center md:col-span-2 md:grid md:grid-cols-2 md:gap-8 md:py-0 md:text-left lg:col-span-1 lg:block lg:pl-10">
               <div>
                 <h3
                     className="
-                        mb-6 w-fit text-lg font-bold text-white
+                        mx-auto mb-4 hidden w-fit text-lg font-bold text-white
                         after:mt-1 after:block after:h-[3px]
                         after:w-12 after:rounded-full
                         after:bg-gradient-to-r
                         after:from-[#485ea8] after:to-[#344780]
                         after:content-['']
-                        sm:text-xl
+                        sm:text-xl md:mx-0 md:mb-6 md:block
                     "
                 >
                     Contact Us
                 </h3>
 
-                <div className="space-y-6">
+                <button
+                  type="button"
+                  aria-expanded={isContactOpen}
+                  aria-controls="footer-contact-details"
+                  onClick={() => setIsContactOpen((open) => !open)}
+                  className="flex w-full items-center justify-between py-3 text-left text-base font-bold text-white md:hidden"
+                >
+                  Contact Us
+                  {isContactOpen ? (
+                    <Minus aria-hidden="true" className="size-5 text-white/80" />
+                  ) : (
+                    <Plus aria-hidden="true" className="size-5 text-white/80" />
+                  )}
+                </button>
+
+                <div
+                  id="footer-contact-details"
+                  className={`grid transition-[grid-template-rows] duration-300 ease-in-out md:grid-rows-[1fr] ${
+                    isContactOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  }`}
+                >
+                <div className={`space-y-4 overflow-hidden pt-2 ${isContactOpen ? "pb-6" : ""} md:space-y-6 md:pt-0`}>
                   {/* Phone */}
                   <a
                     href="tel:+85517824919"
-                    className="group flex items-start gap-4"
+                    className="group flex items-start justify-start gap-3 text-left md:gap-4"
                   >
-                    <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#485ea8] to-[#344780] text-white shadow-lg shadow-blue-900/20 transition-transform duration-300 group-hover:-translate-y-1">
-                      <Phone size={20} />
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#485ea8] to-[#344780] text-white shadow-lg shadow-blue-900/20 transition-transform duration-300 group-hover:-translate-y-1 md:size-12 md:rounded-2xl">
+                      <Phone className="size-[18px] md:size-5" />
                     </span>
 
                     <span className="min-w-0 pt-0.5">
@@ -209,10 +266,10 @@ export default function SiteFooter() {
                   {/* Email */}
                   <a
                     href="mailto:info@asianhire.com.kh"
-                    className="group flex items-start gap-4"
+                    className="group flex items-start justify-start gap-3 text-left md:gap-4"
                   >
-                    <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#485ea8] to-[#344780] text-white shadow-lg shadow-blue-900/20 transition-transform duration-300 group-hover:-translate-y-1">
-                      <Mail size={20} />
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#485ea8] to-[#344780] text-white shadow-lg shadow-blue-900/20 transition-transform duration-300 group-hover:-translate-y-1 md:size-12 md:rounded-2xl">
+                      <Mail className="size-[18px] md:size-5" />
                     </span>
 
                     <span className="min-w-0 pt-0.5">
@@ -226,9 +283,9 @@ export default function SiteFooter() {
                   </a>
 
                   {/* Address */}
-                  <div className="flex items-start gap-4">
-                    <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#485ea8] to-[#344780] text-white shadow-lg shadow-blue-900/20">
-                      <MapPin size={20} />
+                  <div className="flex items-start justify-start gap-3 text-left md:gap-4">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#485ea8] to-[#344780] text-white shadow-lg shadow-blue-900/20 md:size-12 md:rounded-2xl">
+                      <MapPin className="size-[18px] md:size-5" />
                     </span>
 
                     <div className="min-w-0 pt-0.5">
@@ -238,13 +295,14 @@ export default function SiteFooter() {
                       </p>
                     </div>
                   </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Copyright */}
-          <div className="flex flex-col gap-3 border-t border-white/10 py-6 text-xs leading-6 text-slate-400 sm:flex-row sm:items-center sm:justify-between sm:text-sm">
+          <div className="flex flex-col items-center gap-2 border-t border-white/10 py-5 text-center text-xs leading-6 text-slate-400 sm:gap-3 sm:py-6 sm:text-sm md:flex-row md:justify-between md:text-left">
             <p>
               © Copyright 2026{" "}
               <a

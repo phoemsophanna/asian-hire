@@ -151,19 +151,19 @@ function Hero({
       {/* Decorative glow */}
       <div
         aria-hidden="true"
-        className="absolute left-1/2 top-0 -z-10 h-72 w-[600px] -translate-x-1/2 rounded-full bg-blue-500/20 blur-[120px]"
+        className="absolute left-1/2 top-0 -z-10 h-72 w-full md:w-[600px] -translate-x-1/2 rounded-full bg-blue-500/20 blur-[120px]"
       />
 
-      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-8 sm:py-16 md:py-20 lg:py-24">
         <div className="mx-auto max-w-4xl text-center">
 
           {/* Intro text */}
-          <p className="mx-auto max-w-4xl text-lg font-bold uppercase leading-relaxed tracking-[1px] text-white sm:text-xl lg:text-2xl">
+          <p className="mx-auto max-w-4xl text-sm font-semibold uppercase leading-relaxed tracking-[0.10em] tracking-0 text-white sm:text-xl sm:tracking-[1px] lg:text-2xl">
             AUSTRALIA JOBS SEARCH WEBSITE IN CAMBODIA
           </p>
 
           {/* Main message */}
-          <p className="mx-auto mt-3 max-w-3xl text-3xl font-bold leading-tight tracking-tight text-white sm:text-3xl lg:text-4xl">
+          <p className="mx-auto mt-3 max-w-3xl text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl lg:text-4xl">
             Millions of jobs,{" "}
             <span className="bg-gradient-to-r from-blue-300 to-white bg-clip-text text-transparent">
               find the one that&apos;s right for you
@@ -171,7 +171,7 @@ function Hero({
           </p>
 
           {/* Search form */}
-          <div className="mx-auto mt-12 relative z-10 max-w-4xl">
+          <div className="relative z-10 mx-auto mt-8 max-w-4xl sm:mt-10 md:mt-12">
             <HeroSearch
               filters={filters}
               hasSearched={hasSearched}
@@ -180,7 +180,7 @@ function Hero({
           </div>
 
           {/* Trending keywords */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5">
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:mt-6 sm:gap-2.5">
             <span className="mr-1 text-xs font-semibold text-white sm:text-sm">
               Trending Keywords:
             </span>
@@ -192,7 +192,7 @@ function Hero({
               <a
                 key={keyword}
                 href="#featured-jobs"
-                className="rounded-full border border-white/20 bg-white/[0.08] px-4 py-2 text-xs font-medium text-white/90 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-300/70 hover:bg-white/15 hover:text-white sm:text-sm"
+                className="rounded-full border border-white/20 bg-white/[0.08] px-3 py-1.5 text-xs font-medium text-white/90 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-300/70 hover:bg-white/15 hover:text-white sm:px-4 sm:py-2 sm:text-sm"
               >
                 {keyword}
               </a>
@@ -207,13 +207,12 @@ function Hero({
 function PopularIndustries() {
   return (
     <section className="bg-white py-10 sm:py-16">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <SectionHeading
           description="Today jobs live 450"
-          eyebrow="Explore opportunities"
           title="Popular job by industries"
         />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 min-[480px]:grid-cols-2 sm:gap-4 lg:grid-cols-3">
           {industries.map(({ name, count, icon: Icon }) => {
             const params = new URLSearchParams();
 
@@ -224,15 +223,15 @@ function PopularIndustries() {
             const query = params.toString();
 
             return <Link
-                    className="group flex items-center gap-4 rounded-2xl border border-slate-100 bg-white p-3 shadow-[0_5px_22px_rgba(22,47,89,0.035)] transition hover:-translate-y-0.5 hover:border-blue-100 hover:shadow-[0_12px_30px_rgba(22,47,89,0.08)]"
+                    className="group flex min-w-0 items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 shadow-[0_5px_22px_rgba(22,47,89,0.035)] transition hover:-translate-y-0.5 hover:border-blue-100 hover:shadow-[0_12px_30px_rgba(22,47,89,0.08)] sm:gap-4"
                     href={`/jobs?${query}`}
                     key={name}
                   >
-                    <span className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-[#eef4ff] text-[#485ea8] transition group-hover:bg-[#485ea8] group-hover:text-white">
-                      <Icon aria-hidden="true" className="size-6" strokeWidth={1.8} />
+                    <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#eef4ff] text-[#485ea8] transition group-hover:bg-[#485ea8] group-hover:text-white sm:size-14">
+                      <Icon aria-hidden="true" className="size-5 sm:size-6" strokeWidth={1.8} />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block font-semibold text-[#172b4d]">{name}</span>
+                      <span className="block text-sm font-semibold leading-5 text-[#172b4d] sm:text-base">{name}</span>
                       <span className="mt-1 block text-xs text-slate-500">{count}</span>
                     </span>
                     <ChevronRight
@@ -258,10 +257,9 @@ function PopularIndustries() {
 function JobsSection({ jobs }: { jobs: Job[] }) {
   return (
     <section className="bg-[#f7f9fc] py-10 sm:py-16" id="featured-jobs">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <SectionHeading
           description="Find your next opportunity from hand-picked roles at companies that are going places."
-          eyebrow="Hand-picked for you"
           title="Featured jobs"
         />
         <FeaturedJobs jobs={jobs} />
@@ -273,13 +271,13 @@ function JobsSection({ jobs }: { jobs: Job[] }) {
 function HowItWorks() {
   return (
     <section className="bg-white py-10 sm:py-16" id="how-it-works">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <SectionHeading
           description="Find your next opportunity from hand-picked roles at companies that are going places."
-          eyebrow="Hand-picked for you"
+
           title="How It Works"
         />
-        <div className="grid gap-9 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+        <div className="grid gap-8 min-[560px]:grid-cols-3 lg:gap-6">
           {steps.map(({ number, title, text, icon: Icon }, index) => (
             <div className="relative flex flex-col items-center text-center" key={number}>
               {index < steps.length - 1 && (
@@ -309,17 +307,17 @@ function NewsSection() {
   const smallerArticles = articles.slice(1);
   return (
     <section className="bg-white py-10 sm:py-16" id="news">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <SectionHeading
           description="Fresh perspectives and helpful advice to keep your career moving forward."
-          eyebrow="Ideas for your next step"
+
           title="The latest from Asian Hire"
         />
-        <div className="grid gap-5 lg:grid-cols-[1.1fr_1fr]">
-          <a className="group flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-[0_8px_28px_rgba(22,47,89,0.045)] transition hover:shadow-[0_16px_38px_rgba(22,47,89,0.1)]" href="#news">
+        <div className="grid gap-4 sm:gap-5 lg:grid-cols-[1.1fr_1fr]">
+          <a className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-[0_8px_28px_rgba(22,47,89,0.045)] transition hover:shadow-[0_16px_38px_rgba(22,47,89,0.1)]" href="#news">
             <div
               aria-label="Colleagues collaborating in a meeting"
-              className="min-h-[260px] flex-1 bg-cover bg-center transition duration-500 group-hover:scale-[1.02] sm:min-h-[330px]"
+              className="min-h-[190px] flex-1 bg-cover bg-center transition duration-500 group-hover:scale-[1.02] sm:min-h-[330px]"
               role="img"
               style={{ backgroundImage: `url('${spotlight.image}')` }}
             />
@@ -330,7 +328,7 @@ function NewsSection() {
                 </span>
                 <span>{spotlight.date}</span>
               </div>
-              <h3 className="max-w-xl text-xl font-bold leading-snug tracking-[-0.03em] text-[#172b4d] group-hover:text-[#485ea8] sm:text-2xl">
+              <h3 className="max-w-xl text-lg font-bold leading-snug tracking-[-0.03em] text-[#172b4d] group-hover:text-[#485ea8] sm:text-2xl">
                 {spotlight.title}
               </h3>
               <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#485ea8]">
@@ -338,7 +336,7 @@ function NewsSection() {
               </span>
             </div>
           </a>
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-4 min-[480px]:grid-cols-2 sm:gap-5">
             {smallerArticles.map((article) => (
               <a
                 className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-[0_8px_28px_rgba(22,47,89,0.045)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(22,47,89,0.1)]"
@@ -347,7 +345,7 @@ function NewsSection() {
               >
                 <div
                   aria-label={article.title}
-                  className="h-40 bg-cover bg-center transition duration-500 group-hover:scale-[1.02]"
+                  className="h-36 bg-cover bg-center transition duration-500 group-hover:scale-[1.02] sm:h-40"
                   role="img"
                   style={{ backgroundImage: `url('${article.image}')` }}
                 />
@@ -357,7 +355,7 @@ function NewsSection() {
                     <span aria-hidden="true">·</span>
                     <span>{article.date}</span>
                   </div>
-                  <h3 className="text-sx font-semibold leading-6 text-[#172b4d] group-hover:text-[#485ea8]">
+                  <h3 className="text-sm font-semibold leading-6 text-[#172b4d] group-hover:text-[#485ea8]">
                     {article.title}
                   </h3>
                 </div>

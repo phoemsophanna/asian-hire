@@ -10,6 +10,7 @@ import {
   Clock,
   MessageCircle,
   MapPinned,
+  PhoneCall,
 } from "lucide-react";
 import PageBanner from "../PageBanner";
 
@@ -47,6 +48,27 @@ export default function ContactUs() {
         <PageBanner title="Contact Us" />
         <section id="contact" className="bg-white py-10 sm:py-16">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <div className="mb-8 rounded-3xl border border-[#485ea8]/15 bg-gradient-to-br from-[#485ea8]/[0.07] via-white to-white px-4 py-3 sm:px-6 sm:py-4">
+                <div className="mx-auto max-w-4xl text-center">
+                    <h2 className="text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl">
+                        Need a consultation?
+                    </h2>
+                    <div className="mx-auto mt-2 max-w-3xl space-y-1 text-sm leading-5 text-slate-600 sm:text-[15px] sm:leading-6">
+                        <p>
+                            Start your Australian visa application journey with a consultation from one of our experienced career and visa counsellors.
+                        </p>
+                        <p>
+                            Call us to arrange a face-to-face, Skype, or teleconference consultation. We provide culturally sensitive and confidential support.
+                        </p>
+                        <p>
+                            Our team is happy to help you access Australian job opportunities with top Australian employers looking to hire.
+                        </p>
+                        <p>
+                            Want to keep up to date with Australian jobs and immigration changes? Like and follow us on Facebook.
+                        </p>
+                    </div>
+                </div>
+            </div>
             {/* Contact details and form */}
             <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
             {/* Contact information */}

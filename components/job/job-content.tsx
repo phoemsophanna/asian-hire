@@ -14,9 +14,9 @@ type JobContentTabsProps = {
 
 const tabs = [
   { id: "description", label: "Description" },
-  { id: "responsibilities", label: "Responsibilities" },
-  { id: "requirements", label: "Requirements" },
-  { id: "benefits", label: "Benefits" },
+  { id: "responsibilities", label: "Tasks Include" },
+  { id: "requirements", label: "Occupations" },
+  { id: "benefits", label: "Other" },
 ] as const;
 
 type TabId = (typeof tabs)[number]["id"];

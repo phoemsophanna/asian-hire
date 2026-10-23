@@ -20,15 +20,18 @@ export default function IndustryDropdown({
   value,
   industries = defaultIndustries,
   onChange,
+  variant = "hero",
 }: {
   filters: string;
   value?: string;
   industries?: string[];
   onChange?: (industry: string) => void;
+  variant?: "hero" | "light";
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [localSelectedIndustry, setLocalSelectedIndustry] = useState(filters || "");
   const selectedIndustry = value ?? localSelectedIndustry;
+  const isLight = variant === "light";
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -63,23 +66,36 @@ export default function IndustryDropdown({
           }
           if (e.key === "Escape") setIsOpen(false);
         }}
-        className="flex min-h-14 cursor-pointer items-center gap-3
-          rounded-xl border border-white/15 bg-white/10 px-3 py-2
-          backdrop-blur-[5px] transition-all duration-300
-          hover:bg-white/[0.12]"
+        className={`flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border px-3 py-2 transition-all duration-300 ${
+          isLight
+            ? "border-slate-200 bg-white hover:border-[#485ea8]/50 hover:bg-slate-50"
+            : "border-white/15 bg-white/10 backdrop-blur-[5px] hover:bg-white/[0.12]"
+        }`}
       >
-        <SlidersHorizontal className="size-5 shrink-0 text-[#485ea8]" />
+        <SlidersHorizontal
+          className={`size-5 shrink-0 ${
+            isLight ? "text-slate-400" : "text-[#485ea8]"
+          }`}
+        />
 
         <span
           className={`flex-1 truncate text-left text-sm ${
-            selectedIndustry ? "text-white" : "text-slate-300"
+            isLight
+              ? selectedIndustry
+                ? "text-slate-900"
+                : "text-slate-400"
+              : selectedIndustry
+                ? "text-white"
+                : "text-slate-300"
           }`}
         >
           {selectedIndustry || "Choose industry"}
         </span>
 
         <ChevronDown
-          className={`size-4 shrink-0 text-slate-400 transition-transform ${
+          className={`size-4 shrink-0 transition-transform ${
+            isLight ? "text-slate-500" : "text-slate-400"
+          } ${
             isOpen ? "rotate-180" : ""
           }`}
         />
@@ -87,10 +103,12 @@ export default function IndustryDropdown({
 
         <div
             className={`industry-dropdown absolute left-0 right-0 top-full z-[100] mt-3
-                rounded-2xl border border-black/5 bg-black/20 p-2 backdrop-blur-[5px]
-                shadow-2xl shadow-slate-900/10
-                transition-all duration-200
-                ${
+                rounded-2xl border p-2 shadow-2xl shadow-slate-900/10
+                transition-all duration-200 ${
+                isLight
+                    ? "border-slate-200 bg-white"
+                    : "border-black/5 bg-black/20 backdrop-blur-[5px]"
+                } ${
                 isOpen
                     ? "visible translate-y-0 opacity-100"
                     : "invisible -translate-y-2 opacity-0"
@@ -111,14 +129,22 @@ export default function IndustryDropdown({
                         rounded-xl px-3 py-3 text-sm transition-all duration-200
                         ${
                             selectedIndustry === industry
-                            ? "bg-blue-500/15 font-medium text-white"
-                            : "text-white/90 hover:bg-blue-500/15"
+                            ? isLight
+                              ? "bg-blue-50 font-medium text-[#485ea8]"
+                              : "bg-blue-500/15 font-medium text-white"
+                            : isLight
+                              ? "text-slate-700 hover:bg-slate-50"
+                              : "text-white/90 hover:bg-blue-500/15"
                         }`}
                     >
                         <span>{industry}</span>
 
                         {selectedIndustry === industry && (
-                        <Check className="size-4 shrink-0 text-blue-600" />
+                        <Check
+                          className={`size-4 shrink-0 ${
+                            isLight ? "text-[#485ea8]" : "text-blue-600"
+                          }`}
+                        />
                         )}
                     </div>
                 ))}

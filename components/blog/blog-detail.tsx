@@ -157,7 +157,7 @@ export default function BlogDetail() {
             </div>
 
             {/* Title */}
-            <h1 className="max-w-4xl text-3xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-4xl">
+            <h1 className="max-w-4xl text-2xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-4xl">
               {currentBlog.title}
             </h1>
 

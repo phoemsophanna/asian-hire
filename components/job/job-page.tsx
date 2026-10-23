@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import {
   Search,
-  BriefcaseBusiness,
+  Info,
   ChevronLeft,
   ChevronRight,
   RotateCcw,
@@ -18,6 +18,7 @@ import type {
 
 // Replace this import with your actual jobs data source.
 import { jobs } from "@/components/home/job-data";
+import PageBanner from "../PageBanner";
 
 const PAGE_SIZE = 6;
 
@@ -112,39 +113,32 @@ export default function JobPage({
   return (
     <main className="overflow-hidden bg-white text-slate-900">
       {/* Hero */}
-      <section className="relative bg-[#10264b]">
-        <div className="absolute -right-20 -top-28 size-80 rounded-full bg-blue-500/20 blur-3xl" />
-        <div className="absolute -bottom-32 left-1/4 size-72 rounded-full bg-indigo-400/10 blur-3xl" />
-
-        <div className="relative mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-16">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-blue-100">
-            <BriefcaseBusiness size={14} />
-            Find your next opportunity
-          </span>
-
-          <h1 className="mt-5 max-w-3xl text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl">
-            Find a job that moves your career forward.
-          </h1>
-
-          <p className="mt-4 max-w-2xl text-sm leading-7 text-blue-100/80 sm:text-base">
-            Explore opportunities from companies, discover new career
-            paths, and find the right position for your skills.
-          </p>
-
-          <HeroSearch
-            className="mt-8 max-w-4xl"
-            filters={filters}
-            resultCount={filteredJobs.length}
-            hasSearched={Boolean(filters.keyword || filters.industry || filters.location)}
-            industries={industries}
-            onKeywordChange={(keyword) => updateFilter("keyword", keyword)}
-            onIndustryChange={(industry) => updateFilter("industry", industry)}
-          />
-        </div>
-      </section>
+      <PageBanner title="Job Lists" />
 
       {/* Results */}
       <section className="mx-auto max-w-7xl px-5 sm:px-8 py-10 sm:py-16">
+        <div className="mb-8 flex items-start md:items-center gap-3 rounded-2xl border border-[#485ea8]/15 bg-[#485ea8]/[0.04] p-4 sm:gap-4">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[#485ea8]/10 text-[#485ea8]">
+            <Info aria-hidden="true" size={18} />
+          </span>
+          <p className="text-sm md:text-base leading-7 text-slate-600">
+            ANZSCO information is published under the{" "}
+            <a
+              className="font-semibold text-[#485ea8] underline decoration-[#485ea8]/30 underline-offset-4 transition hover:decoration-[#485ea8] focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#485ea8]"
+              href="https://creativecommons.org/licenses/by/2.5/au/" target="_blank"
+            >
+              Creative Commons Attribution 2.5 Australia licence
+            </a>
+            . Find the original classification on the{" "}
+            <a
+              className="font-semibold text-[#485ea8] underline decoration-[#485ea8]/30 underline-offset-4 transition hover:decoration-[#485ea8] focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#485ea8]"
+              href="https://www.abs.gov.au/" target="_blank"
+            >
+              Australian Bureau of Statistics website
+            </a>
+            .
+          </p>
+        </div>
         <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-slate-900">
@@ -197,6 +191,26 @@ export default function JobPage({
               </select>
             </label>
           </div>
+        </div>
+
+        <div className="mb-8 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm shadow-slate-900/5 sm:p-5">
+          <div className="mb-4">
+            <h3 className="text-base font-semibold text-slate-900">
+              Find your next opportunity
+            </h3>
+            <p className="mt-1 text-sm text-slate-500">
+              Search by role or narrow the results by industry.
+            </p>
+          </div>
+          <HeroSearch
+            variant="light"
+            filters={filters}
+            resultCount={filteredJobs.length}
+            hasSearched={Boolean(filters.keyword || filters.industry || filters.location)}
+            industries={industries}
+            onKeywordChange={(keyword) => updateFilter("keyword", keyword)}
+            onIndustryChange={(industry) => updateFilter("industry", industry)}
+          />
         </div>
 
         {/* Job cards */}

@@ -177,11 +177,11 @@ export default function AboutPage() {
                       About Asian Hire
                     </span>
 
-                    <h1 className="mt-6 text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl">
+                    <h1 className="mt-3 md:mt-6 text-2xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl">
                       Bridging Cambodian Talent and{" "} Australian Opportunity
                     </h1>
 
-                    <p className="mx-auto mt-6 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
+                    <p className="mx-auto mt-3 md:mt-6 max-w-3xl text-base leading-6 md:leading-8 text-slate-600 sm:text-lg">
                       Technology will create millions of jobs. The problem will be to find workers to fill them. Whom should you connect with the next time you’re looking for a job?
                     </p>
                 </div>
@@ -203,7 +203,7 @@ export default function AboutPage() {
                     </div>
 
                     {/* Bottom accent */}
-                    <div className="mx-auto mt-5 h-1 w-20 rounded-full bg-[#485ea8]" />
+                    <div className="mx-auto mt-3 md:mt-5 h-1 w-20 rounded-full bg-[#485ea8]" />
                 </div>
             </div>
         </section>
@@ -240,16 +240,16 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="pt-3 lg:pt-0">
-            <p className="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
+          <div className="pt-1 lg:pt-0">
+            <p className="mb-3 md:mb-4 text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
               Who we are
             </p>
 
-            <h2 className="text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-[42px]">
+            <h2 className="text-2xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-[42px]">
               Bridging Cambodian Talent and Australian Opportunity
             </h2>
 
-            <p className="mt-6 leading-7 text-slate-600">
+            <p className="mt-3 md:mt-6 leading-7 text-slate-600">
               Asian Hire was founded in early 2015 by <strong>Mrs. LUON SOTHEARY</strong>, a Cambodian and a family business operating in Cambodia. Asian Hire is an international recruiter and migration counsellor to Australia for skilled workers, technicians and senior professionals in all industries.
             </p>
 
@@ -275,7 +275,7 @@ export default function AboutPage() {
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
               What we do
             </p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-4xl">
               Helping talent find its next chapter
             </h2>
             <p className="mt-4 leading-7 text-slate-600">
@@ -284,7 +284,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-6 md:mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {[
               {
                 icon: BriefcaseBusiness,
@@ -312,7 +312,7 @@ export default function AboutPage() {
               return (
                 <article
                   key={item.title}
-                  className="group rounded-2xl border border-slate-200/80 bg-white p-6 transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-900/5 sm:p-8"
+                  className="group rounded-2xl border border-slate-200/80 bg-white p-4 transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-900/5 sm:p-8"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex size-12 items-center justify-center rounded-xl bg-blue-50 text-[#485ea8] transition group-hover:bg-[#485ea8] group-hover:text-white">
@@ -322,11 +322,11 @@ export default function AboutPage() {
                       {item.number}
                     </span>
                   </div>
-                  <h3 className="mt-6 text-xl font-bold">{item.title}</h3>
+                  <h3 className="mt-4 md:mt-6 text-xl font-bold">{item.title}</h3>
                   <p className="mt-3 text-sm leading-7 text-slate-600">
                     {item.description}
                   </p>
-                  <div className="mt-6 h-1 w-10 rounded-full bg-[#485ea8] transition-all group-hover:w-16" />
+                  <div className="mt-3 md:mt-6 h-1 w-10 rounded-full bg-[#485ea8] transition-all group-hover:w-16" />
                 </article>
               );
             })}
@@ -341,20 +341,20 @@ export default function AboutPage() {
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
               What guides us
             </p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-4xl">
               Purpose behind every connection
             </h2>
-            <p className="mt-4 leading-7 text-slate-600">
+            <p className="mt-3 md:mt-4 leading-7 text-slate-600">
               Our values shape how we connect people, approach recruitment,
               and build for the future.
             </p>
           </div>
 
-          <div className="mt-10 overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-xl shadow-slate-900/[0.04]">
+          <div className="mt-6 md:mt-10 overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-xl shadow-slate-900/[0.04]">
             <div
               role="tablist"
               aria-label="Our principles"
-              className="grid grid-cols-1 gap-2 border-b border-slate-100 bg-slate-50/80 p-3 sm:grid-cols-3 sm:p-4"
+              className="flex flex-nowrap gap-2 overflow-x-auto border-b border-slate-100 bg-slate-50/80 p-3 sm:p-4 md:grid md:grid-cols-3"
             >
               {principles.map((item) => {
                 const Icon = item.icon;
@@ -369,7 +369,7 @@ export default function AboutPage() {
                     aria-selected={selected}
                     aria-controls="principle-panel"
                     onClick={() => setActiveTab(item.id)}
-                    className={`flex items-center justify-center gap-2.5 rounded-xl px-4 py-4 text-sm font-semibold transition ${
+                    className={`flex shrink-0 items-center justify-center gap-2.5 whitespace-nowrap rounded-xl px-4 py-4 text-sm font-semibold transition md:shrink ${
                       selected
                         ? "bg-[#485ea8] text-white shadow-lg shadow-blue-900/20"
                         : "text-slate-600 hover:bg-white hover:text-[#485ea8]"
@@ -466,12 +466,12 @@ export default function AboutPage() {
         <section id="our-team" className="bg-slate-50 py-10 sm:py-16">
             <div className="mx-auto max-w-7xl px-5 sm:px-8">
                 {/* Heading */}
-                <div className="mb-10 flex flex-col text-center justify-center gap-4 sm:mb-14 sm:flex-row sm:items-end">
+                <div className="mb-6 md:mb-10 flex flex-col text-center justify-center gap-4 sm:mb-14 sm:flex-row sm:items-end">
                     <div className="max-w-2xl">
                         <span className="text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
                             People behind Asian Hire
                         </span>
-                        <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                        <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-4xl">
                             Meet the people behind our mission.
                         </h2>
                     </div>

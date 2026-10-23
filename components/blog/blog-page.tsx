@@ -1,4 +1,5 @@
 import PageBanner from "../PageBanner";
+import SectionHeading from "../ui/SectionHeader";
 import BlogCard from "./blog-card";
 
 
@@ -80,33 +81,7 @@ export default function BlogPage() {
       {/* Blog listing */}
       <section className="py-10 sm:py-16">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-                Latest articles
-              </h2>
-              <p className="mt-2 text-sm text-slate-500">
-                Ideas, guidance, and updates for your professional journey.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2">
-              {["All", "Career Advice", "Job Search", "Workplace", "Company News"].map(
-                (category) => (
-                  <button
-                    key={category}
-                    className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                      category === "All"
-                        ? "border-[#485ea8] bg-[#485ea8] text-white shadow-sm shadow-blue-200"
-                        : "border-slate-200 bg-white text-slate-600 hover:border-[#485ea8]/30 hover:bg-blue-50 hover:text-[#485ea8]"
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ),
-              )}
-            </div>
-          </div>
+          <SectionHeading title="Latest articles" description="Ideas, guidance, and updates for your professional journey." />
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7">
             {blogs.map((blog,index) => (

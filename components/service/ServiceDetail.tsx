@@ -90,7 +90,7 @@ export default function ServiceDetail({ service }: { service: Service }) {
             />
           </div>
 
-          <h1 className="mt-4 max-w-4xl text-3xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-4xl">
+          <h1 className="mt-4 max-w-4xl text-2xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-4xl">
             {service.title}
           </h1>
 

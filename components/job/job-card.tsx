@@ -14,7 +14,6 @@ export default function JobCard ({job}:any) {
                         <h3 className="font-semibold tracking-[-0.02em] text-[#172b4d] group-hover:text-[#485ea8]">
                             <Link href={`/jobs/${job.code}`}>{job.title}</Link>
                         </h3>
-                        <p className="mt-1 text-sm text-slate-500">{job.company}</p>
                         </div>
                         <div
                         className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1.5"
@@ -52,7 +51,7 @@ export default function JobCard ({job}:any) {
                     <Wallet aria-hidden="true" className="size-3.5 text-slate-400" />
                     {job.salary}
                 </span>
-                <span className="ml-auto inline-flex items-center gap-1.5">
+                <span className="ml-auto inline-flex items-center gap-1.5 w-full md:w-auto">
                     <Clock3 aria-hidden="true" className="size-3.5 text-slate-400" />
                     {job.posted}
                 </span>
