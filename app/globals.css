@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #172b4d;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Jost", "Kantumruy Pro", sans-serif;
+}
+
+/* Glass dropdown scrollbar */
+.industry-dropdown-list {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.55) transparent;
+  padding-right: 4px;
+}
+
+/* Chrome, Edge, Safari */
+.industry-dropdown-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.industry-dropdown-list::-webkit-scrollbar-track {
+  background: transparent;
+  margin-block: 8px;
+}
+
+.industry-dropdown-list::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.45);
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+.industry-dropdown-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(37, 99, 235, 0.75);
+  background-clip: padding-box;
+}
