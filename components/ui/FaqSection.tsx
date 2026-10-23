@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { FaArrowRight, FaChevronDown, FaEnvelope } from "react-icons/fa";
 import SectionHeading from "./SectionHeader";
+import { Reveal, Stagger, StaggerItem } from "@/util/animations";
 
 const mailTo = `mailto:recruitment@asianhire.com?subject=${encodeURIComponent(
   "Resume Submission - [Your Occupation]",
@@ -29,59 +30,66 @@ export default function FaqSection ({faqs, title, description}: FaqSectionProps)
     return <>
         <section className="bg-[#f7f9fc] px-5 py-10 sm:py-16 sm:px-8">
             <div className="mx-auto max-w-7xl">
-                <SectionHeading eyebrow="Need to know more?" title={title} description={description} />
-
-                <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-4">
+                <Reveal direction="up">
+                    <SectionHeading eyebrow="Need to know more?" title={title} description={description} />
+                </Reveal>
+                
+                <Stagger 
+                    delay={0.2}
+                    className="grid grid-cols-1 md:grid-cols-2 items-start gap-4"
+                >
                     {faqColumns.map((column, columnIndex) => (
-                        <div key={columnIndex} className="grid gap-4">
-                            {column.map(({faq, index}) => {
-                                const isOpen = openFaq === index;
-                                const panelId = `job-seeker-faq-${index}`;
+                        <StaggerItem key={columnIndex} direction="up">
+                            <div key={columnIndex} className="grid gap-4">
+                                {column.map(({faq, index}) => {
+                                    const isOpen = openFaq === index;
+                                    const panelId = `job-seeker-faq-${index}`;
 
-                                return (
-                                    <div
-                                        key={faq.question}
-                                        className={`self-start overflow-hidden rounded-2xl border bg-white transition ${
-                                            isOpen
-                                                ? "border-blue-200 shadow-lg shadow-blue-900/[0.04]"
-                                                : "border-slate-200/80 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-900/[0.04]"
-                                        }`}
-                                    >
-                                        <button
-                                            type="button"
-                                            aria-expanded={isOpen}
-                                            aria-controls={panelId}
-                                            onClick={() => setOpenFaq(isOpen ? null : index)}
-                                            className="flex w-full text-base items-center justify-between gap-4 px-5 py-5 text-left sm:px-6"
+                                    return (
+                                        <div
+                                            key={faq.question}
+                                            className={`self-start overflow-hidden rounded-2xl border bg-white transition ${
+                                                isOpen
+                                                    ? "border-blue-200 shadow-lg shadow-blue-900/[0.04]"
+                                                    : "border-slate-200/80 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-900/[0.04]"
+                                            }`}
                                         >
-                                            <span className="font-bold leading-6 text-[#10264b]">
-                                                {faq.question}
-                                            </span>
-
-                                            <span
-                                                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition ${
-                                                    isOpen
-                                                        ? "rotate-180 bg-blue-50 text-[#485ea8]"
-                                                        : "bg-slate-100 text-slate-500"
-                                                }`}
+                                            <button
+                                                type="button"
+                                                aria-expanded={isOpen}
+                                                aria-controls={panelId}
+                                                onClick={() => setOpenFaq(isOpen ? null : index)}
+                                                className="flex w-full text-base items-center justify-between gap-4 px-5 py-5 text-left sm:px-6"
                                             >
-                                                <FaChevronDown className="text-xs" />
-                                            </span>
-                                        </button>
+                                                <span className="font-bold leading-6 text-[#10264b]">
+                                                    {faq.question}
+                                                </span>
 
-                                        {isOpen && (
-                                            <div id={panelId} className="px-5 pb-5 sm:px-6 sm:pb-6">
-                                                <div className="border-t border-slate-100 pt-4 text-sm leading-7 text-slate-600">
-                                                    <div dangerouslySetInnerHTML={{__html: faq.answer}} />
+                                                <span
+                                                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition ${
+                                                        isOpen
+                                                            ? "rotate-180 bg-blue-50 text-[#485ea8]"
+                                                            : "bg-slate-100 text-slate-500"
+                                                    }`}
+                                                >
+                                                    <FaChevronDown className="text-xs" />
+                                                </span>
+                                            </button>
+
+                                            {isOpen && (
+                                                <div id={panelId} className="px-5 pb-5 sm:px-6 sm:pb-6">
+                                                    <div className="border-t border-slate-100 pt-4 text-sm leading-7 text-slate-600">
+                                                        <div dangerouslySetInnerHTML={{__html: faq.answer}} />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                );
-                            })}
-                        </div>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </StaggerItem>
                     ))}
-                </div>
+                </Stagger>
             </div>
         </section>
     </>;

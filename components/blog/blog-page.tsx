@@ -1,3 +1,4 @@
+import { Reveal, Stagger, StaggerItem } from "@/util/animations";
 import PageBanner from "../PageBanner";
 import SectionHeading from "../ui/SectionHeader";
 import BlogCard from "./blog-card";
@@ -81,13 +82,20 @@ export default function BlogPage() {
       {/* Blog listing */}
       <section className="py-10 sm:py-16">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <SectionHeading title="Latest articles" description="Ideas, guidance, and updates for your professional journey." />
+          <Reveal direction="up">
+            <SectionHeading title="Latest articles" description="Ideas, guidance, and updates for your professional journey." />
+          </Reveal>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7">
+          <Stagger
+            delay={0.2}
+            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7"
+          >
             {blogs.map((blog,index) => (
-              <BlogCard key={index} spotlight={blog} />
+              <StaggerItem key={index} direction="up">
+                <BlogCard spotlight={blog} />
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         </div>
       </section>
     </main>

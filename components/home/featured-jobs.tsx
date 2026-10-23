@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { Job } from "@/components/home/job-data";
 import JobCard from "../job/job-card";
 import { ArrowRight } from "lucide-react";
+import { Reveal, Stagger, StaggerItem } from "@/util/animations";
 
 const tabs = ["Featured", "Urgent", "Latest"] as const;
 type JobTab = (typeof tabs)[number];
@@ -26,32 +27,34 @@ export default function FeaturedJobs({ jobs }: { jobs: Job[] }) {
   return (
     <div>
       <div className="mb-8 flex flex-wrap justify-center items-center gap-4">
-        <div
-          aria-label="Filter jobs"
-          className="inline-flex max-w-full flex-wrap items-center gap-1 rounded-full border border-slate-200/70 bg-white p-1.5 shadow-sm"
-          role="tablist"
-        >
-          {tabs.map((tab) => (
-            <button
-              aria-selected={activeTab === tab}
-              className={`relative rounded-full px-5 py-1.5 text-sm font-semibold
-                whitespace-nowrap transition-all duration-300 ease-out
-                focus-visible:outline-none focus-visible:ring-2 border
-                focus-visible:ring-[#485ea8]/50 focus-visible:ring-offset-2
-                active:scale-95 ${
-                  activeTab === tab
-                    ? "bg-white text-[#485ea8] shadow-[0_2px_8px_rgba(23,43,77,0.10)] border-[#485ea8]/30"
-                    : "bg-transparent text-slate-500 hover:bg-white/60 border-black/5 hover:text-[#172b4d]"
-                }`}
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              role="tab"
-              type="button"
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
+        <Reveal direction="zoom">
+          <div
+            aria-label="Filter jobs"
+            className="inline-flex max-w-full flex-wrap items-center gap-1 rounded-full border border-slate-200/70 bg-white p-1.5 shadow-sm"
+            role="tablist"
+          >
+            {tabs.map((tab) => (
+              <button
+                aria-selected={activeTab === tab}
+                className={`relative rounded-full px-6 py-3 text-sm font-semibold
+                  whitespace-nowrap transition-all duration-300 ease-out
+                  focus-visible:outline-none focus-visible:ring-2 border
+                  focus-visible:ring-[#485ea8]/50 focus-visible:ring-offset-2
+                  active:scale-95 ${
+                    activeTab === tab
+                      ? "bg-white text-[#485ea8] shadow-[0_2px_8px_rgba(23,43,77,0.10)] border-[#485ea8]/30"
+                      : "bg-transparent text-slate-500 hover:bg-white/60 border-black/5 hover:text-[#172b4d]"
+                  }`}
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                role="tab"
+                type="button"
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+        </Reveal>
       </div>
 
       {filteredJobs.length === 0 ? (
@@ -59,22 +62,29 @@ export default function FeaturedJobs({ jobs }: { jobs: Job[] }) {
           No jobs match your search. Try adjusting your keywords or filters.
         </p>
       ) : (
-        <div className="grid gap-5 lg:grid-cols-2" role="tabpanel">
+        <Stagger 
+          delay={0.2}
+          className="grid gap-5 lg:grid-cols-2"
+        >
           {filteredJobs.map((job, index) => {
             return (
-              <JobCard job={job} key={index} />
+              <StaggerItem key={index} direction="up">
+                <JobCard job={job} />
+              </StaggerItem>
             );
           })}
-        </div>
+        </Stagger>
       )}
 
       <div className="mt-8 text-center">
-        <a
-          className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-3 text-sm font-semibold text-[#172b4d] transition hover:border-blue-200 hover:text-[#485ea8]"
-          href="#featured-jobs"
-        >
-          View all Job <ArrowRight aria-hidden="true" className="size-4" />
-        </a>
+        <Reveal direction="zoom">
+          <a
+            className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-3 text-sm font-semibold text-[#172b4d] transition hover:border-blue-200 hover:text-[#485ea8]"
+            href="#featured-jobs"
+          >
+            View all Job <ArrowRight aria-hidden="true" className="size-4" />
+          </a>
+        </Reveal>
       </div>
     </div>
   );

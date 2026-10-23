@@ -19,6 +19,7 @@ import type {
 // Replace this import with your actual jobs data source.
 import { jobs } from "@/components/home/job-data";
 import PageBanner from "../PageBanner";
+import { Reveal, Stagger, StaggerItem } from "@/util/animations";
 
 const PAGE_SIZE = 6;
 
@@ -117,101 +118,114 @@ export default function JobPage({
 
       {/* Results */}
       <section className="mx-auto max-w-7xl px-5 sm:px-8 py-10 sm:py-16">
-        <div className="mb-8 flex items-start md:items-center gap-3 rounded-2xl border border-[#485ea8]/15 bg-[#485ea8]/[0.04] p-4 sm:gap-4">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[#485ea8]/10 text-[#485ea8]">
-            <Info aria-hidden="true" size={18} />
-          </span>
-          <p className="text-sm md:text-base leading-7 text-slate-600">
-            ANZSCO information is published under the{" "}
-            <a
-              className="font-semibold text-[#485ea8] underline decoration-[#485ea8]/30 underline-offset-4 transition hover:decoration-[#485ea8] focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#485ea8]"
-              href="https://creativecommons.org/licenses/by/2.5/au/" target="_blank"
-            >
-              Creative Commons Attribution 2.5 Australia licence
-            </a>
-            . Find the original classification on the{" "}
-            <a
-              className="font-semibold text-[#485ea8] underline decoration-[#485ea8]/30 underline-offset-4 transition hover:decoration-[#485ea8] focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#485ea8]"
-              href="https://www.abs.gov.au/" target="_blank"
-            >
-              Australian Bureau of Statistics website
-            </a>
-            .
-          </p>
-        </div>
-        <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div>
-            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-              Browse Jobs
-            </h2>
-
-            <p className="mt-2 text-sm text-slate-500">
-              Showing{" "}
-              <span className="font-semibold text-slate-800">
-                {filteredJobs.length === 0
-                  ? 0
-                  : (safePage - 1) * PAGE_SIZE + 1}
-                {"–"}
-                {Math.min(safePage * PAGE_SIZE, filteredJobs.length)}
-              </span>{" "}
-              of{" "}
-              <span className="font-semibold text-slate-800">
-                {filteredJobs.length}
-              </span>{" "}
-              jobs
+        <Reveal direction="zoom">
+          <div className="mb-8 flex items-start md:items-center gap-3 rounded-2xl border border-[#485ea8]/15 bg-[#485ea8]/[0.04] p-4 sm:gap-4">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[#485ea8]/10 text-[#485ea8]">
+              <Info aria-hidden="true" size={18} />
+            </span>
+            <p className="text-sm md:text-base leading-7 text-slate-600">
+              ANZSCO information is published under the{" "}
+              <a
+                className="font-semibold text-[#485ea8] underline decoration-[#485ea8]/30 underline-offset-4 transition hover:decoration-[#485ea8] focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#485ea8]"
+                href="https://creativecommons.org/licenses/by/2.5/au/" target="_blank"
+              >
+                Creative Commons Attribution 2.5 Australia licence
+              </a>
+              . Find the original classification on the{" "}
+              <a
+                className="font-semibold text-[#485ea8] underline decoration-[#485ea8]/30 underline-offset-4 transition hover:decoration-[#485ea8] focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#485ea8]"
+                href="https://www.abs.gov.au/" target="_blank"
+              >
+                Australian Bureau of Statistics website
+              </a>
+              .
             </p>
           </div>
+        </Reveal>
+        <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <Reveal direction="left">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+                Browse Jobs
+              </h2>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              onClick={resetFilters}
-              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-600 transition hover:border-blue-200 hover:text-[#485ea8]"
-            >
-              <RotateCcw size={15} />
-              Reset
-            </button>
-
-            <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm">
-              <span className="whitespace-nowrap text-slate-500">
-                Sort by
-              </span>
-
-              <select
-                value={sortBy}
-                onChange={(event) => {
-                  setSortBy(event.target.value as SortOption);
-                  setCurrentPage(1);
-                }}
-                className="max-w-36 bg-transparent font-semibold text-slate-800 outline-none"
+              <p className="mt-2 text-sm text-slate-500">
+                Showing{" "}
+                <span className="font-semibold text-slate-800">
+                  {filteredJobs.length === 0
+                    ? 0
+                    : (safePage - 1) * PAGE_SIZE + 1}
+                  {"–"}
+                  {Math.min(safePage * PAGE_SIZE, filteredJobs.length)}
+                </span>{" "}
+                of{" "}
+                <span className="font-semibold text-slate-800">
+                  {filteredJobs.length}
+                </span>{" "}
+                jobs
+              </p>
+            </div>
+          </Reveal>
+          
+          <Reveal direction="right">
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-600 transition hover:border-blue-200 hover:text-[#485ea8]"
               >
-                <option value="newest">Newest</option>
-                <option value="oldest">Oldest</option>
-                <option value="title">Job title</option>
-              </select>
-            </label>
-          </div>
+                <RotateCcw size={15} />
+                Reset
+              </button>
+
+              <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm">
+                <span className="whitespace-nowrap text-slate-500">
+                  Sort by
+                </span>
+
+                <select
+                  value={sortBy}
+                  onChange={(event) => {
+                    setSortBy(event.target.value as SortOption);
+                    setCurrentPage(1);
+                  }}
+                  className="max-w-36 bg-transparent font-semibold text-slate-800 outline-none"
+                >
+                  <option value="newest">Newest</option>
+                  <option value="oldest">Oldest</option>
+                  <option value="title">Job title</option>
+                </select>
+              </label>
+            </div>
+          </Reveal>
         </div>
 
         <div className="mb-8">
-          <HeroSearch
-            variant="light"
-            filters={filters}
-            resultCount={filteredJobs.length}
-            hasSearched={Boolean(filters.keyword || filters.industry || filters.location)}
-            industries={industries}
-            onKeywordChange={(keyword) => updateFilter("keyword", keyword)}
-            onIndustryChange={(industry) => updateFilter("industry", industry)}
-          />
+          <Reveal direction="up">
+            <HeroSearch
+              variant="light"
+              filters={filters}
+              resultCount={filteredJobs.length}
+              hasSearched={Boolean(filters.keyword || filters.industry || filters.location)}
+              industries={industries}
+              onKeywordChange={(keyword) => updateFilter("keyword", keyword)}
+              onIndustryChange={(industry) => updateFilter("industry", industry)}
+            />
+          </Reveal>
         </div>
 
         {/* Job cards */}
         {paginatedJobs.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Stagger
+            delay={0.2}
+            className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          >
             {paginatedJobs.map((job: any, index) => (
-              <JobCard key={index} job={job} />
+              <StaggerItem key={index} direction="up">
+                <JobCard job={job} />
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         ) : (
           <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
             <span className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">

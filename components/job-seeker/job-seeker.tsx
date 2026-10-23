@@ -20,6 +20,7 @@ import {
 import PageBanner from "../PageBanner";
 import ServiceSection from "../ui/ServiceSection";
 import FaqSection from "../ui/FaqSection";
+import { Reveal } from "@/util/animations";
 
 const services = [
   {
@@ -153,161 +154,169 @@ export default function JobSeeker() {
       {/* Hero */}
       <section className="relative">
         <div className="mx-auto grid max-w-7xl items-center gap-8 md:gap-12 px-5 py-10 sm:px-8 sm:py-16 lg:grid-cols-2 lg:gap-16">
-          <div className="relative z-10 order-2 md:order-1">
-            <div className="mb-4 md:mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 text-sm font-semibold text-[#485ea8] shadow-sm">
-              <span className="h-2 w-2 rounded-full bg-[#485ea8]" />
-              Your career. Your future.
-            </div>
+          <Reveal direction="left">
+            <div className="relative z-10 order-2 md:order-1">
+              <div className="mb-4 md:mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 text-sm font-semibold text-[#485ea8] shadow-sm">
+                <span className="h-2 w-2 rounded-full bg-[#485ea8]" />
+                Your career. Your future.
+              </div>
 
-            <h1 className="max-w-2xl text-2xl md:text-4xl font-extrabold leading-[1.15] tracking-tight text-[#10264b]">
-              Build Your Future: Skilled Job Opportunities in Australia
-            </h1>
+              <h1 className="max-w-2xl text-2xl md:text-4xl font-extrabold leading-[1.15] tracking-tight text-[#10264b]">
+                Build Your Future: Skilled Job Opportunities in Australia
+              </h1>
 
-            <p className="mt-3 md:mt-5 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
-              Your next career opportunity starts here. Connect with our
-              recruitment team, explore opportunities across key industries,
-              and take the next step toward your professional future in
-              Australia.
-            </p>
+              <p className="mt-3 md:mt-5 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
+                Your next career opportunity starts here. Connect with our
+                recruitment team, explore opportunities across key industries,
+                and take the next step toward your professional future in
+                Australia.
+              </p>
 
-            <p className="mt-1 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
-              Your next career opportunity starts here. Connect with our
-              recruitment team, explore opportunities across key industries,
-              and take the next step toward your professional future in
-              Australia.
-            </p>
+              <p className="mt-1 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
+                Your next career opportunity starts here. Connect with our
+                recruitment team, explore opportunities across key industries,
+                and take the next step toward your professional future in
+                Australia.
+              </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/jobs"
-                className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full bg-[#485ea8] px-6 py-3.5 font-semibold text-white shadow-lg shadow-[#485ea8]/20 transition hover:-translate-y-0.5 hover:bg-[#1955c5]"
-              >
-                Explore Job Opportunities
-                <FaArrowRight />
-              </Link>
-            </div>
-          </div>
-
-          <div className="relative mx-auto order-1 md:order-2 w-full max-w-xl lg:max-w-none">
-            <div className="absolute -right-5 -top-5 h-36 w-36 rounded-full bg-blue-200/50 blur-3xl" />
-            <div className="absolute -bottom-6 -left-6 h-40 w-40 rounded-full bg-sky-200/50 blur-3xl" />
-
-            <div className="relative overflow-hidden rounded-[28px] border border-white bg-white p-2 shadow-2xl shadow-slate-300/50">
-              <div className="relative aspect-[4/4.2] overflow-hidden rounded-[22px]">
-                <Image
-                  src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85"
-                  alt="Professionals collaborating in a modern workplace"
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#10264b]/80 via-transparent to-transparent" />
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/jobs"
+                  className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full bg-[#485ea8] px-6 py-3.5 font-semibold text-white shadow-lg shadow-[#485ea8]/20 transition hover:-translate-y-0.5 hover:bg-[#1955c5]"
+                >
+                  Explore Job Opportunities
+                  <FaArrowRight />
+                </Link>
               </div>
             </div>
-          </div>
+          </Reveal>
+
+          <Reveal direction="right">
+            <div className="relative mx-auto order-1 md:order-2 w-full max-w-xl lg:max-w-none">
+              <div className="absolute -right-5 -top-5 h-36 w-36 rounded-full bg-blue-200/50 blur-3xl" />
+              <div className="absolute -bottom-6 -left-6 h-40 w-40 rounded-full bg-sky-200/50 blur-3xl" />
+
+              <div className="relative overflow-hidden rounded-[28px] border border-white bg-white p-2 shadow-2xl shadow-slate-300/50">
+                <div className="relative aspect-[4/4.2] overflow-hidden rounded-[22px]">
+                  <Image
+                    src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85"
+                    alt="Professionals collaborating in a modern workplace"
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#10264b]/80 via-transparent to-transparent" />
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
       {/* Dedicated Recruiters */}
       <section className="bg-[#f7f9fc] px-5 py-10 sm:px-8 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-2 lg:items-stretch">
-          <div className="flex flex-col justify-center rounded-3xl border border-slate-100 bg-[#f7f9fc]/80 p-7 sm:p-10 lg:p-12">
-            <span className="text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
-              Support at every step
-            </span>
+          <Reveal direction="left">
+            <div className="flex flex-col justify-center rounded-3xl border border-slate-100 bg-[#f7f9fc]/80 p-7 sm:p-10 lg:p-12">
+              <span className="text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
+                Support at every step
+              </span>
 
-            <h2 className="mt-3 md:mt-4 text-2xl font-extrabold tracking-tight text-[#10264b] sm:text-4xl">
-              Dedicated Recruiters, Focused on Your Future
-            </h2>
+              <h2 className="mt-3 md:mt-4 text-2xl font-extrabold tracking-tight text-[#10264b] sm:text-4xl">
+                Dedicated Recruiters, Focused on Your Future
+              </h2>
 
-            <p className="mt-3 md:mt-5 leading-8 text-slate-600">
-              Finding the right job is about more than matching a resume to a
-              vacancy. Our recruitment team helps you understand opportunities,
-              highlight your strengths, and navigate the application process
-              with greater confidence.
-            </p>
+              <p className="mt-3 md:mt-5 leading-8 text-slate-600">
+                Finding the right job is about more than matching a resume to a
+                vacancy. Our recruitment team helps you understand opportunities,
+                highlight your strengths, and navigate the application process
+                with greater confidence.
+              </p>
 
-            <div className="mt-7 space-y-5">
-              {[
-                {
-                  title: "Understand your goals",
-                  text: "We consider your experience, skills, and the type of role you are looking for.",
-                },
-                {
-                  title: "Find suitable opportunities",
-                  text: "Explore vacancies aligned with your background and career direction.",
-                },
-                {
-                  title: "Move forward with confidence",
-                  text: "Get clear guidance on applications and the next recruitment steps.",
-                },
-              ].map((item) => (
-                <div key={item.title} className="flex gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-[#485ea8]">
-                    <FaCheckCircle />
+              <div className="mt-7 space-y-5">
+                {[
+                  {
+                    title: "Understand your goals",
+                    text: "We consider your experience, skills, and the type of role you are looking for.",
+                  },
+                  {
+                    title: "Find suitable opportunities",
+                    text: "Explore vacancies aligned with your background and career direction.",
+                  },
+                  {
+                    title: "Move forward with confidence",
+                    text: "Get clear guidance on applications and the next recruitment steps.",
+                  },
+                ].map((item) => (
+                  <div key={item.title} className="flex gap-4">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-[#485ea8]">
+                      <FaCheckCircle />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-[#10264b]">{item.title}</h3>
+                      <p className="mt-1 text-sm leading-6 text-slate-600">
+                        {item.text}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-[#10264b]">{item.title}</h3>
-                    <p className="mt-1 text-sm leading-6 text-slate-600">
-                      {item.text}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
+
+              <Link
+                href="/jobs"
+                className="mt-8 inline-flex w-fit items-center gap-2 font-bold text-[#485ea8] transition hover:gap-3"
+              >
+                Find your next role <FaArrowRight />
+              </Link>
             </div>
-
-            <Link
-              href="/jobs"
-              className="mt-8 inline-flex w-fit items-center gap-2 font-bold text-[#485ea8] transition hover:gap-3"
-            >
-              Find your next role <FaArrowRight />
-            </Link>
-          </div>
+          </Reveal>
 
           {/* Blue industries panel with online background image */}
-          <div className="relative isolate overflow-hidden rounded-3xl bg-[#485ea8] p-4 text-white sm:p-6 lg:p-7">
-            <Image
-              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=85"
-              alt=""
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="absolute inset-0 -z-20 object-cover"
-            />
-            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#485ea8]/95 via-[#1555b7]/90 to-[#0d2857]/95" />
+          <Reveal direction="right">
+            <div className="relative isolate overflow-hidden rounded-3xl bg-[#485ea8] p-4 text-white sm:p-6 lg:p-7">
+              <Image
+                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=85"
+                alt=""
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="absolute inset-0 -z-20 object-cover"
+              />
+              <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#485ea8]/95 via-[#1555b7]/90 to-[#0d2857]/95" />
 
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-blue-50 backdrop-blur-md">
-              <FaGlobeAsia />
-              Opportunities across Australia
-            </span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-blue-50 backdrop-blur-md">
+                <FaGlobeAsia />
+                Opportunities across Australia
+              </span>
 
-            <h2 className="mt-6 text-3xl font-extrabold tracking-tight sm:text-4xl">
-              Industries We Serve
-            </h2>
+              <h2 className="mt-6 text-3xl font-extrabold tracking-tight sm:text-4xl">
+                Industries We Serve
+              </h2>
 
-            <p className="mt-4 max-w-lg leading-7 text-blue-100">
-              Explore career opportunities across a range of industries and
-              discover where your skills can make a difference.
-            </p>
+              <p className="mt-4 max-w-lg leading-7 text-blue-100">
+                Explore career opportunities across a range of industries and
+                discover where your skills can make a difference.
+              </p>
 
-            <div className="mt-8 grid gap-3 sm:grid-cols-2">
-              {industries.map((industry) => (
-                <div
-                  key={industry}
-                  className="group flex items-start gap-3 rounded-xl border border-white/15 bg-white/[0.10] p-4 backdrop-blur-sm transition hover:border-white/40 hover:bg-white/[0.17]"
-                >
-                  <FaCheckCircle className="mt-1 shrink-0 text-blue-200" />
-                  <span className="text-sm font-medium leading-6 text-white">
-                    {industry}
-                  </span>
-                </div>
-              ))}
+              <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                {industries.map((industry) => (
+                  <div
+                    key={industry}
+                    className="group flex items-start gap-3 rounded-xl border border-white/15 bg-white/[0.10] p-4 backdrop-blur-sm transition hover:border-white/40 hover:bg-white/[0.17]"
+                  >
+                    <FaCheckCircle className="mt-1 shrink-0 text-blue-200" />
+                    <span className="text-sm font-medium leading-6 text-white">
+                      {industry}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <p className="mt-7 text-xs leading-5 text-blue-100/90">
+                Available roles and industry coverage depend on current vacancies.
+              </p>
             </div>
-
-            <p className="mt-7 text-xs leading-5 text-blue-100/90">
-              Available roles and industry coverage depend on current vacancies.
-            </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 
