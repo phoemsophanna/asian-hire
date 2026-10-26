@@ -176,7 +176,7 @@ function Hero({
           </Reveal>
 
           {/* Search form */}
-          <div className="relative z-10 overflow-hidden mx-auto mt-8 max-w-4xl sm:mt-10 md:mt-12">
+          <div className="relative z-10 mx-auto mt-8 max-w-4xl sm:mt-10 md:mt-12">
             <Reveal direction="up">
               <HeroSearch
                 filters={filters}
