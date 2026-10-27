@@ -20,8 +20,8 @@ export default function BlogCard({
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-blue-100 hover:shadow-xl hover:shadow-slate-900/[0.06]">
       {/* Blog image */}
-      <a
-        href={`/blog/${spotlight.slug}`}
+      <Link
+        href={`/blogs/${spotlight.slug}`}
         aria-label={`Read article: ${spotlight.title}`}
         className="relative block aspect-[16/10] overflow-hidden bg-slate-100"
       >
@@ -37,7 +37,7 @@ export default function BlogCard({
         <span className="absolute left-5 top-5 rounded-full border border-white/50 bg-white/95 px-3.5 py-1.5 text-xs font-bold text-[#485ea8] shadow-sm backdrop-blur-md">
           {spotlight.category}
         </span>
-      </a>
+      </Link>
 
       {/* Blog content */}
       <div className="flex flex-1 flex-col p-5 sm:p-6">

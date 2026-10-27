@@ -257,12 +257,12 @@ function PopularIndustries() {
         </Stagger>
         <div className="mt-8 text-center">
           <Reveal direction="zoom">
-            <a
+            <Link
               className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-3 text-sm font-semibold text-[#172b4d] transition hover:border-blue-200 hover:text-[#485ea8]"
-              href="#featured-jobs"
+              href="/industry"
             >
               Browse all industries <ArrowRight aria-hidden="true" className="size-4" />
-            </a>
+            </Link>
           </Reveal>
         </div>
       </div>
@@ -391,12 +391,12 @@ function NewsSection() {
         </div>
         <div className="mt-8 text-center">
           <Reveal direction="zoom">
-            <a
+            <Link
               className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-3 text-sm font-semibold text-[#172b4d] transition hover:border-blue-200 hover:text-[#485ea8]"
-              href="#featured-jobs"
+              href="/blogs"
             >
-              Explore career advice <ArrowRight aria-hidden="true" className="size-4" />
-            </a>
+              View More <ArrowRight aria-hidden="true" className="size-4" />
+            </Link>
           </Reveal>
         </div>
       </div>

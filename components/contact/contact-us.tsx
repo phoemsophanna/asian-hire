@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import PageBanner from "../PageBanner";
 import { Reveal } from "@/util/animations";
+import Image from "next/image";
+import { FaHeadset } from "react-icons/fa";
 
 const MAIN_COLOR = "#485ea8";
 
@@ -49,33 +51,54 @@ export default function ContactUs() {
         <PageBanner title="Contact Us" />
         <section id="contact" className="bg-white py-10 sm:py-16">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
-            <Reveal direction="zoom">
-                <div className="mb-8 rounded-3xl border border-[#485ea8]/15 bg-gradient-to-br from-[#485ea8]/[0.07] via-white to-white px-4 py-3 sm:px-6 sm:py-4">
-                    <div className="mx-auto max-w-4xl text-center">
-                        <h2 className="text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl">
-                            Need a consultation?
-                        </h2>
-                        <div className="mx-auto mt-2 max-w-3xl space-y-1 text-sm leading-5 text-slate-600 sm:text-[15px] sm:leading-6">
-                            <p>
-                                Start your Australian visa application journey with a consultation from one of our experienced career and visa counsellors.
-                            </p>
-                            <p>
-                                Call us to arrange a face-to-face, Skype, or teleconference consultation. We provide culturally sensitive and confidential support.
-                            </p>
-                            <p>
-                                Our team is happy to help you access Australian job opportunities with top Australian employers looking to hire.
-                            </p>
-                            <p>
-                                Want to keep up to date with Australian jobs and immigration changes? Like and follow us on Facebook.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </Reveal>
             {/* Contact details and form */}
-            <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] overflow-hidden">
                 {/* Contact information */}
                 <Reveal direction="left">
+                    <div className="mb-4     rounded-3xl border border-[#485ea8]/15 bg-gradient-to-br from-[#485ea8]/[0.07] via-white to-white px-4 py-3 sm:px-6 sm:py-4">
+                        <div className="mx-auto text-start">
+                            <h2 className="text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl">
+                                Need a consultation?
+                            </h2>
+                            <div className="mx-auto mt-2 max-w-3xl space-y-1 text-sm leading-5 text-slate-600 sm:text-[15px] sm:leading-6">
+                                <p className="mb-3">
+                                    Start your Australian visa application journey with a consultation from one of our experienced career and visa counsellors.
+                                </p>
+                                <p className="mb-3">
+                                    Call us to arrange a face-to-face, Skype, or teleconference consultation. We provide culturally sensitive and confidential support.
+                                </p>
+                                <p className="mb-3">
+                                    Our team is happy to help you access Australian job opportunities with top Australian employers looking to hire.
+                                </p>
+                                <p>
+                                    Want to keep up to date with Australian jobs and immigration changes? Like and follow us on Facebook.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="group relative mx-auto w-full">
+                        {/* Image container */}
+                        <div className="relative overflow-hidden rounded-[2rem] border border-white/80 bg-gradient-to-br from-slate-50 to-indigo-50 shadow-md shadow-[#485ea8]/10">
+                            <div className="relative overflow-hidden rounded-[1.5rem] bg-white">
+                            <Image
+                                src="/images/call-center-1.jpg"
+                                alt="Asian Hire recruitment support team"
+                                width={400}
+                                height={400}
+                                priority
+                                className="h-auto w-full object-cover h-[100px] transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                            />
+
+                            {/* Bottom gradient */}
+                            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#485ea8]/10 to-transparent" />
+                            </div>
+                        </div>
+                    </div>
+                </Reveal>
+
+                {/* Contact form */}
+                <Reveal direction="right">
                     <div className="relative overflow-hidden rounded-3xl bg-[#485ea8] p-6 text-white shadow-xl shadow-[#485ea8]/15 sm:p-8 lg:p-9">
                         <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full border border-white/10" />
                         <div className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full border border-white/10" />
@@ -192,126 +215,6 @@ export default function ContactUs() {
                         </div>
                     </div>
                 </Reveal>
-
-                {/* Contact form */}
-                <Reveal direction="right">
-                    <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm sm:p-8 lg:p-9">
-                        <div className="mb-7">
-                            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                                Let&apos;s start a{" "} conversation.
-                            </h2>
-
-                            <p className="mt-4 max-w-xl text-sm leading-7 text-slate-600 sm:text-base">
-                                Have a question or need assistance? Our team is here to help.
-                                Contact us using your preferred method or send us a message below.
-                            </p>
-                        </div>
-
-                        <form onSubmit={handleSubmit} className="space-y-5">
-                        <div className="grid gap-5 sm:grid-cols-2">
-                            <div>
-                            <label
-                                htmlFor="contact-name"
-                                className="mb-2 block text-sm font-semibold text-slate-700"
-                            >
-                                Your name <span className="text-red-500">*</span>
-                            </label>
-
-                            <input
-                                id="contact-name"
-                                type="text"
-                                autoComplete="name"
-                                required
-                                value={form.name}
-                                onChange={(e) =>
-                                setForm({ ...form, name: e.target.value })
-                                }
-                                placeholder="Enter your name"
-                                className="w-full rounded-xl border border-slate-200 bg-[#f9fafb] px-4 py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#485ea8] focus:bg-white focus:ring-4 focus:ring-[#485ea8]/10"
-                            />
-                            </div>
-
-                            <div>
-                            <label
-                                htmlFor="contact-email"
-                                className="mb-2 block text-sm font-semibold text-slate-700"
-                            >
-                                Email address <span className="text-red-500">*</span>
-                            </label>
-
-                            <input
-                                id="contact-email"
-                                type="email"
-                                autoComplete="email"
-                                required
-                                value={form.email}
-                                onChange={(e) =>
-                                setForm({ ...form, email: e.target.value })
-                                }
-                                placeholder="you@example.com"
-                                className="w-full rounded-xl border border-slate-200 bg-[#f9fafb] px-4 py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#485ea8] focus:bg-white focus:ring-4 focus:ring-[#485ea8]/10"
-                            />
-                            </div>
-                        </div>
-
-                        <div>
-                            <label
-                            htmlFor="contact-subject"
-                            className="mb-2 block text-sm font-semibold text-slate-700"
-                            >
-                            Subject
-                            </label>
-
-                            <input
-                            id="contact-subject"
-                            type="text"
-                            value={form.subject}
-                            onChange={(e) =>
-                                setForm({ ...form, subject: e.target.value })
-                            }
-                            placeholder="How can we help you?"
-                            className="w-full rounded-xl border border-slate-200 bg-[#f9fafb] px-4 py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#485ea8] focus:bg-white focus:ring-4 focus:ring-[#485ea8]/10"
-                            />
-                        </div>
-
-                        <div>
-                            <label
-                            htmlFor="contact-message"
-                            className="mb-2 block text-sm font-semibold text-slate-700"
-                            >
-                            Your message <span className="text-red-500">*</span>
-                            </label>
-
-                            <textarea
-                            id="contact-message"
-                            required
-                            rows={5}
-                            value={form.message}
-                            onChange={(e) =>
-                                setForm({ ...form, message: e.target.value })
-                            }
-                            placeholder="Tell us how we can help..."
-                            className="w-full resize-y rounded-xl border border-slate-200 bg-[#f9fafb] px-4 py-3.5 text-sm leading-6 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#485ea8] focus:bg-white focus:ring-4 focus:ring-[#485ea8]/10"
-                            />
-                        </div>
-
-                        <button
-                            type="submit"
-                            className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#485ea8] px-6 py-4 text-sm font-bold text-white shadow-lg shadow-[#485ea8]/20 transition hover:-translate-y-0.5 hover:bg-[#073da5] focus:outline-none focus:ring-4 focus:ring-[#485ea8]/20 sm:w-auto"
-                        >
-                            Send message
-                            <Send
-                            size={16}
-                            className="transition-transform group-hover:translate-x-1"
-                            />
-                        </button>
-
-                        <p className="text-xs leading-5 text-slate-400">
-                            Your email application will open with your message prepared.
-                        </p>
-                        </form>
-                    </div>
-                </Reveal>
             </div>
 
             {/* Google Maps */}
@@ -346,7 +249,7 @@ export default function ContactUs() {
                 <div className="overflow-hidden rounded-2xl bg-slate-100">
                     <iframe
                     title="iBaby office location in Phnom Penh, Cambodia"
-                    src={`https://maps.google.com/maps/embed?pb=!1m13!1m8!1m3!1d7819.119885426901!2d104.878883!3d11.511634!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTHCsDMwJzQxLjkiTiAxMDTCsDUyJzQ0LjAiRQ!5e0!3m2!1sen!2sus!4v1792641203122!5m2!1sen!2sus`}
+                    src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3909.5615736543264!2d104.8761977909851!3d11.511516639651578!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa45dc188a79edf45%3A0xe0a3a6484f1b156c!2sAsian%20Hire!5e0!3m2!1sen!2skh!4v1793087831732!5m2!1sen!2skh`}
                     width="100%"
                     height="380"
                     style={{ border: 0 }}

@@ -354,40 +354,6 @@ export default function EmployersPage() {
       {/* FAQs */}
       <FaqSection faqs={faqs} title="FAQs for Job Employers" description="Find answers to common questions about applying for jobs,
                     preparing your resume, and working with our recruitment team." />
-
-      {/* Resume CTA */}
-      <section className="bg-white px-5 py-10 sm:px-8 sm:py-16">
-        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[28px] bg-[#485ea8] px-6 py-12 text-center text-white shadow-2xl shadow-blue-900/10 sm:px-12 sm:py-16">
-          <div className="absolute -right-16 -top-24 h-72 w-72 rounded-full border-[45px] border-white/[0.06]" />
-          <div className="absolute -bottom-32 -left-16 h-72 w-72 rounded-full border-[45px] border-white/[0.06]" />
-
-          <div className="relative mx-auto max-w-3xl">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-2xl">
-              <FaRegFileAlt />
-            </div>
-
-            <h2 className="mt-6 text-3xl font-extrabold tracking-tight sm:text-4xl">
-              Don’t See a Role That Fits?
-            </h2>
-
-            <p className="mx-auto mt-4 max-w-2xl leading-7 text-blue-100 sm:text-lg">
-              Send us your resume with your occupation in the email subject
-              line. We would be happy to consider your profile for relevant
-              future opportunities.
-            </p>
-
-            <div className="mt-8">
-              <a
-                href={mailTo}
-                className="inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-white px-7 py-4 font-bold text-[#485ea8] shadow-lg transition hover:-translate-y-0.5 hover:bg-blue-50"
-              >
-                Submit Your Resume
-                <FaArrowRight />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }

@@ -9,16 +9,7 @@ export default function WhyChooseUs({benefits}:any) {
         <Reveal direction="left">
           <div className="relative mx-auto w-full max-w-[540px]">
             <Image src={"/images/whychoose.jpg"} alt="" className="rounded-[2rem] shadow-[0_25px_70px_rgba(23,43,77,0.17)]" width={900} height={900} />
-            <div className="absolute -bottom-6 left-4 flex items-center gap-3 rounded-2xl bg-white px-4 py-3.5 shadow-[0_12px_40px_rgba(23,43,77,0.14)] sm:-left-5 sm:px-5">
-              <span className="flex size-11 items-center justify-center rounded-xl bg-[#edf5ff] text-[#485ea8]">
-                <TrendingUp aria-hidden="true" className="size-5" />
-              </span>
-              <span>
-                <span className="block text-lg font-bold text-[#172b4d]">92%</span>
-                <span className="block text-xs text-slate-500">successful connections</span>
-              </span>
-            </div>
-            <div className="absolute -right-1 top-7 rounded-2xl bg-white px-4 py-3 shadow-[0_12px_40px_rgba(23,43,77,0.14)] sm:-right-5">
+            {/* <div className="absolute -right-1 top-7 rounded-2xl bg-white px-4 py-3 shadow-[0_12px_40px_rgba(23,43,77,0.14)] sm:-right-5">
               <div className="flex -space-x-2">
                 {["#485ea8", "#f19a75", "#7b70d6", "#43b7a8"].map((color, index) => (
                   <span
@@ -32,7 +23,7 @@ export default function WhyChooseUs({benefits}:any) {
                 ))}
               </div>
               <p className="mt-2 text-xs font-medium text-[#172b4d]">Join 12k+ job seekers</p>
-            </div>
+            </div> */}
           </div>
         </Reveal>
         <Reveal direction="right">
@@ -61,12 +52,6 @@ export default function WhyChooseUs({benefits}:any) {
                 </div>
               ))}
             </div>
-            <a
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#485ea8] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#3c4f8d]"
-              href="#how-it-works"
-            >
-              Get started today <ArrowRight aria-hidden="true" className="size-4" />
-            </a>
           </div>
         </Reveal>
       </div>

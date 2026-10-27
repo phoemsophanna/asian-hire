@@ -228,22 +228,6 @@ export default function AboutPage() {
                   className="h-[320px] w-full object-cover sm:h-[460px]"
                 />
               </div>
-
-              <div className="absolute -bottom-5 right-3 max-w-[260px] rounded-2xl border border-slate-100 bg-white p-3 shadow-xl sm:-right-5 sm:p-3">
-                <div className="flex items-center gap-3">
-                  <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#485ea8]">
-                    <HeartHandshake size={25} />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm text-slate-900">
-                      People before positions
-                    </p>
-                    <p className="mt-1 text-xs leading-5 text-slate-500">
-                      Building meaningful connections
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
           </Reveal>
           
@@ -523,56 +507,13 @@ export default function AboutPage() {
                         {/* Always-visible bottom gradient */}
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/10 to-transparent transition-opacity duration-500 group-hover:opacity-0" />
 
-                        {/* Hover overlay */}
-                        <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-[#485ea8]/95 via-[#485ea8]/75 to-[#485ea8]/10 p-6 opacity-0 transition-all duration-500 group-hover:opacity-100 sm:p-7">
-                            <div className="translate-y-5 transition-transform duration-500 group-hover:translate-y-0">
-                            <span className="mb-3 inline-block h-1 w-10 rounded-full bg-white" />
-
-                            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-100">
-                                Our team · {String(index + 1).padStart(2, "0")}
-                            </p>
-
-                            <h3 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                                {member.name}
-                            </h3>
-
-                            <p className="mt-2 text-sm font-medium text-blue-100">
-                                {member.role}
-                            </p>
-
-                            {/* Social links */}
-                            <div className="mt-6 flex items-center gap-3 border-t border-white/25 pt-5">
-                                {[
-                                    { href: member.linkedin, label: "LinkedIn", Icon: FaLinkedinIn },
-                                    { href: member.facebook, label: "Facebook", Icon: FaFacebookF },
-                                    { href: member.instagram, label: "Instagram", Icon: FaInstagram },
-                                ].map(({ href, label, Icon }) => (
-                                <a
-                                    key={label}
-                                    href={href}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label={`${member.name} on ${label}`}
-                                    className="flex size-10 items-center justify-center rounded-full border border-white/35 bg-white/10 text-white backdrop-blur-md transition duration-300 hover:border-white hover:bg-white hover:text-[#485ea8]"
-                                >
-                                    <Icon size={18} />
-                                </a>
-                                ))}
-
-                                <span className="ml-auto flex size-10 items-center justify-center rounded-full bg-white text-[#485ea8]">
-                                <ArrowUpRight size={19} />
-                                </span>
-                            </div>
-                            </div>
-                        </div>
-
                         {/* Name visible before hover */}
-                        <div className="absolute inset-x-0 bottom-0 p-6 transition-opacity duration-300 group-hover:opacity-0 sm:p-7">
+                        <div className="absolute inset-x-0 bottom-0 p-6 transition-opacity duration-300 sm:p-7">
                             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-200">
-                            {member.role}
+                              {member.role}
                             </p>
                             <h3 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                            {member.name}
+                              {member.name}
                             </h3>
                             <div className="mt-3 h-1 w-9 rounded-full bg-[#6684ff]" />
                         </div>

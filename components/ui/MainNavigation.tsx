@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import {
   Building2,
   ChevronRight,
+  Home,
   Info,
   Mail,
   Newspaper,
@@ -19,12 +20,14 @@ type NavigationItem = {
 };
 
 const navItems = [
+  { label: "HOME", href: "/" },
   { label: "JOB SEARCH", href: "/jobs" },
   { label: "JOB SEEKERS", href: "/job-seeker" },
   { label: "EMPLOYERS", href: "/employers" },
 ];
 
 const mobileNavItems = [
+  { label: "Home", href: "/", icon: Home },
   { label: "Job Search", href: "/jobs", icon: Search },
   { label: "Job Seeker", href: "/job-seeker", icon: UserRound },
   { label: "Employers", href: "/employers", icon: Building2 },

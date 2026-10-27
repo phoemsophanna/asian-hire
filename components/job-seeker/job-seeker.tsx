@@ -153,62 +153,98 @@ export default function JobSeeker() {
       <PageBanner title="Job Seekers" />
       {/* Hero */}
       <section className="relative">
-        <div className="mx-auto grid max-w-7xl items-center gap-8 md:gap-12 px-5 py-10 sm:px-8 sm:py-16 lg:grid-cols-2 lg:gap-16">
-          <Reveal direction="left">
-            <div className="relative z-10 order-2 md:order-1">
-              <div className="mb-4 md:mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 text-sm font-semibold text-[#485ea8] shadow-sm">
-                <span className="h-2 w-2 rounded-full bg-[#485ea8]" />
-                Your career. Your future.
+        <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-16">
+          <div className="grid items-center gap-8 md:gap-12 lg:grid-cols-2 lg:gap-16">
+            <Reveal direction="left">
+              <div className="relative z-10 order-2 md:order-1">
+                <div className="mb-4 md:mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 text-sm font-semibold text-[#485ea8] shadow-sm">
+                  <span className="h-2 w-2 rounded-full bg-[#485ea8]" />
+                  Your career. Your future.
+                </div>
+
+                <h1 className="max-w-2xl text-2xl md:text-4xl font-extrabold leading-[1.15] tracking-tight text-[#10264b]">
+                  Build Your Future: Skilled Job Opportunities in Australia
+                </h1>
+
+                <blockquote className="mt-4 relative after:absolute after:left-0 after:top-0 after:w-[4px] after:rounded-full after:h-full after:bg-[#485ea8] pl-5 text-xl font-semibold leading-relaxed text-[#485ea8]">
+                  Connecting qualified Cambodian professionals with trusted Australian sponsors under the Subclass 482​ and 494 visa program.{" "}
+                </blockquote>
+
+                <p className="mt-3 md:mt-5 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
+                  Are you a skilled Cambodian professional or tradesperson looking to advance your career on an international stage? Asian Hire is your licensed pathway to employment in Australia. We specialise in matching local talent with verified Australian employers who are ready to sponsor qualified workers.
+                </p>
+
+                <p className="mt-2 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
+                  Navigating overseas employment requires precision. Our dedicated team in Phnom Penh guides you through every milestone of the journey—from aligning your profile with official ANZSCO occupational standards to prepping your documentation for formal skills assessments and English proficiency requirements (IELTS/PTE). We do not just find you a job; we ensure your transition is safe, transparent, and fully legally compliant.
+                </p>
               </div>
+            </Reveal>
 
-              <h1 className="max-w-2xl text-2xl md:text-4xl font-extrabold leading-[1.15] tracking-tight text-[#10264b]">
-                Build Your Future: Skilled Job Opportunities in Australia
-              </h1>
+            <Reveal direction="right">
+              <div className="relative mx-auto order-1 md:order-2 w-full max-w-xl lg:max-w-none">
+                <div className="absolute -right-5 -top-5 h-36 w-36 rounded-full bg-blue-200/50 blur-3xl" />
+                <div className="absolute -bottom-6 -left-6 h-40 w-40 rounded-full bg-sky-200/50 blur-3xl" />
 
-              <p className="mt-3 md:mt-5 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
-                Your next career opportunity starts here. Connect with our
-                recruitment team, explore opportunities across key industries,
-                and take the next step toward your professional future in
-                Australia.
-              </p>
-
-              <p className="mt-1 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
-                Your next career opportunity starts here. Connect with our
-                recruitment team, explore opportunities across key industries,
-                and take the next step toward your professional future in
-                Australia.
-              </p>
-
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/jobs"
-                  className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full bg-[#485ea8] px-6 py-3.5 font-semibold text-white shadow-lg shadow-[#485ea8]/20 transition hover:-translate-y-0.5 hover:bg-[#1955c5]"
-                >
-                  Explore Job Opportunities
-                  <FaArrowRight />
-                </Link>
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal direction="right">
-            <div className="relative mx-auto order-1 md:order-2 w-full max-w-xl lg:max-w-none">
-              <div className="absolute -right-5 -top-5 h-36 w-36 rounded-full bg-blue-200/50 blur-3xl" />
-              <div className="absolute -bottom-6 -left-6 h-40 w-40 rounded-full bg-sky-200/50 blur-3xl" />
-
-              <div className="relative overflow-hidden rounded-[28px] border border-white bg-white p-2 shadow-2xl shadow-slate-300/50">
-                <div className="relative aspect-[4/4.2] overflow-hidden rounded-[22px]">
-                  <Image
-                    src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85"
-                    alt="Professionals collaborating in a modern workplace"
-                    fill
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#10264b]/80 via-transparent to-transparent" />
+                <div className="relative overflow-hidden rounded-[28px] border border-white bg-white p-2 shadow-2xl shadow-slate-300/50">
+                  <div className="relative aspect-[4/4.2] overflow-hidden rounded-[22px]">
+                    <Image
+                      src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85"
+                      alt="Professionals collaborating in a modern workplace"
+                      fill
+                      priority
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#10264b]/80 via-transparent to-transparent" />
+                  </div>
                 </div>
               </div>
+            </Reveal>
+          </div>
+
+          <Reveal direction="up">
+            <div className="mt-8 col-span-2 rounded-2xl border border-slate-200/80 bg-white shadow-sm p-6 text-center order-3">
+              <h2 className="text-xl font-bold text-[#10264b]">
+                Our 3-Step Process (Bullet Points)
+              </h2>
+
+              <ul className="mt-6 grid grid-cols-1 text-start md:grid-cols-3 gap-3">
+                <li className="flex items-start gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm transition hover:border-blue-200 hover:shadow-md">
+                  <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-50 text-[#485ea8]">
+                    <FaCheckCircle aria-hidden="true" />
+                  </span>
+                  <span className="text-sm leading-6 text-slate-600">
+                    <strong className="font-semibold text-[#10264b]">Profile Evaluation:</strong>{" "}
+                     Submit your CV and certifications. Our team assesses your eligibility against Australian visa requirements.
+                  </span>
+                </li>
+                <li className="flex items-start gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm transition hover:border-blue-200 hover:shadow-md">
+                  <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-50 text-[#485ea8]">
+                    <FaCheckCircle aria-hidden="true" />
+                  </span>
+                  <span className="text-sm leading-6 text-slate-600">
+                    <strong className="font-semibold text-[#10264b]">Employer Matching:</strong>{" "}
+                     We present your profile to verified Australian businesses facing critical skills shortages.
+                  </span>
+                </li>
+                <li className="flex items-start gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm transition hover:border-blue-200 hover:shadow-md">
+                  <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-50 text-[#485ea8]">
+                    <FaCheckCircle aria-hidden="true" />
+                  </span>
+                  <span className="text-sm leading-6 text-slate-600">
+                    <strong className="font-semibold text-[#10264b]">Migration Support:</strong>{" "}
+                    Once selected, we assist you and our legal partners in compiling documentation for a seamless Subclass 482 or 494 visa application.
+                  </span>
+                </li>
+              </ul>
+
+              <Link
+                href="mailto:info@camgotech.com"
+                target="_blank"
+                className="mt-8 inline-flex w-fit text-sm md:text-base items-center gap-2 font-bold text-[#485ea8] transition hover:gap-3"
+              >
+                Contact Us today <FaArrowRight />
+              </Link>
             </div>
           </Reveal>
         </div>

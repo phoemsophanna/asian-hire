@@ -15,6 +15,7 @@ import {
   FaLinkedinIn,
   FaMapMarkerAlt,
   FaMoneyBillWave,
+  FaPhone,
   FaShareAlt,
   FaTelegramPlane,
   FaUserTie,
@@ -29,7 +30,7 @@ const job = {
   title: "Senior Web Developer",
   company: "Asian Hire",
   category: "Information Technology",
-  location: "Phnom Penh, Cambodia",
+  location: "Sydney, Australia",
   jobType: "Full-time",
   workplace: "On-site",
   experience: "2+ years",
@@ -119,27 +120,22 @@ export default function JobDetail() {
               <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
                 <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
                   <div className="min-w-0 flex-1">
-                    <span className="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-[#485ea8]">
-                      {job.category}
-                    </span>
-
-                    <h1 className="mt-3 text-2xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-3xl">
+                    <h1 className="text-2xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-3xl">
                       {job.title}
                     </h1>
 
-                    <p className="mt-2 flex items-center gap-2 text-sm font-semibold text-slate-600">
+                    <p className="mt-3 flex items-center gap-2 text-sm font-semibold text-slate-600">
+                      <span className="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-[#485ea8]">
+                        {job.category}
+                      </span>
                       <FaUserTie className="text-[#485ea8]" />
                       {job.company}
-                    </p>
-
-                    <p className="mt-3 text-xs text-slate-400">
-                      Posted on {job.postedDate}
                     </p>
                   </div>
                 </div>
 
                 {/* Job summary */}
-                <div className="mt-7 grid grid-cols-1 gap-3 border-t border-slate-100 pt-6 sm:grid-cols-2">
+                <div className="mt-6 grid grid-cols-1 gap-3 border-t border-slate-100 pt-6 sm:grid-cols-2">
                   <InfoItem
                     icon={<FaMapMarkerAlt />}
                     label="Location"
@@ -162,19 +158,6 @@ export default function JobDetail() {
                     icon={<FaClock />}
                     label="Experience"
                     value={job.experience}
-                  />
-
-                  <InfoItem
-                    icon={<FaCalendarAlt />}
-                    label="Expected start date"
-                    value={job.startDate}
-                  />
-
-                  <InfoItem
-                    icon={<FaCalendarAlt />}
-                    label="Application deadline"
-                    value={job.deadline}
-                    highlight
                   />
                 </div>
               </section>
@@ -307,61 +290,67 @@ export default function JobDetail() {
                 </div>
               </section>
 
-              {/* Important dates */}
-              <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <h2 className="font-bold text-slate-900">
-                  Important Dates
-                </h2>
-
-                <div className="mt-5 space-y-5">
-                  <div className="flex items-start gap-3">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#485ea8]">
-                      <FaClock />
-                    </span>
-                    <div>
-                      <p className="text-xs text-slate-500">
-                        Expected start date
-                      </p>
-                      <p className="mt-1 text-sm font-bold text-slate-900">
-                        {job.startDate}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-600">
-                      <FaCalendarAlt />
-                    </span>
-                    <div>
-                      <p className="text-xs text-slate-500">
-                        Application deadline
-                      </p>
-                      <p className="mt-1 text-sm font-bold text-slate-900">
-                        {job.deadline}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
               {/* Company contact */}
               <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
                 <h2 className="flex items-center gap-2 font-bold text-slate-900">
-                  <FaUserTie className="text-[#485ea8]" />
+                  <FaUserTie className="text-[#485ea8]" size={20} />
                   Need more information?
                 </h2>
 
                 <p className="mt-2 text-sm leading-6 text-slate-500">
-                  Contact the recruitment team if you have questions
-                  about this position or the application process.
+                  Contact our recruitment team if you have questions about this
+                  position or the application process.
                 </p>
 
-                <a
-                  href={`mailto:${job.email}`}
-                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#485ea8] hover:underline"
-                >
-                  Email recruitment
-                  <FaArrowRight size={13} />
-                </a>
+                <div className="mt-5 space-y-4">
+                  {/* Phone */}
+                  <a
+                    href="tel:+85517824919"
+                    className="group flex items-center gap-3 rounded-xl bg-slate-50 p-3 transition-colors hover:bg-[#485ea8]/5"
+                  >
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#485ea8]/10 text-[#485ea8]">
+                      <FaPhone size={16} />
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-medium text-slate-500">
+                        Call our team
+                      </p>
+                      <p className="mt-1 break-words text-sm font-semibold text-slate-800 transition-colors group-hover:text-[#485ea8]">
+                        +855 17 824 919
+                      </p>
+                    </div>
+
+                    <FaArrowRight
+                      size={13}
+                      className="shrink-0 text-slate-400 transition-transform group-hover:translate-x-1 group-hover:text-[#485ea8]"
+                    />
+                  </a>
+
+                  {/* Email */}
+                  <a
+                    href="mailto:info@asianhire.com.kh"
+                    className="group flex items-center gap-3 rounded-xl bg-slate-50 p-3 transition-colors hover:bg-[#485ea8]/5"
+                  >
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#485ea8]/10 text-[#485ea8]">
+                      <FaEnvelope size={16} />
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-medium text-slate-500">
+                        Email us
+                      </p>
+                      <p className="mt-1 break-all text-sm font-semibold text-slate-800 transition-colors group-hover:text-[#485ea8]">
+                        info@asianhire.com.kh
+                      </p>
+                    </div>
+
+                    <FaArrowRight
+                      size={13}
+                      className="shrink-0 text-slate-400 transition-transform group-hover:translate-x-1 group-hover:text-[#485ea8]"
+                    />
+                  </a>
+                </div>
               </section>
             </aside>
           </Reveal>

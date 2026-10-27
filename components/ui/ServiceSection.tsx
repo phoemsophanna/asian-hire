@@ -72,8 +72,13 @@ export default function ServiceSection ({ services }:any) {
                         </StaggerItem>
                     ))}
                 </Stagger>
-                <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3">
-                    
+                <div className="mt-3 text-center">
+                    <Link
+                        href="/services"
+                        className="mt-8 inline-flex w-fit items-center gap-2 font-bold text-[#485ea8] transition hover:gap-3"
+                    >
+                        View More <FaArrowRight />
+                    </Link>
                 </div>
             </div>
         </section>

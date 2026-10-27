@@ -49,13 +49,9 @@ export default function JobCard ({job}:any) {
                         <MapPin aria-hidden="true" className="size-3.5 text-slate-400" />
                         {job.location}
                     </span>
-                    <span className="inline-flex items-center gap-1 md:gap-1.5">
+                    <span className="ml-auto inline-flex items-center gap-1 md:gap-1.5">
                         <Wallet aria-hidden="true" className="size-3.5 text-slate-400" />
                         {job.salary}
-                    </span>
-                    <span className="ml-auto inline-flex items-center gap-1 md:gap-1.5">
-                        <Clock3 aria-hidden="true" className="size-3.5 text-slate-400" />
-                        {job.posted}
                     </span>
                 </div>
             </article>
