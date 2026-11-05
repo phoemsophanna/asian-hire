@@ -10,6 +10,8 @@ export type Job = {
   industry: string;
   category: "Featured" | "Urgent" | "Latest";
   posted: string;
+  isFeatured?: boolean;
+  typeIds?: number[];
 };
 
 export type JobSearchFilters = {

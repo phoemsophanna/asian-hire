@@ -18,7 +18,7 @@ export default function SectionHeading({
         {title}
       </h2>
       {description && (
-        <p className="text-sx leading-6 text-slate-500">{description}</p>
+        <div className="text-sx leading-6 text-slate-500" dangerouslySetInnerHTML={{ __html: description }} />
       )}
     </div>
   );

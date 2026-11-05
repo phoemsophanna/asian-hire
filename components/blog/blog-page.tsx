@@ -2,97 +2,38 @@ import { Reveal, Stagger, StaggerItem } from "@/util/animations";
 import PageBanner from "../PageBanner";
 import SectionHeading from "../ui/SectionHeader";
 import BlogCard from "./blog-card";
+import type { NewsPageContent } from "@/services/news-service";
 
+export default function BlogPage({
+  content,
+  lang,
+}: {
+  content: NewsPageContent;
+  lang: string;
+}) {
+  const blogs = content.items.map((item) => ({
+    id: item.id,
+    tag: item.tag,
+    date: item.date ? formatDate(item.date, lang) : "",
+    title: item.title,
+    summary: item.summary,
+    image: item.thumbnail,
+  }));
 
-
-const blogs = [
-  {
-    slug: "build-a-strong-cv",
-    category: "Career Advice",
-    date: "October 20, 2026",
-    title: "How to Build a Strong CV That Gets Noticed",
-    summary:
-      "Learn how to highlight your skills, showcase your achievements, and create a professional CV that helps you stand out to recruiters and potential employers.",
-    image:
-      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85",
-    imageAlt: "Professionals collaborating in a modern office",
-  },
-  {
-    slug: "prepare-for-a-job-interview",
-    category: "Interview Tips",
-    date: "October 15, 2026",
-    title: "How to Prepare for Your Next Job Interview",
-    summary:
-      "Discover practical ways to research employers, answer interview questions confidently, and make a strong first impression.",
-    image:
-      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=85",
-    imageAlt: "Colleagues discussing ideas in a meeting",
-  },
-  {
-    slug: "grow-your-career",
-    category: "Career Growth",
-    date: "October 10, 2026",
-    title: "Practical Steps to Grow Your Career",
-    summary:
-      "Explore ways to develop valuable skills, build professional relationships, and discover new opportunities for long-term career growth.",
-    image:
-      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85",
-    imageAlt: "Team working together in an office",
-  },
-  {
-    slug: "build-a-strong-cv",
-    category: "Career Advice",
-    date: "October 20, 2026",
-    title: "How to Build a Strong CV That Gets Noticed",
-    summary:
-      "Learn how to highlight your skills, showcase your achievements, and create a professional CV that helps you stand out to recruiters and potential employers.",
-    image:
-      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85",
-    imageAlt: "Professionals collaborating in a modern office",
-  },
-  {
-    slug: "prepare-for-a-job-interview",
-    category: "Interview Tips",
-    date: "October 15, 2026",
-    title: "How to Prepare for Your Next Job Interview",
-    summary:
-      "Discover practical ways to research employers, answer interview questions confidently, and make a strong first impression.",
-    image:
-      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=85",
-    imageAlt: "Colleagues discussing ideas in a meeting",
-  },
-  {
-    slug: "grow-your-career",
-    category: "Career Growth",
-    date: "October 10, 2026",
-    title: "Practical Steps to Grow Your Career",
-    summary:
-      "Explore ways to develop valuable skills, build professional relationships, and discover new opportunities for long-term career growth.",
-    image:
-      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85",
-    imageAlt: "Team working together in an office",
-  },
-];
-
-export default function BlogPage() {
   return (
     <main className="overflow-hidden bg-white text-slate-900">
-        <PageBanner title={"News & Blogs"} />
+      <PageBanner title={"News & Blogs"} image={content.banner} />
 
       {/* Blog listing */}
       <section className="py-10 sm:py-16">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <Reveal direction="up">
-            <SectionHeading title="Latest articles" description="Ideas, guidance, and updates for your professional journey." />
-          </Reveal>
-
           <Stagger
             delay={0.2}
             className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7"
           >
-            {blogs.map((blog,index) => (
-              <StaggerItem key={index} direction="up">
-                <BlogCard spotlight={blog} />
+            {blogs.map((blog) => (
+              <StaggerItem key={blog.id} direction="up">
+                <BlogCard spotlight={blog} lang={lang === "km" ? "km" : "en"} />
               </StaggerItem>
             ))}
           </Stagger>
@@ -100,4 +41,33 @@ export default function BlogPage() {
       </section>
     </main>
   );
+}
+
+const KHMER_MONTHS = [
+  "មករា",
+  "កុម្ភៈ",
+  "មីនា",
+  "មេសា",
+  "ឧសភា",
+  "មិថុនា",
+  "កក្កដា",
+  "សីហា",
+  "កញ្ញា",
+  "តុលា",
+  "វិច្ឆិកា",
+  "ធ្នូ",
+];
+const KHMER_DIGITS = "០១២៣៤៥៦៧៨៩";
+
+function toKhmerDigits(value: number) {
+  return String(value).replace(/\d/g, (digit) => KHMER_DIGITS[Number(digit)]);
+}
+
+function formatDate(value: string, lang: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  if (lang === "km") {
+    return `ថ្ងៃទី ${toKhmerDigits(date.getUTCDate())} ខែ${KHMER_MONTHS[date.getUTCMonth()]} ឆ្នាំ ${toKhmerDigits(date.getUTCFullYear())}`;
+  }
+  return date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
 }

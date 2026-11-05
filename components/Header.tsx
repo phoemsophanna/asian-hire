@@ -1,14 +1,52 @@
 "use client";
-import Image from "next/image";
 import MainNavigation from "./ui/MainNavigation";
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { Menu, X } from "lucide-react";
+import { useLanguage } from "./LanguageProvider";
+import { createTranslator, fetchTranslations } from "@/services/translation-service";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api";
+const STATIC_LOGO = "/images/logo_en.png";
 
 function Header() {
+  const { locale, setLocale } = useLanguage();
+  const [translations, setTranslations] = useState<Record<string, string>>({});
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [headerLogo, setHeaderLogo] = useState<string | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const t = createTranslator(translations);
+
+  useEffect(() => {
+    let active = true;
+
+    fetchTranslations(locale).then((result) => {
+      if (active) setTranslations(result);
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [locale]);
+
+  useEffect(() => {
+    let active = true;
+
+    fetch(`${API_URL}/public/general`, { cache: "no-store" })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload: { data?: { header_logo?: string | null } } | null) => {
+        if (active) setHeaderLogo(payload?.data?.header_logo ?? null);
+      })
+      .catch(() => {
+        if (active) setHeaderLogo(null);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+  const logoSrc = headerLogo ?? STATIC_LOGO;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,14 +113,18 @@ function Header() {
           className="flex min-w-0 shrink items-center"
           href="/"
         >
-          <Image
-            src="/images/logo_en.png"
+          <img
+            src={logoSrc}
             alt=""
-            width={230}
-            height={100}
-            className="h-auto w-[170px] sm:w-[200px] md:w-[230px]"
+            className="h-auto w-[170px] object-contain sm:w-[200px] md:w-[230px]"
           />
         </Link>
+
+        {translations.title && (
+          <span className="hidden text-sm font-semibold text-slate-700 xl:inline">
+            {translations.title}
+          </span>
+        )}
 
         <div className="hidden items-center gap-5 md:flex">
           <MainNavigation />
@@ -90,18 +132,30 @@ function Header() {
 
         <div className="hidden items-center gap-5 md:flex">
           <div className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 p-1">
-            <a
-              href="#"
-              className="inline-flex items-center justify-center rounded-full bg-[#485ea8] px-4 py-2 text-xs font-semibold tracking-wide text-white transition-all duration-300 hover:bg-[#3c4f8d] active:scale-95"
+            <button
+              type="button"
+              aria-pressed={locale === "eng"}
+              onClick={() => setLocale("eng")}
+              className={`cursor-pointer inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-all duration-300 active:scale-95 ${
+                locale === "eng"
+                  ? "bg-[#485ea8] text-white hover:bg-[#3c4f8d]"
+                  : "text-slate-500 hover:bg-[#485ea8] hover:text-white"
+              }`}
             >
-              ENGLISH
-            </a>
-            <a
-              href="#"
-              className="inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-semibold tracking-wide text-slate-500 transition-all duration-300 hover:bg-[#485ea8] hover:text-white active:scale-95"
+              {t("ENGLISH")}
+            </button>
+            <button
+              type="button"
+              aria-pressed={locale === "km"}
+              onClick={() => setLocale("km")}
+              className={`cursor-pointer inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-all duration-300 active:scale-95 ${
+                locale === "km"
+                  ? "bg-[#485ea8] text-white hover:bg-[#3c4f8d]"
+                  : "text-slate-500 hover:bg-[#485ea8] hover:text-white"
+              }`}
             >
-              KHMER
-            </a>
+              {t("KHMER")}
+            </button>
           </div>
         </div>
 
@@ -153,12 +207,10 @@ function Header() {
               onClick={closeMobileMenu}
               className="inline-flex items-center rounded-xl bg-white px-3 py-1.5"
             >
-              <Image
-                src="/images/logo_en.png"
+              <img
+                src={logoSrc}
                 alt=""
-                width={230}
-                height={100}
-                className="h-auto w-[170px]"
+                className="h-auto w-[170px] object-contain"
               />
             </Link>
             <button
@@ -179,23 +231,39 @@ function Header() {
           <div className="mt-auto border-t border-white/20 pt-5">
             <div className="flex items-center justify-between gap-4">
               <span className="text-xs font-semibold uppercase tracking-wider text-white/70">
-                Language
+                {t("Language")}
               </span>
               <div className="inline-flex items-center gap-1 rounded-full border border-white/25 bg-white/10 p-1">
-                <a
-                  href="#"
-                  onClick={closeMobileMenu}
-                  className="inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-xs font-semibold tracking-wide text-[#485ea8] transition hover:bg-white/90 active:scale-95"
+                <button
+                  type="button"
+                  aria-pressed={locale === "eng"}
+                  onClick={() => {
+                    setLocale("eng");
+                    closeMobileMenu();
+                  }}
+                  className={`cursor-pointer inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition active:scale-95 ${
+                    locale === "eng"
+                      ? "bg-white text-[#485ea8] hover:bg-white/90"
+                      : "text-white hover:bg-white/15"
+                  }`}
                 >
-                  ENGLISH
-                </a>
-                <a
-                  href="#"
-                  onClick={closeMobileMenu}
-                  className="inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-semibold tracking-wide text-white transition hover:bg-white/15 active:scale-95"
+                  {t("ENGLISH")}
+                </button>
+                <button
+                  type="button"
+                  aria-pressed={locale === "km"}
+                  onClick={() => {
+                    setLocale("km");
+                    closeMobileMenu();
+                  }}
+                  className={`cursor-pointer inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition active:scale-95 ${
+                    locale === "km"
+                      ? "bg-white text-[#485ea8] hover:bg-white/90"
+                      : "text-white hover:bg-white/15"
+                  }`}
                 >
-                  KHMER
-                </a>
+                  {t("KHMER")}
+                </button>
               </div>
             </div>
           </div>

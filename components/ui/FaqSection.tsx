@@ -17,11 +17,12 @@ type Faq = {
 
 type FaqSectionProps = {
     faqs: Faq[];
+    subtitle?: string | null;
     title: string;
     description: string;
 };
 
-export default function FaqSection ({faqs, title, description}: FaqSectionProps) {
+export default function FaqSection ({faqs, subtitle, title, description}: FaqSectionProps) {
     const [openFaq, setOpenFaq] = useState<number | null>(null);
     const faqItems = faqs.map((faq, index) => ({faq, index}));
     const midpoint = Math.ceil(faqItems.length / 2);
@@ -31,7 +32,7 @@ export default function FaqSection ({faqs, title, description}: FaqSectionProps)
         <section className="bg-[#f7f9fc] px-5 py-10 sm:py-16 sm:px-8">
             <div className="mx-auto max-w-7xl">
                 <Reveal direction="up">
-                    <SectionHeading eyebrow="Need to know more?" title={title} description={description} />
+                    <SectionHeading eyebrow={subtitle || "Need to know more?"} title={title} description={description} />
                 </Reveal>
                 
                 <Stagger 

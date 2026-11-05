@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 import type { JobSearchFilters } from "@/components/home/job-data";
 import IndustryDropdown from "../ui/IndustryDropdown";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "../LanguageProvider";
 
 export default function HeroSearch({
   filters,
@@ -12,30 +13,47 @@ export default function HeroSearch({
   industries,
   onKeywordChange,
   onIndustryChange,
+  onSearch,
   className = "",
   variant = "hero",
+  t = (text: string) => text,
+  industryIds,
 }: {
   filters: JobSearchFilters;
-  resultCount: number;
-  hasSearched: boolean;
+  resultCount?: number;
+  hasSearched?: boolean;
   industries?: string[];
+  industryIds?: Record<string, number>;
   onKeywordChange?: (keyword: string) => void;
   onIndustryChange?: (industry: string) => void;
+  onSearch?: (values: { keyword: string; industry: string }) => void;
   className?: string;
   variant?: "hero" | "light";
+  t?: (text: string) => string;
 }) {
   const router = useRouter();
+  const { localizeHref } = useLanguage();
   const isLight = variant === "light";
 
-  const handleFilterForm = () => {
-    const params = new URLSearchParams();
+  const handleFilterForm = (form: HTMLFormElement) => {
+    const formData = new FormData(form);
+    const keyword = String(formData.get("keyword") ?? "").trim();
+    const industry = String(formData.get("industry") ?? "").trim();
 
-    if (filters.keyword.trim()) {
-      params.set("keyword", filters.keyword.trim());
+    // Controlled mode (jobs page): hand the values to the page instead of navigating.
+    if (onSearch) {
+      onSearch({ keyword, industry });
+      return;
     }
 
-    if (filters.industry) {
-      params.set("industry", filters.industry);
+    const params = new URLSearchParams();
+
+    if (keyword) {
+      params.set("keyword", keyword);
+    }
+
+    if (industry) {
+      params.set("industry", String(industryIds?.[industry] ?? industry));
     }
 
     if (filters.location.trim()) {
@@ -44,7 +62,7 @@ export default function HeroSearch({
 
     const query = params.toString();
 
-    router.push(query ? `/jobs?${query}` : "/jobs");
+    router.push(localizeHref(query ? `/jobs?${query}` : "/jobs"));
   };
 
   return (
@@ -58,7 +76,7 @@ export default function HeroSearch({
         method="get"
         onSubmit={(e) => {
           e.preventDefault();
-          handleFilterForm();
+          handleFilterForm(e.currentTarget);
         }}
       >
         <label
@@ -74,7 +92,7 @@ export default function HeroSearch({
               isLight ? "text-slate-400" : "absolute right-3 text-[#485ea8]"
             }`}
           />
-          <span className="sr-only">Job title or keyword</span>
+          <span className="sr-only">{t("Job title or keyword")}</span>
           <input
             className={`min-w-0 flex-1 bg-transparent text-sm outline-none ${
               isLight
@@ -85,7 +103,7 @@ export default function HeroSearch({
             value={onKeywordChange ? filters.keyword : undefined}
             onChange={(event) => onKeywordChange?.(event.target.value)}
             name="keyword"
-            placeholder="Job title here"
+            placeholder={t("Job title here")}
           />
         </label>
         <IndustryDropdown
@@ -94,6 +112,7 @@ export default function HeroSearch({
           industries={industries}
           onChange={onIndustryChange}
           variant={variant}
+          t={t}
         />
         <button
           className={`inline-flex min-h-14 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#485ea8] px-8 text-sm font-semibold text-white transition hover:bg-[#3c4f8d] focus-visible:outline-2 focus-visible:outline-offset-2 ${
@@ -104,7 +123,7 @@ export default function HeroSearch({
           type="submit"
         >
           <Search aria-hidden="true" className="size-4" />
-          Search Jobs
+          {t("Search Jobs")}
         </button>
       </form>
       {/* <p aria-live="polite" className="mt-3 min-h-5 text-sm text-white/90">

@@ -1,7 +1,12 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  createTranslator,
+  fetchTranslations,
+  type TranslationApiLang,
+} from "@/services/translation-service";
 import {
   ArrowUpRight,
   BriefcaseBusiness,
@@ -14,47 +19,30 @@ import {
   ShieldCheck,
   Sparkles,
   Target,
-  Users,
-  Eye,
-  GraduationCap,
-  MessagesSquare,
-  UserSearch,
-  Earth,
 } from "lucide-react";
 import { FaLinkedinIn, FaFacebookF, FaInstagram } from "react-icons/fa";
 import PageBanner from "../PageBanner";
 import Image from "next/image";
 import WhyChooseUs from "../ui/WhyChoose";
 import { Reveal, Stagger, StaggerItem } from "@/util/animations";
+import type { AboutPageContent } from "@/services/about-service";
 
 const BLUE = "#485ea8";
 
-const principles = [
-  {
-    id: "philosophy",
-    label: "Our Philosophy",
-    icon: Lightbulb,
-    heading: "People first. Opportunities always.",
-    description:
-      "To build long-standing relationships based on a foundation of integrity, sincerity and trust. Asian Hire’s experienced and knowledgeable staff work as a team to provide unparalleled service and dedication to our clients and applicants.",
-  },
-  {
-    id: "vision",
-    label: "Our Vision",
-    icon: Eye,
-    heading: "A world without borders for talent.",
-    description:
-      "To be nationally and internationally recognized as an Australian Skilled Worker Recruiter and Migration Counsellor in Asia by connecting applicants to land of opportunities, Australia.",
-  },
-  {
-    id: "mission",
-    label: "Our Mission",
-    icon: Target,
-    heading: "Making every career move count.",
-    description:
-      "To help businesses grow by matching the right talent​ to their specialized staffing​ by consulting and build rewarding careers for the professionals we place.",
-  },
-];
+const workIcons = ["ri-briefcase-line", "ri-group-line", "ri-graduation-cap-line"];
+const statIcons = ["ri-briefcase-line", "ri-checkbox-circle-line", "ri-building-line", "ri-group-line"];
+
+const principleIcons: Record<string, string> = {
+  philosophy: "ri-lightbulb-line",
+  vision: "ri-eye-line",
+  mission: "ri-focus-3-line",
+};
+
+const principleLabels: Record<string, string> = {
+  philosophy: "Philosophy",
+  vision: "Vision",
+  mission: "Mission",
+};
 
 const advantages = [
   {
@@ -83,67 +71,51 @@ const advantages = [
   },
 ];
 
-const stats = [
-  { value: "500+", label: "Career opportunities", icon: BriefcaseBusiness },
-  { value: "200+", label: "Jobs filled", icon: CheckCircle2 },
-  { value: "100+", label: "Partner companies", icon: Building2 },
-  { value: "5K+", label: "Community members", icon: Users },
-];
+export default function AboutPage({
+  content,
+  lang = "eng",
+}: {
+  content: AboutPageContent;
+  lang?: TranslationApiLang;
+}) {
+  const [translations, setTranslations] = useState<Record<string, string>>({});
 
-const team = [
-  {
-    name: "Luon Sotheary​​",
-    role: "General Director/ Recruiting Director​",
-    image:
-      "/images/pf1.jfif",
-    linkedin: "https://www.linkedin.com/",
-    facebook: "https://www.facebook.com/",
-    instagram: "https://www.instagram.com/",
-  },
-  {
-    name: "Hing Raksmey",
-    role: "Senior Recruiting Manager",
-    image:
-      "/images/pf2.jfif",
-    linkedin: "https://www.linkedin.com/",
-    facebook: "https://www.facebook.com/",
-    instagram: "https://www.instagram.com/",
-  },
-  {
-    name: "Taing Navy",
-    role: "Recruiting Manager",
-    image:
-      "/images/pf3.jfif",
-    linkedin: "https://www.linkedin.com/",
-    facebook: "https://www.facebook.com/",
-    instagram: "https://www.instagram.com/",
-  },
-];
+  useEffect(() => {
+    let active = true;
 
-const benefits = [
-  {
-    title: "Focus on Applicant Needs",
-    text: "Our team is focused on the desired results. Focusing on the applicant's preferred result is an integral part of the strategic process for each case.",
-    icon: Users,
-  },
-  {
-    title: "Easy to communicate",
-    text: "Regardless of whether you are onshore or offshore, we provide a full-service counselling for skilled jobs opportunies and safe migration's advise to Australia full of professionalism and integrity.",
-    icon: MessagesSquare,
-  },
-  {
-    title: "Clients First",
-    text: "We recognise that all Asutralian employers want to cooperate with the best. As a team of exceptional individuals, we are committed in every way to make that happen.",
-    icon: UserSearch,
-  },
-  {
-    title: "Oversea Worker Recruitment",
-    text: "We strive to give our Australian employers the best recruitment service we possibly can, from initial consultation to a successful resolution.",
-    icon: Earth,
-  },
-];
+    fetchTranslations(lang).then((result) => {
+      if (active) setTranslations(result);
+    });
 
-export default function AboutPage() {
+    return () => {
+      active = false;
+    };
+  }, [lang]);
+
+  const t = createTranslator(translations);
+
+  const workItems = content.what_we_do.items.map((item, index) => ({
+    icon: item.icon || workIcons[index % workIcons.length],
+    number: String(index + 1).padStart(2, "0"),
+    title: item.title,
+    summary: item.summary,
+  }));
+
+  const stats = content.statistics.items.map((item, index) => ({
+    icon: statIcons[index % statIcons.length],
+    value: item.value,
+    label: item.label,
+  }));
+
+  const principles = content.principles.map((item) => ({
+    id: item.id,
+    label: principleLabels[item.id] ?? item.id,
+    icon: item.icon || principleIcons[item.id],
+    heading: item.title,
+    description: item.description,
+    image: item.image || "/images/mission.webp",
+  }));
+
   const [activeTab, setActiveTab] = useState("philosophy");
   const activePrinciple =
     principles.find((item) => item.id === activeTab) ?? principles[0];
@@ -176,16 +148,17 @@ export default function AboutPage() {
                   <div className="mx-auto max-w-4xl text-center">
                       <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/80 px-4 py-2 text-sm font-semibold text-[#485ea8] shadow-sm backdrop-blur-sm">
                       <span className="size-2 rounded-full bg-[#485ea8]" />
-                        About Asian Hire
+                        {t("About Asian Hire")}
                       </span>
 
                       <h1 className="mt-3 md:mt-6 text-2xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl">
-                        Bridging Cambodian Talent and{" "} Australian Opportunity
+                        {content.hero.title}
                       </h1>
 
-                      <p className="mx-auto mt-3 md:mt-6 max-w-3xl text-base leading-6 md:leading-8 text-slate-600 sm:text-lg">
-                        Technology will create millions of jobs. The problem will be to find workers to fill them. Whom should you connect with the next time you’re looking for a job?
-                      </p>
+                      <div
+                        className="about-description mx-auto mt-3 md:mt-6 max-w-3xl space-y-4 text-base leading-6 text-slate-600 md:leading-8 sm:text-lg"
+                        dangerouslySetInnerHTML={{ __html: content.hero.description }}
+                      />
                   </div>
                 </Reveal>
 
@@ -196,14 +169,15 @@ export default function AboutPage() {
                       <div className="absolute -inset-3 -z-10 rounded-[32px] border border-blue-100/80 bg-white/50 sm:-inset-5" />
 
                       <div className="relative overflow-hidden rounded-2xl shadow-2xl shadow-blue-950/10 sm:rounded-3xl">
-                      <img
-                          src="https://www.asianhire.com.kh/assets/client/images/about/about-img1.png"
-                          alt="Asian Hire connecting Cambodian professionals with career opportunities"
-                          className="block h-auto max-h-[580px] w-full object-cover object-center"
-                      />
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                              src={content.hero.image || "https://www.asianhire.com.kh/assets/client/images/about/about-img1.png"}
+                              alt={content.hero.title}
+                              className="block h-auto max-h-[580px] w-full object-cover object-center"
+                          />
 
-                      {/* Subtle image overlay */}
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#101b46]/10 via-transparent to-white/5" />
+                          {/* Subtle image overlay */}
+                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#101b46]/10 via-transparent to-white/5" />
                       </div>
 
                       {/* Bottom accent */}
@@ -223,8 +197,8 @@ export default function AboutPage() {
             <div className="relative">
               <div className="overflow-hidden rounded-[28px] bg-slate-100">
                 <img
-                  src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=90"
-                  alt="Professionals collaborating in a modern workplace"
+                  src={content.who_we_are.image || "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=90"}
+                  alt={content.who_we_are.title}
                   className="h-[320px] w-full object-cover sm:h-[460px]"
                 />
               </div>
@@ -234,28 +208,17 @@ export default function AboutPage() {
           <Reveal direction="right">
             <div className="pt-1 lg:pt-0">
               <p className="mb-3 md:mb-4 text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
-                Who we are
+                {t("Who we are")}
               </p>
 
               <h2 className="text-2xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-[42px]">
-                Bridging Cambodian Talent and Australian Opportunity
+                {content.who_we_are.title}
               </h2>
 
-              <p className="mt-3 md:mt-6 leading-7 text-slate-600">
-                Asian Hire was founded in early 2015 by <strong>Mrs. LUON SOTHEARY</strong>, a Cambodian and a family business operating in Cambodia. Asian Hire is an international recruiter and migration counsellor to Australia for skilled workers, technicians and senior professionals in all industries.
-              </p>
-
-              <p className="mt-3 leading-7 text-slate-600">
-                We are specialize in agriculture,​​ diary, fishing, environment, horticulture, breedery etc.
-              </p>
-
-              <p className="mt-3 leading-7 text-slate-600">
-                Since its inception, Asian Hire has been committed to helping clients across Cambodia increase their interests and value based on the principles of "integrity, professionalism, stability, innovation".
-              </p>
-
-              <p className="mt-3 leading-7 text-slate-600">
-                We strongly believe that  Asian Hire will create more miracles because we can dream and especially have the ability to make our customers' dreams come true with the spirit of​ dream "we make it closer to you".
-              </p>
+              <div
+                className="who-we-are-description mt-3 md:mt-6 space-y-3 leading-7 text-slate-600"
+                dangerouslySetInnerHTML={{ __html: content.who_we_are.description }}
+              />
             </div>
           </Reveal>
         </div>
@@ -267,15 +230,15 @@ export default function AboutPage() {
           <Reveal direction="up">
             <div className="mx-auto max-w-2xl text-center">
               <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
-                What we do
+                {t("What we do")}
               </p>
               <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-4xl">
-                Helping talent find its next chapter
+                {content.what_we_do.title}
               </h2>
-              <p className="mt-4 leading-7 text-slate-600">
-                We bring candidates and employers together through a
-                straightforward, people-focused recruitment experience.
-              </p>
+              <div
+                className="mt-4 leading-7 text-slate-600"
+                dangerouslySetInnerHTML={{ __html: content.what_we_do.description }}
+              />
             </div>
           </Reveal>
 
@@ -283,30 +246,7 @@ export default function AboutPage() {
             delay={0.2}
             className="mt-6 md:mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
           >
-            {[
-              {
-                icon: BriefcaseBusiness,
-                title: "Job Opportunities",
-                description:
-                  "Explore roles across industries and discover opportunities aligned with your experience and goals.",
-                number: "01",
-              },
-              {
-                icon: Users,
-                title: "Talent Connection",
-                description:
-                  "Help employers connect with candidates whose skills and ambitions fit their hiring needs.",
-                number: "02",
-              },
-              {
-                icon: GraduationCap,
-                title: "Career Development",
-                description:
-                  "Encourage candidates to grow their skills, build confidence, and take meaningful career steps.",
-                number: "03",
-              },
-            ].map((item) => {
-              const Icon = item.icon;
+            {workItems.map((item) => {
               return (
                 <StaggerItem key={item.title} direction="up">
                   <article
@@ -314,7 +254,7 @@ export default function AboutPage() {
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex size-12 items-center justify-center rounded-xl bg-blue-50 text-[#485ea8] transition group-hover:bg-[#485ea8] group-hover:text-white">
-                        <Icon size={23} />
+                        <i aria-hidden="true" className={`${item.icon} text-[23px]`} />
                       </div>
                       <span className="text-sm font-semibold text-slate-300">
                         {item.number}
@@ -322,7 +262,7 @@ export default function AboutPage() {
                     </div>
                     <h3 className="mt-4 md:mt-6 text-xl font-bold">{item.title}</h3>
                     <p className="mt-3 text-sm leading-7 text-slate-600">
-                      {item.description}
+                      {item.summary}
                     </p>
                     <div className="mt-3 md:mt-6 h-1 w-10 rounded-full bg-[#485ea8] transition-all group-hover:w-16" />
                   </article>
@@ -339,15 +279,15 @@ export default function AboutPage() {
           <Reveal direction="up">
             <div className="mx-auto max-w-2xl text-center">
               <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
-                What guides us
+                {t("What guides us")}
               </p>
               <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-4xl">
-                Purpose behind every connection
+                {content.what_guides_us.title}
               </h2>
-              <p className="mt-3 md:mt-4 leading-7 text-slate-600">
-                Our values shape how we connect people, approach recruitment,
-                and build for the future.
-              </p>
+              <div
+                className="mt-3 md:mt-4 leading-7 text-slate-600"
+                dangerouslySetInnerHTML={{ __html: content.what_guides_us.description }}
+              />
             </div>
           </Reveal>
           
@@ -359,7 +299,6 @@ export default function AboutPage() {
                 className="flex flex-nowrap gap-2 overflow-x-auto border-b border-slate-100 bg-slate-50/80 p-3 sm:p-4 md:grid md:grid-cols-3"
               >
                 {principles.map((item) => {
-                  const Icon = item.icon;
                   const selected = activeTab === item.id;
 
                   return (
@@ -377,8 +316,8 @@ export default function AboutPage() {
                           : "text-slate-600 hover:bg-white hover:text-[#485ea8]"
                       }`}
                     >
-                      <Icon size={19} />
-                      {item.label}
+                      <i aria-hidden="true" className={`${item.icon} text-[19px]`} />
+                      {t(item.label)}
                     </button>
                   );
                 })}
@@ -392,7 +331,7 @@ export default function AboutPage() {
               >
                 <div>
                   <div className="flex size-14 items-center justify-center rounded-2xl bg-blue-50 text-[#485ea8]">
-                    <activePrinciple.icon size={28} />
+                    <i aria-hidden="true" className={`${activePrinciple.icon} text-[28px]`} />
                   </div>
 
                   <h3 className="mt-6 text-2xl font-bold leading-tight sm:text-3xl">
@@ -405,7 +344,7 @@ export default function AboutPage() {
                 </div>
 
                 <div className="relative min-h-[250px] overflow-hidden rounded-2xl bg-gradient-to-br from-[#485ea8] to-[#132b9c] shadow-[0_25px_70px_rgba(23,43,77,0.17)] text-white sm:min-h-[300px]">
-                  <Image src={"/images/mission.webp"} alt="" width={500} height={500} />
+                  <img src={activePrinciple.image} alt={activePrinciple.label} className="absolute inset-0 h-full w-full object-cover" />
                 </div>
               </div>
             </div>
@@ -414,7 +353,18 @@ export default function AboutPage() {
       </section>
 
       {/* 5. WHY CHOOSE ASIAN HIRE */}
-      <WhyChooseUs benefits={benefits} />
+      <WhyChooseUs
+        benefits={content.why_choose.items.map((item) => ({
+          title: item.title,
+          text: item.text,
+          iconUrl: item.icon,
+        }))}
+        title={content.why_choose.title}
+        description={content.why_choose.description}
+        thumbnail={content.why_choose.thumbnail}
+        t={t}
+      />
+
 
       {/* 6. STATISTICS */}
       <section className="relative isolate overflow-hidden py-10 sm:py-16">
@@ -440,15 +390,13 @@ export default function AboutPage() {
             className="grid grid-cols-2 gap-y-10 sm:gap-y-12 lg:grid-cols-4 lg:gap-8"
           >
             {stats.map((item) => {
-                const Icon = item.icon;
-
                 return (
                   <StaggerItem key={item.label} direction="up">
                     <div
                         className="group flex flex-col items-center text-center"
                     >
                         <div className="flex size-14 items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-blue-200 backdrop-blur-sm transition duration-300 group-hover:border-white/40 group-hover:bg-[#485ea8] group-hover:text-white">
-                        <Icon size={26} strokeWidth={1.7} />
+                        <i aria-hidden="true" className={`${item.icon} text-[26px]`} />
                         </div>
 
                         <p className="mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
@@ -470,6 +418,7 @@ export default function AboutPage() {
 
         {/* 7. MEET OUR TEAM */}
       
+        {content.team.members.length > 0 && (
         <section id="our-team" className="bg-slate-50 py-10 sm:py-16">
             <div className="mx-auto max-w-7xl px-5 sm:px-8">
                 {/* Heading */}
@@ -477,10 +426,10 @@ export default function AboutPage() {
                   <div className="mb-6 md:mb-10 flex flex-col text-center justify-center gap-4 sm:mb-14 sm:flex-row sm:items-end">
                       <div className="max-w-2xl">
                           <span className="text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
-                              People behind Asian Hire
+                              {t("People behind Asian Hire")}
                           </span>
                           <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                              Meet the people behind our mission.
+                              {content.team.title}
                           </h2>
                       </div>
                   </div>
@@ -489,20 +438,22 @@ export default function AboutPage() {
                 {/* Full-image profiles */}
                 <Stagger
                   delay={0.2}
-                  className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7"
+                  className="flex flex-wrap justify-center gap-5 lg:gap-7"
                 >
-                  {team.map((member, index) => (
-                    <StaggerItem key={member.name} direction="up">
+                  {content.team.members.map((member) => (
+                    <StaggerItem key={member.id} direction="up" className="w-full sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-1.17rem)]">
                       <article
                         className="group relative isolate aspect-[4/5] overflow-hidden rounded-2xl bg-slate-200 shadow-sm"
                       >
                         {/* Full-card image */}
-                        <img
-                            src={member.image}
-                            alt={member.name}
-                            loading="lazy"
-                            className="absolute inset-0 size-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
-                        />
+                        {member.image && (
+                          <img
+                              src={member.image}
+                              alt={member.name}
+                              loading="lazy"
+                              className="absolute inset-0 size-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
+                          />
+                        )}
 
                         {/* Always-visible bottom gradient */}
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/10 to-transparent transition-opacity duration-500 group-hover:opacity-0" />
@@ -523,6 +474,7 @@ export default function AboutPage() {
                 </Stagger>
             </div>
         </section>
+        )}
 
     </main>
   );

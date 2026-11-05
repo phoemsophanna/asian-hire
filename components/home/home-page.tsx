@@ -1,139 +1,41 @@
-import {
-  ArrowRight,
-  BriefcaseBusiness,
-  ChartNoAxesCombined,
-  ChevronRight,
-  Code2,
-  Earth,
-  FileUser,
-  HeartHandshake,
-  Megaphone,
-  MessagesSquare,
-  PenTool,
-  Search,
-  ShieldCheck,
-  Sparkles,
-  TrendingUp,
-  UserRound,
-  UserRoundCheck,
-  Users,
-  UserSearch,
-  UsersRound,
-  Wallet,
-  Wrench,
-} from "lucide-react";
+"use client";
+
+import { ArrowRight, ChevronRight } from "lucide-react";
 import FeaturedJobs from "@/components/home/featured-jobs";
 import HeroSearch from "@/components/home/hero-search";
 import type { Job, JobSearchFilters } from "@/components/home/job-data";
+import { createTranslator, fetchTranslations } from "@/services/translation-service";
+import { fetchHomepage, type ApiLang, type HomepageData, type HomepageJob } from "@/services/homepage-service";
+import { fetchIndustryPage } from "@/services/industry-service";
 import SectionHeading from "../ui/SectionHeader";
-import Image from "next/image";
 import WhyChooseUs from "../ui/WhyChoose";
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { Reveal, Stagger, StaggerItem } from "@/util/animations";
-
-const industries = [
-  { name: "Accounting & Finance", count: "120 jobs available", icon: Wallet },
-  { name: "Marketing & Sales", count: "86 jobs available", icon: Megaphone },
-  { name: "Information Technology", count: "204 jobs available", icon: Code2 },
-  { name: "Human Resources", count: "56 jobs available", icon: UsersRound },
-  { name: "Engineering", count: "93 jobs available", icon: Wrench },
-  { name: "Design & Creative", count: "48 jobs available", icon: PenTool },
-  { name: "Education & Training", count: "72 jobs available", icon: FileUser },
-  { name: "Business & Management", count: "111 jobs available", icon: ChartNoAxesCombined },
-  { name: "Customer Service", count: "65 jobs available", icon: HeartHandshake },
-];
-
-const steps = [
-  {
-    number: "01",
-    title: "Browse Jobs You Want",
-    text: "Don't just find. Be found. Your next career move starts here.",
-    icon: BriefcaseBusiness,
-  },
-  {
-    number: "02",
-    title: "Organize Your Resume",
-    text: "Prepare your resume and degree for skill assessment.",
-    icon: Search,
-  },
-  {
-    number: "03",
-    title: "Consult with us",
-    text: "Consult with us to find the best way and make a safe migration plan to Australia.",
-    icon: FileUser,
-  },
-];
-
-const benefits = [
-  {
-    title: "Focus on Applicant Needs",
-    text: "Our team is focused on the desired results. Focusing on the applicant's preferred result is an integral part of the strategic process for each case.",
-    icon: Users,
-  },
-  {
-    title: "Easy to communicate",
-    text: "Regardless of whether you are onshore or offshore, we provide a full-service counselling for skilled jobs opportunies and safe migration's advise to Australia full of professionalism and integrity.",
-    icon: MessagesSquare,
-  },
-  {
-    title: "Clients First",
-    text: "We recognise that all Asutralian employers want to cooperate with the best. As a team of exceptional individuals, we are committed in every way to make that happen.",
-    icon: UserSearch,
-  },
-  {
-    title: "Oversea Worker Recruitment",
-    text: "We strive to give our Australian employers the best recruitment service we possibly can, from initial consultation to a successful resolution.",
-    icon: Earth,
-  },
-];
-
-const articles = [
-  {
-    category: "Career advice",
-    date: "May 16, 2025",
-    title: "How to make your next career move with confidence",
-    image:
-      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1100&q=85",
-  },
-  {
-    category: "Job search",
-    date: "May 12, 2025",
-    title: "Five ways to make your resume stand out",
-    image:
-      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=700&q=85",
-  },
-  {
-    category: "Workplace",
-    date: "May 08, 2025",
-    title: "What to ask at your next job interview",
-    image:
-      "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=700&q=85",
-  },
-  {
-    category: "Career growth",
-    date: "May 02, 2025",
-    title: "Building skills for a changing workplace",
-    image:
-      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=700&q=85",
-  },
-  {
-    category: "Career growth",
-    date: "May 02, 2025",
-    title: "Building skills for a changing workplaces",
-    image:
-      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=700&q=85",
-  },
-];
+import { useEffect, useRef, useState } from "react";
 
 function Hero({
-  filters,
-  resultCount,
-  hasSearched,
+  data,
+  industries,
+  resultCount = 0,
+  t = (text: string) => text,
 }: {
-  filters: JobSearchFilters;
-  resultCount: number;
-  hasSearched: boolean;
+  data: HomepageData;
+  industries: { id: number; title: string }[];
+  resultCount?: number;
+  t?: (text: string) => string;
 }) {
+  const filters: JobSearchFilters = { keyword: "", industry: "", location: "" };
+  const hasSearched = false;
+  const subtitle = data.hero.subtitle;
+  const titleText = data.hero.title;
+  const commaIndex = titleText.indexOf(",");
+  const titleLead = commaIndex >= 0 ? titleText.slice(0, commaIndex + 1) : "";
+  const titleAccent = commaIndex >= 0 ? titleText.slice(commaIndex + 1).trim() : titleText;
+  const trendingKeywords = data.find_job.trending_keywords;
+  const industryNames = industries.map((industry) => industry.title);
+  const industryIds = Object.fromEntries(industries.map((industry) => [industry.title, industry.id]));
+  const heroImage = data.hero.image ?? "/images/slider/slider.jpg";
+
   return (
     <section className="relative isolate bg-[#112b57]">
       {/* Background image */}
@@ -141,8 +43,7 @@ function Hero({
         aria-hidden="true"
         className="absolute inset-0 -z-20 bg-cover bg-center"
         style={{
-          backgroundImage:
-            "url('/images/slider/slider.jpg')",
+          backgroundImage: `url('${heroImage}')`,
         }}
       />
 
@@ -161,16 +62,16 @@ function Hero({
           {/* Intro text */}
           <Reveal direction="zoom">
             <p className="mx-auto max-w-4xl text-sm font-semibold uppercase leading-relaxed tracking-[0.10em] tracking-0 text-white sm:text-xl sm:tracking-[1px] lg:text-2xl">
-              AUSTRALIA JOBS SEARCH WEBSITE IN CAMBODIA
+              {subtitle}
             </p>
           </Reveal>
 
           {/* Main message */}
           <Reveal direction="zoom">
             <p className="mx-auto mt-3 max-w-3xl text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl lg:text-4xl">
-              Millions of jobs,{" "}
-              <span className="bg-gradient-to-r from-blue-500 to-white bg-clip-text text-transparent">
-                find the one that&apos;s right for you
+              {titleLead && <>{titleLead}{" "}</>}
+              <span className="">
+                {titleAccent}
               </span>
             </p>
           </Reveal>
@@ -182,6 +83,9 @@ function Hero({
                 filters={filters}
                 hasSearched={hasSearched}
                 resultCount={resultCount}
+                industries={industryNames}
+                industryIds={industryIds}
+                t={t}
               />
             </Reveal>
           </div>
@@ -190,20 +94,17 @@ function Hero({
           <Reveal direction="zoom">
             <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:mt-6 sm:gap-2.5">
               <span className="mr-1 text-xs font-semibold text-white sm:text-sm">
-                Trending Keywords:
+                {t("Trending Keywords")}:
               </span>
 
-              {[
-                "Automotive", "Education", "Health",
-                "Health and Engineering",
-              ].map((keyword) => (
-                <a
+              {trendingKeywords.map((keyword) => (
+                <Link
                   key={keyword}
-                  href="#featured-jobs"
+                  href={`/jobs?${new URLSearchParams({ keyword }).toString()}`}
                   className="rounded-full border border-white/10 bg-white/[0.08] px-3 py-1.5 text-xs font-medium text-white/90 backdrop-blur-[2px] transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-300/70 hover:bg-white/15 hover:text-white sm:px-4 sm:py-2 sm:text-sm"
                 >
                   {keyword}
-                </a>
+                </Link>
               ))}
             </div>
           </Reveal>
@@ -213,40 +114,38 @@ function Hero({
   );
 }
 
-function PopularIndustries() {
+function PopularIndustries({ data, t = (key: string) => key }: { data: HomepageData["industries"], t?: (key: string) => string }) {
+  const items = data.items.slice(0, 9);
+
   return (
     <section className="bg-white py-10 sm:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <Reveal direction="up">
           <SectionHeading
-            description="Today jobs live 450"
-            title="Popular job by industries"
+            description={data.description}
+            title={data.title}
           />
         </Reveal>
         <Stagger
           staggerDelay={0.2}
           className="grid gap-3 min-[480px]:grid-cols-2 sm:gap-4 lg:grid-cols-3"
         >
-          {industries.map(({ name, count, icon: Icon }) => {
-            const params = new URLSearchParams();
+          {items.map((industry) => {
+            const params = new URLSearchParams({ industry: String(industry.id) });
 
-            if (name) {
-              params.set("industry", name);
-            }
-
-            const query = params.toString();
-
-            return <StaggerItem key={name} direction="up">
+            return <StaggerItem key={industry.id} direction="up">
                   <Link
                     className="group flex min-w-0 items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 shadow-[0_5px_22px_rgba(22,47,89,0.035)] transition hover:-translate-y-0.5 hover:border-blue-100 hover:shadow-[0_12px_30px_rgba(22,47,89,0.08)] sm:gap-4"
-                    href={`/jobs?${query}`}
+                    href={`/jobs?${params.toString()}`}
                   >
-                    <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#eef4ff] text-[#485ea8] transition group-hover:bg-[#485ea8] group-hover:text-white sm:size-14">
-                      <Icon aria-hidden="true" className="size-5 sm:size-6" strokeWidth={1.8} />
+                    <span className="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#eef4ff] sm:size-14">
+                      {industry.icon && (
+                        <i aria-hidden="true" className={`${industry.icon} text-2xl text-[#485ea8] sm:text-3xl`} />
+                      )}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-semibold leading-5 text-[#172b4d] sm:text-base">{name}</span>
-                      <span className="mt-1 block text-xs text-slate-500">{count}</span>
+                      <span className="block text-sm font-semibold leading-5 text-[#172b4d] sm:text-base">{industry.title}</span>
+                      <span className="mt-1 block text-xs text-slate-500">{industry.active_jobs_count} {t("jobs available")}</span>
                     </span>
                     <ChevronRight
                       aria-hidden="true"
@@ -261,7 +160,7 @@ function PopularIndustries() {
               className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-3 text-sm font-semibold text-[#172b4d] transition hover:border-blue-200 hover:text-[#485ea8]"
               href="/industry"
             >
-              Browse all industries <ArrowRight aria-hidden="true" className="size-4" />
+              {t("Browse all industries")} <ArrowRight aria-hidden="true" className="size-4" />
             </Link>
           </Reveal>
         </div>
@@ -270,50 +169,65 @@ function PopularIndustries() {
   );
 }
 
-function JobsSection({ jobs }: { jobs: Job[] }) {
+function JobsSection({
+  data,
+  types,
+  t = (text: string) => text,
+}: {
+  data: HomepageData["jobs"];
+  types: HomepageData["types"];
+  t?: (text: string) => string;
+}) {
   return (
     <section className="bg-[#f7f9fc] py-10 sm:py-16" id="featured-jobs">
       <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <Reveal direction="up">
           <SectionHeading
-            description="Find your next opportunity from hand-picked roles at companies that are going places."
-            title="Featured jobs"
+            description={data.description}
+            title={data.title}
           />
         </Reveal>
-        <FeaturedJobs jobs={jobs} />
+        <FeaturedJobs
+          jobs={data.items.map((job) => job)}
+          types={types.map((type) => ({ id: type.id, title: type.title }))}
+          t={t}
+        />
       </div>
     </section>
   );
 }
 
-function HowItWorks() {
+function HowItWorks({ data }: { data: HomepageData["find_job"] }) {
+  console.log(data);
   return (
     <section className="bg-white py-10 sm:py-16" id="how-it-works">
       <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <Reveal direction="up">
           <SectionHeading
-            description="Find your next opportunity from hand-picked roles at companies that are going places."
-            title="Easiest Way to Find a Job"
+            description={data.description}
+            title={data.title}
           />
         </Reveal>
         <div className="grid gap-8 min-[560px]:grid-cols-3 lg:gap-6">
-          {steps.map(({ number, title, text, icon: Icon }, index) => (
-            <Reveal direction="zoom" key={number}>
+          {data.items.map((step, index) => (
+            <Reveal direction="zoom" key={`${step.title}-${index}`}>
               <div className="relative flex flex-col items-center text-center">
-                {index < steps.length - 1 && (
+                {index < data.items.length - 1 && (
                   <span
                     aria-hidden="true"
                     className="absolute left-[calc(50%+70px)] right-[calc(-50%+50px)] top-10 hidden border-t border-dashed border-blue-200 lg:block"
                   />
                 )}
                 <span className="relative flex size-20 items-center justify-center rounded-full border border-blue-100 bg-[#f0f5ff] text-[#485ea8]">
-                  <Icon aria-hidden="true" className="size-8" strokeWidth={1.8} />
+                  {step.icon && (
+                    <i aria-hidden="true" className={`${step.icon} text-3xl`} />
+                  )}
                   <span className="absolute -right-2 -top-1 flex size-6 items-center justify-center rounded-full bg-[#485ea8] text-[10px] font-bold text-white">
-                    {number.slice(1)}
+                    {String(index + 1).padStart(2, "0")}
                   </span>
                 </span>
-                <h3 className="mt-5 font-semibold text-[#172b4d]">{title}</h3>
-                <p className="mt-2 max-w-[240px] text-sm leading-6 text-slate-500">{text}</p>
+                <h3 className="mt-5 font-semibold text-[#172b4d]">{step.title}</h3>
+                <p className="mt-2 max-w-[240px] text-sm leading-6 text-slate-500">{step.text}</p>
               </div>
             </Reveal>
           ))}
@@ -323,39 +237,73 @@ function HowItWorks() {
   );
 }
 
-function NewsSection() {
-  const spotlight = articles[0];
-  const smallerArticles = articles.slice(1);
+const KHMER_MONTHS = [
+  "មករា",
+  "កុម្ភៈ",
+  "មីនា",
+  "មេសា",
+  "ឧសភា",
+  "មិថុនា",
+  "កក្កដា",
+  "សីហា",
+  "កញ្ញា",
+  "តុលា",
+  "វិច្ឆិកា",
+  "ធ្នូ",
+];
+const KHMER_DIGITS = "០១២៣៤៥៦៧៨៩";
+
+function toKhmerDigits(value: number) {
+  return String(value).replace(/\d/g, (digit) => KHMER_DIGITS[Number(digit)]);
+}
+
+function formatNewsDate(value: string | null, lang: ApiLang) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  if (lang === "km") {
+    return `ថ្ងៃទី ${toKhmerDigits(date.getUTCDate())} ខែ${KHMER_MONTHS[date.getUTCMonth()]} ឆ្នាំ ${toKhmerDigits(date.getUTCFullYear())}`;
+  }
+  return date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+}
+
+function NewsSection({ data, lang, t = (key: string) => key }: { data: HomepageData["news"]; lang: ApiLang; t?: (key: string) => string }) {
+  const [spotlight, ...smallerArticles] = data.items;
+  if (!spotlight) return null;
+
   return (
     <section className="bg-white overflow-hidden py-10 sm:py-16" id="news">
       <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <Reveal direction="up">
           <SectionHeading
-            description="Fresh perspectives and helpful advice to keep your career moving forward."
-            title="The latest from Asian Hire"
+            description={data.description}
+            title={data.title}
           />
         </Reveal>
         <div className="grid gap-4 sm:gap-5 lg:grid-cols-[1.1fr_1fr]">
           <Reveal direction="left">
-            <Link className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_8px_28px_rgba(22,47,89,0.045)] transition hover:shadow-[0_16px_38px_rgba(22,47,89,0.1)]" href="/blogs/1">
+            <Link className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_8px_28px_rgba(22,47,89,0.045)] transition hover:shadow-[0_16px_38px_rgba(22,47,89,0.1)]" href={`/blogs/${spotlight.id}`}>
               <div
-                aria-label="Colleagues collaborating in a meeting"
+                aria-label={spotlight.title}
                 className="min-h-[190px] flex-1 bg-cover bg-center transition duration-500 group-hover:scale-[1.02] sm:min-h-[330px]"
                 role="img"
-                style={{ backgroundImage: `url('${spotlight.image}')` }}
+                style={{ backgroundImage: `url('${spotlight.thumbnail ?? ""}')` }}
               />
               <div className="relative bg-white p-6 sm:p-7">
                 <div className="mb-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                  <span className="rounded-full bg-blue-50 px-3 py-1.5 font-semibold text-[#485ea8]">
-                    {spotlight.category}
-                  </span>
-                  <span>{spotlight.date}</span>
+                  {(() => {
+                    const tag = lang === "km" ? spotlight.tag_km || spotlight.tag_eng : spotlight.tag_eng;
+                    return tag ? (
+                      <span className="rounded-full bg-blue-50 px-3 py-1.5 font-semibold text-[#485ea8]">{tag}</span>
+                    ) : null;
+                  })()}
+                  <span>{formatNewsDate(spotlight.date, lang)}</span>
                 </div>
                 <h3 className="max-w-xl text-lg font-bold leading-snug tracking-[-0.03em] text-[#172b4d] group-hover:text-[#485ea8] sm:text-2xl">
                   {spotlight.title}
                 </h3>
                 <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#485ea8]">
-                  Read article <ArrowRight aria-hidden="true" className="size-4" />
+                   {t("Read article")} <ArrowRight aria-hidden="true" className="size-4" />
                 </span>
               </div>
             </Link>
@@ -365,19 +313,17 @@ function NewsSection() {
               {smallerArticles.map((article) => (
                 <Link
                   className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_8px_28px_rgba(22,47,89,0.045)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(22,47,89,0.1)]"
-                  href="/blogs/1"
-                  key={article.title}
+                  href={`/blogs/${article.id}`}
+                  key={article.id}
                 >
                   <div
                     aria-label={article.title}
                     className="h-50 md:h-36 bg-cover bg-center transition duration-500 group-hover:scale-[1.02] sm:h-40"
                     role="img"
-                    style={{ backgroundImage: `url('${article.image}')` }}
+                    style={{ backgroundImage: `url('${article.thumbnail ?? ""}')` }}
                   />
                   <div className="p-4">
                     <div className="mb-2 flex flex-wrap items-center gap-2 text-[11px] text-slate-500">
-                      <span className="font-semibold text-[#485ea8]">{article.category}</span>
-                      <span aria-hidden="true">·</span>
                       <span>{article.date}</span>
                     </div>
                     <h3 className="text-sm font-semibold leading-6 text-[#172b4d] group-hover:text-[#485ea8]">
@@ -393,9 +339,9 @@ function NewsSection() {
           <Reveal direction="zoom">
             <Link
               className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-3 text-sm font-semibold text-[#172b4d] transition hover:border-blue-200 hover:text-[#485ea8]"
-              href="/blogs"
+              href={`/blogs`}
             >
-              View More <ArrowRight aria-hidden="true" className="size-4" />
+              {t("View More")} <ArrowRight aria-hidden="true" className="size-4" />
             </Link>
           </Reveal>
         </div>
@@ -405,23 +351,74 @@ function NewsSection() {
 }
 
 export default function HomePage({
-  jobs,
-  filters,
-  hasSearched,
+  lang,
+  initialContent,
 }: {
-  jobs: Job[];
-  filters: JobSearchFilters;
-  hasSearched: boolean;
+  lang: ApiLang;
+  initialContent?: {
+    data: HomepageData | null;
+    industries: { items: { id: number; title: string }[] } | null;
+    translations: Record<string, string>;
+  };
 }) {
+  const initialLang = useRef(lang);
+  const [data, setData] = useState<HomepageData | null>(initialContent?.data ?? null);
+  const [allIndustries, setAllIndustries] = useState<{ id: number; title: string }[]>(
+    initialContent?.industries?.items.map((industry) => ({ id: industry.id, title: industry.title })) ?? [],
+  );
+  const [translations, setTranslations] = useState<Record<string, string>>(initialContent?.translations ?? {});
+
+  useEffect(() => {
+    // Server-rendered content already matches this language, so skip the first client fetch.
+    if (initialContent && lang === initialLang.current && initialContent.data) return;
+
+    let active = true;
+
+    fetchHomepage(lang).then((result) => {
+      if (active) setData(result);
+    });
+    fetchIndustryPage(lang).then((result) => {
+      if (active && result) {
+        setAllIndustries(result.items.map((industry) => ({ id: industry.id, title: industry.title })));
+      }
+    });
+    fetchTranslations(lang).then((result) => {
+      if (active) setTranslations(result);
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [lang, initialContent]);
+
+  if (!data) return null;
+
+  const whyChooseItems = data.why_choose.items.map((item) => ({
+    title: item.title,
+    text: item.text,
+    iconUrl: item.icon,
+  }));
+
   return (
     <>
       <main>
-        <Hero filters={filters} hasSearched={hasSearched} resultCount={jobs.length} />
-        <PopularIndustries />
-        <JobsSection jobs={jobs} />
-        <HowItWorks />
-        <WhyChooseUs benefits={benefits} />
-        <NewsSection />
+        <Hero
+          data={data}
+          industries={allIndustries.length > 0 ? allIndustries : data.industries.items}
+          resultCount={data.jobs.items.length}
+          t={createTranslator(translations)}
+        />
+        <PopularIndustries data={data.industries} t={createTranslator(translations)} />
+        <JobsSection data={data.jobs} types={data.types} t={createTranslator(translations)} />
+        <HowItWorks data={data.find_job} />
+        <WhyChooseUs
+          benefits={whyChooseItems}
+          title={data.why_choose.title}
+          description={data.why_choose.description}
+          thumbnail={data.why_choose.thumbnail}
+          t={createTranslator(translations)}
+        />
+        <NewsSection data={data.news} lang={lang} t={createTranslator(translations)} />
       </main>
     </>
   );

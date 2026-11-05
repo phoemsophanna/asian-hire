@@ -15,6 +15,21 @@ interface RevealProps extends HTMLMotionProps<"div"> {
   once?: boolean;
 }
 
+// Next.js hides visited pages with <Activity> instead of unmounting them. Effects
+// re-run when a page is shown again, so bumping this key remounts the animated
+// element and replays its whileInView animation.
+function useReplayKey() {
+  const [replayKey, setReplayKey] = React.useState(0);
+  const hasMounted = React.useRef(false);
+
+  React.useEffect(() => {
+    if (hasMounted.current) setReplayKey((key) => key + 1);
+    hasMounted.current = true;
+  }, []);
+
+  return replayKey;
+}
+
 const directions: Record<Direction, { x?: number; y?: number; scale?: number }> = {
   left: { x: -50 },
   right: { x: 50 },
@@ -34,6 +49,7 @@ export function Reveal({
   ...props
 }: RevealProps) {
   const initial = directions[direction];
+  const replayKey = useReplayKey();
 
   const offset =
     direction === "left" || direction === "right"
@@ -44,6 +60,7 @@ export function Reveal({
 
   return (
     <motion.div
+      key={replayKey}
       initial={{ opacity: 0, ...offset }}
       whileInView={{
         opacity: 1,
@@ -77,8 +94,11 @@ export function Stagger({
   delay = 0,
   className,
 }: StaggerProps) {
+  const replayKey = useReplayKey();
+
   return (
     <motion.div
+      key={replayKey}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { SlidersHorizontal, ChevronDown, Check } from "lucide-react";
+import { SlidersHorizontal, ChevronDown, Check, Search } from "lucide-react";
 
 const defaultIndustries = [
   "Accounting & Finance",
@@ -21,19 +21,30 @@ export default function IndustryDropdown({
   industries = defaultIndustries,
   onChange,
   variant = "hero",
+  t = (text: string) => text,
 }: {
   filters: string;
   value?: string;
   industries?: string[];
   onChange?: (industry: string) => void;
   variant?: "hero" | "light";
+  t?: (text: string) => string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [localSelectedIndustry, setLocalSelectedIndustry] = useState(filters || "");
   const selectedIndustry = value ?? localSelectedIndustry;
   const isLight = variant === "light";
+  const [query, setQuery] = useState("");
+  const normalizedQuery = query.trim().toLowerCase();
+  const visibleIndustries = normalizedQuery
+    ? industries.filter((industry) => industry.toLowerCase().includes(normalizedQuery))
+    : industries;
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) setQuery("");
+  }, [isOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -89,7 +100,7 @@ export default function IndustryDropdown({
                 : "text-[#485ea8]"
           }`}
         >
-          {selectedIndustry || "Choose industry"}
+          {selectedIndustry || t("Choose industry")}
         </span>
 
         <ChevronDown
@@ -104,7 +115,7 @@ export default function IndustryDropdown({
         <div
             className={`industry-dropdown absolute left-0 right-0 top-full z-[100] mt-3
                 rounded-2xl border p-2 shadow-2xl shadow-slate-900/10
-                transition-all duration-200 ${
+                transition-all duration-200 w-[280px] ${
                 isLight
                     ? "border-slate-200 bg-white"
                     : "border-slate-200 bg-white"
@@ -114,8 +125,25 @@ export default function IndustryDropdown({
                     : "invisible -translate-y-2 opacity-0"
                 }`}
         >
+            <div className="relative mb-2">
+                <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+                <input
+                    type="search"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Escape") setIsOpen(false);
+                    }}
+                    placeholder={t("Search industry")}
+                    aria-label={t("Search industry")}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-9 pr-3 text-sm text-slate-700 outline-none transition focus:border-[#485ea8]/50 focus:bg-white"
+                />
+            </div>
             <div className="industry-dropdown-list relative max-h-64 space-y-1 overflow-y-auto">
-                {industries.map((industry) => (
+                {visibleIndustries.length === 0 && (
+                    <p className="px-3 py-3 text-sm text-slate-500">{t("No industries found")}</p>
+                )}
+                {visibleIndustries.map((industry) => (
                     <div
                         key={industry}
                         onClick={() => {
@@ -125,7 +153,7 @@ export default function IndustryDropdown({
                         onChange?.(industry);
                         setIsOpen(false);
                         }}
-                        className={`flex cursor-pointer items-center justify-between
+                        className={`flex text-start cursor-pointer items-center justify-between
                         rounded-xl px-3 py-3 text-sm transition-all duration-200
                         ${
                             selectedIndustry === industry

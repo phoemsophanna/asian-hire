@@ -1,14 +1,35 @@
-import Link from "next/link";
+"use client";
 
-export default function PageBanner({title}:any){
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "@/components/LocaleLink";
+import { createTranslator, fetchTranslations } from "@/services/translation-service";
+
+export default function PageBanner({title, image}:{title:any; image?: string | null}){
+    const pathname = usePathname();
+    const lang = pathname.startsWith("/km") ? "km" : "eng";
+    const [translations, setTranslations] = useState<Record<string, string>>({});
+    const t = createTranslator(translations);
+
+    useEffect(() => {
+        let active = true;
+
+        fetchTranslations(lang).then((data) => {
+            if (active) setTranslations(data);
+        });
+
+        return () => {
+            active = false;
+        };
+    }, [lang]);
+
     return <>
         <section className="relative isolate overflow-hidden bg-[#101b46]">
             {/* Background image */}
             <div
                 className="absolute inset-0 -z-20 bg-cover bg-center"
                 style={{
-                backgroundImage:
-                    "url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=2000&q=90')",
+                backgroundImage: `url('${image || "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=2000&q=90"}')`,
                 }}
             />
 
@@ -31,19 +52,19 @@ export default function PageBanner({title}:any){
                         href="/"
                         className="transition hover:text-white"
                     >
-                        Home
+                        {t("Home")}
                     </Link>
 
                     <span className="text-white/50">/</span>
 
                     <span className="font-medium text-white">
-                        {title}
+                        {t(title)}
                     </span>
                 </nav>
 
                 {/* Page title */}
                 <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
-                    {title}
+                    {t(title)}
                 </h1>
 
                 {/* Decorative line */}

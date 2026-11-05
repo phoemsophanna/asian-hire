@@ -1,11 +1,27 @@
-import Link from "next/link";
+"use client";
+
+import Link from "@/components/LocaleLink";
 import SectionHeading from "./SectionHeader";
-import Image from "next/image";
 import { FaArrowRight } from "react-icons/fa";
 import { Reveal, Stagger, StaggerItem } from "@/util/animations";
 
-export default function ServiceSection ({ services }:any) {
-    
+type ServiceItem = {
+    id: number;
+    number: string | number;
+    href: string;
+    image: string;
+    alt: string;
+    title: string;
+    description: string;
+};
+
+type ServiceSectionProps = {
+    services: ServiceItem[];
+    title?: string | null;
+    description?: string | null;
+};
+
+export default function ServiceSection ({ services, title, description, t = (key: string) => key }: any) {
     return <>
         {/* Our Services */}
         <section
@@ -16,8 +32,8 @@ export default function ServiceSection ({ services }:any) {
                 {/* Section Heading */}
                 <Reveal direction="up">
                     <SectionHeading
-                        description="From language preparation to career guidance, discover the support you need to take your next step with confidence."
-                        title="Our Services"
+                        description={description || "From language preparation to career guidance, discover the support you need to take your next step with confidence."}
+                        title={title || "Our Services"}
                     />
                 </Reveal>
 
@@ -34,16 +50,14 @@ export default function ServiceSection ({ services }:any) {
                             >
                                 {/* Image */}
                                 <Link
-                                    href={service.href}
+                                    href={`/services/${service.id}`}
                                     aria-label={`Learn more about ${service.title}`}
                                     className="relative block aspect-[4/3] overflow-hidden bg-slate-100"
                                 >
-                                    <Image
+                                    <img
                                         src={service.image}
                                         alt={service.alt}
-                                        fill
-                                        sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
-                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                                     />
 
                                     {/* Image Overlay */}
@@ -64,7 +78,7 @@ export default function ServiceSection ({ services }:any) {
                                         href={service.href}
                                         className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-[#485ea8] transition-all hover:gap-3"
                                     >
-                                        Read More
+                                        {t("Read More")}
                                         <FaArrowRight className="text-xs" />
                                     </Link>
                                 </div>
@@ -77,7 +91,7 @@ export default function ServiceSection ({ services }:any) {
                         href="/services"
                         className="mt-8 inline-flex w-fit items-center gap-2 font-bold text-[#485ea8] transition hover:gap-3"
                     >
-                        View More <FaArrowRight />
+                        {t("View More")} <FaArrowRight />
                     </Link>
                 </div>
             </div>

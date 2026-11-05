@@ -1,28 +1,41 @@
 "use client";
 
 import { useState } from "react";
-import type { Job } from "@/components/home/job-data";
+// import type { Job } from "@/components/home/job-data";
 import JobCard from "../job/job-card";
 import { ArrowRight } from "lucide-react";
-import { Reveal, Stagger, StaggerItem } from "@/util/animations";
+import { motion } from "motion/react";
+import { Reveal } from "@/util/animations";
+import { HomepageJob } from "@/services/homepage-service";
 
-const tabs = ["Featured", "Urgent", "Latest"] as const;
-type JobTab = (typeof tabs)[number];
+type JobTab = {
+  key: string;
+  label: string;
+  matches: (job: HomepageJob) => boolean;
+};
 
-export default function FeaturedJobs({ jobs }: { jobs: Job[] }) {
-  const [activeTab, setActiveTab] = useState<JobTab>("Featured");
-  const [savedJobs, setSavedJobs] = useState<string[]>([]);
-  const filteredJobs = jobs.filter(
-    (job) => activeTab === "Featured" || job.category === activeTab,
-  );
-
-  function toggleSaved(title: string) {
-    setSavedJobs((current) =>
-      current.includes(title)
-        ? current.filter((savedTitle) => savedTitle !== title)
-        : [...current, title],
-    );
-  }
+export default function FeaturedJobs({
+  jobs,
+  types,
+  t = (text: string) => text,
+}: {
+  jobs: HomepageJob[];
+  types: { id: number; title: string }[];
+  t?: (text: string) => string;
+}) {
+  const tabs: JobTab[] = [
+    { key: "featured", label: t("Featured"), matches: (job) => job.is_featured === true },
+    ...types.map((type) => ({
+      key: `type-${type.id}`,
+      label: type.title,
+      matches: (job: HomepageJob) =>
+        (job.type_ids?.includes(type.id) ?? false) ||
+        (job.types?.some((jobType) => jobType.id === type.id) ?? false),
+    })),
+  ];
+  const [activeKey, setActiveKey] = useState("featured");
+  const activeTab = tabs.find((tab) => tab.key === activeKey) ?? tabs[0];
+  const filteredJobs = jobs.filter(activeTab.matches);
 
   return (
     <div>
@@ -35,22 +48,22 @@ export default function FeaturedJobs({ jobs }: { jobs: Job[] }) {
           >
             {tabs.map((tab) => (
               <button
-                aria-selected={activeTab === tab}
+                aria-selected={activeKey === tab.key}
                 className={`relative rounded-full px-6 py-3 text-sm font-semibold
                   whitespace-nowrap transition-all duration-300 ease-out
                   focus-visible:outline-none focus-visible:ring-2 border
                   focus-visible:ring-[#485ea8]/50 focus-visible:ring-offset-2
                   active:scale-95 ${
-                    activeTab === tab
+                    activeKey === tab.key
                       ? "bg-white text-[#485ea8] shadow-[0_2px_8px_rgba(23,43,77,0.10)] border-[#485ea8]/30"
                       : "bg-transparent text-slate-500 hover:bg-white/60 border-black/5 hover:text-[#172b4d]"
                   }`}
-                key={tab}
-                onClick={() => setActiveTab(tab)}
+                key={tab.key}
+                onClick={() => setActiveKey(tab.key)}
                 role="tab"
                 type="button"
               >
-                {tab}
+                {tab.label}
               </button>
             ))}
           </div>
@@ -59,30 +72,30 @@ export default function FeaturedJobs({ jobs }: { jobs: Job[] }) {
 
       {filteredJobs.length === 0 ? (
         <p className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center text-sm text-slate-500" role="status">
-          No jobs match your search. Try adjusting your keywords or filters.
+          {t("No jobs match your search.")}
         </p>
       ) : (
-        <Stagger 
-          delay={0.2}
-          className="grid gap-5 lg:grid-cols-2"
-        >
-          {filteredJobs.map((job, index) => {
-            return (
-              <StaggerItem key={index} direction="up">
-                <JobCard job={job} />
-              </StaggerItem>
-            );
-          })}
-        </Stagger>
+        <div className="grid gap-5 lg:grid-cols-2" key={activeKey}>
+          {filteredJobs.map((job, index) => (
+            <motion.div
+              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              key={index}
+              transition={{ duration: 0.5, delay: Math.min(index, 8) * 0.08, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <JobCard job={job} />
+            </motion.div>
+          ))}
+        </div>
       )}
 
       <div className="mt-8 text-center">
         <Reveal direction="zoom">
           <a
             className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-3 text-sm font-semibold text-[#172b4d] transition hover:border-blue-200 hover:text-[#485ea8]"
-            href="#featured-jobs"
+            href={`/jobs`}
           >
-            View all Job <ArrowRight aria-hidden="true" className="size-4" />
+            {t("View all Jobs")} <ArrowRight aria-hidden="true" className="size-4" />
           </a>
         </Reveal>
       </div>

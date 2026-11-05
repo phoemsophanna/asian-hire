@@ -1,6 +1,10 @@
 "use client";
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { stripUrlLocale } from "@/util/i18n";
+import { useLanguage } from "@/components/LanguageProvider";
+import { createTranslator, fetchTranslations } from "@/services/translation-service";
 import {
   Building2,
   ChevronRight,
@@ -19,11 +23,22 @@ type NavigationItem = {
   icon?: LucideIcon;
 };
 
+type MenuRow = {
+  key: string;
+  label: string;
+  href: string;
+  show_in_header: boolean;
+  show_in_mobile: boolean;
+  is_active: boolean;
+};
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api";
+
 const navItems = [
-  { label: "HOME", href: "/" },
-  { label: "JOB SEARCH", href: "/jobs" },
-  { label: "JOB SEEKERS", href: "/job-seeker" },
-  { label: "EMPLOYERS", href: "/employers" },
+  { label: "Home", href: "/" },
+  { label: "Job Search", href: "/jobs" },
+  { label: "Job Seekers", href: "/job-seeker" },
+  { label: "Employers", href: "/employers" },
 ];
 
 const mobileNavItems = [
@@ -43,8 +58,55 @@ export default function MainNavigation({
   mobile?: boolean;
   onNavigate?: () => void;
 }) {
-  const pathname = usePathname();
-  const items: NavigationItem[] = mobile ? mobileNavItems : navItems;
+  const pathname = stripUrlLocale(usePathname());
+  const { locale } = useLanguage();
+  const [menuRows, setMenuRows] = useState<MenuRow[] | null>(null);
+  const [translations, setTranslations] = useState<Record<string, string>>({});
+  const t = createTranslator(translations);
+
+  useEffect(() => {
+    let active = true;
+
+    fetchTranslations(locale).then((result) => {
+      if (active) setTranslations(result);
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [locale]);
+
+  useEffect(() => {
+    let isCurrentRequest = true;
+
+    fetch(`${API_URL}/menus/active`, { cache: "no-store" })
+      .then((response) => {
+        if (!response.ok) throw new Error("Menu request failed");
+        return response.json() as Promise<{ data: MenuRow[] }>;
+      })
+      .then((json) => {
+        if (isCurrentRequest) setMenuRows(json.data);
+      })
+      .catch(() => {
+        // Keep the fallback list when the API is unavailable.
+      });
+
+    return () => {
+      isCurrentRequest = false;
+    };
+  }, []);
+
+  const staticItems: NavigationItem[] = mobile ? mobileNavItems : navItems;
+  const items: NavigationItem[] = menuRows
+    ? staticItems.filter((item) =>
+        menuRows.some(
+          (row) =>
+            row.href === item.href &&
+            row.is_active &&
+            (mobile ? row.show_in_mobile : row.show_in_header),
+        ),
+      )
+    : staticItems;
 
   return (
     <nav
@@ -56,6 +118,7 @@ export default function MainNavigation({
       }
     >
       {items.map((item) => {
+        const label = t(item.label);
         const isActive =
           pathname === item.href || pathname.startsWith(`${item.href}/`);
 
@@ -68,7 +131,7 @@ export default function MainNavigation({
             className={`group relative transition-colors duration-300 ${
               mobile
                 ? "flex min-h-[68px] items-center justify-between gap-4 rounded-2xl border px-4 text-base font-semibold tracking-wide shadow-sm transition-all duration-200 active:scale-[0.99]"
-                : "py-2 text-[13px] font-normal tracking-wide"
+                : "py-2 text-[13px] font-normal uppercase tracking-wide"
             }
               ${
                 isActive
@@ -94,7 +157,7 @@ export default function MainNavigation({
                       <item.icon aria-hidden="true" className="size-5" />
                     </span>
                   )}
-                  <span>{item.label}</span>
+                  <span>{label}</span>
                 </span>
                 <ChevronRight
                   aria-hidden="true"
@@ -104,7 +167,7 @@ export default function MainNavigation({
                 />
               </>
             ) : (
-              item.label
+              t(label)
             )}
 
             {/* Animated underline */}
