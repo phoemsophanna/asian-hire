@@ -78,7 +78,6 @@ function toList<T>(value: unknown): T[] {
 }
 
 function normalizeHomepage(data: HomepageData): HomepageData {
-  console.log("Normalizing homepage data", data);
   return {
     ...data,
     find_job: {

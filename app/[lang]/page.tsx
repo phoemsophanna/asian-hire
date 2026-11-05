@@ -1,5 +1,4 @@
-import { cache } from "react";
-import { cacheLife } from "next/cache";
+import { Suspense, cache } from "react";
 import type { Metadata } from "next";
 import { SITE_NAME, buildPageMetadata } from "@/util/seo-metadata";
 import { fetchHomepage, fetchSeo, type ApiLang } from "@/services/homepage-service";
@@ -10,11 +9,7 @@ import HomePage from "@/components/home/home-page";
 
 const getSeo = cache(fetchSeo);
 
-// Prerendered with content so a reload shows the homepage without a client-side loading gap.
-async function loadHomeContent(lang: ApiLang) {
-  "use cache";
-  cacheLife("hours");
-
+const getHomeContent = cache(async (lang: ApiLang) => {
   const [data, industries, translations] = await Promise.all([
     fetchHomepage(lang),
     fetchIndustryPage(lang),
@@ -22,7 +17,7 @@ async function loadHomeContent(lang: ApiLang) {
   ]);
 
   return { data, industries, translations };
-}
+});
 
 function resolveLang(lang: string): UrlLocale {
   return isUrlLocale(lang) ? lang : DEFAULT_URL_LOCALE;
@@ -49,13 +44,25 @@ export async function generateMetadata({
   });
 }
 
-export default async function Page({
+export default function Page({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  return (
+    <Suspense fallback={<div className="h-16" />}>
+      <HomeContent params={params} />
+    </Suspense>
+  );
+}
+
+async function HomeContent({
   params,
 }: {
   params: Promise<{ lang: string }>;
 }) {
   const lang = toApiLang(resolveLang((await params).lang));
-  const initial = await loadHomeContent(lang);
+  const initial = await getHomeContent(lang);
 
   return <HomePage lang={lang} initialContent={initial} />;
 }
