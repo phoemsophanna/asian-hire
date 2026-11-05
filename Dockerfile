@@ -9,7 +9,10 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
+sudo docker build \
+  --build-arg NEXT_PUBLIC_API_URL=https://api.asianhire.com.kh/api \
+  --build-arg NEXT_PUBLIC_SITE_URL=https://asianhire.com.kh \
+  -t asianhire-app .
 # NEXT_PUBLIC_* values are inlined at build time, so pass them with --build-arg.
 ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_SITE_URL
