@@ -1,14 +1,20 @@
+
 import type { NextConfig } from "next";
 
-const apiUrl = new URL(process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api");
+const apiUrl = new URL(
+  process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api"
+);
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: "standalone",
+
   experimental: {
     agentFeedback: true,
   },
+
   cacheComponents: true,
   partialPrefetching: true,
+
   turbopack: {
     rules: {
       "*.css": {
@@ -17,6 +23,7 @@ const nextConfig: NextConfig = {
       },
     },
   },
+
   images: {
     remotePatterns: [
       {
@@ -24,7 +31,7 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
       },
       {
-        protocol: apiUrl.protocol.replace(":", "") as "http" | "https",
+        protocol: apiUrl.protocol.replace(":","") as "http" | "https",
         hostname: apiUrl.hostname,
         port: apiUrl.port,
         pathname: "/storage/**",
