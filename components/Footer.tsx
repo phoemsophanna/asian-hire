@@ -32,6 +32,11 @@ type GeneralSettings = {
   description: string;
 };
 
+type MenuRow = {
+  href: string;
+  is_active: boolean;
+};
+
 const footerLinks = [
   { label: "About Us", href: "/about-us" },
   { label: "News & Blogs", href: "/blogs" },
@@ -74,6 +79,7 @@ export default function SiteFooter() {
   const [translations, setTranslations] = useState<Record<string, string>>({});
   const [contact, setContact] = useState<ContactPageContent | null>(null);
   const [general, setGeneral] = useState<GeneralSettings | null>(null);
+  const [menuRows, setMenuRows] = useState<MenuRow[] | null>(null);
   const t = createTranslator(translations);
 
   useEffect(() => {
@@ -97,10 +103,26 @@ export default function SiteFooter() {
         if (active) setGeneral(null);
       });
 
+    fetch(`${API_URL}/menus/active`, { cache: "no-store" })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload: { data?: MenuRow[] } | null) => {
+        if (active) setMenuRows(payload?.data ?? null);
+      })
+      .catch(() => {
+        if (active) setMenuRows(null);
+      });
+
     return () => {
       active = false;
     };
   }, [locale]);
+
+  // Hide a footer link only when its matching menu row is inactive. Links with no menu row (legal pages) stay visible.
+  const visibleFooterLinks = footerLinks.filter((link) => {
+    if (!menuRows) return true;
+    const row = menuRows.find((menuRow) => menuRow.href === link.href);
+    return row ? row.is_active : true;
+  });
 
   const logoSrc = general?.footer_logo ?? STATIC_LOGO;
   const visibleSocialLinks = socialLinks.filter(
@@ -232,7 +254,7 @@ export default function SiteFooter() {
                     className="overflow-hidden"
                   >
                     <ul className="space-y-2 pb-2 pt-2 md:space-y-4 md:pb-0 md:pt-0">
-                      {footerLinks.map((link) => (
+                      {visibleFooterLinks.map((link) => (
                         <li key={link.label}>
                             <Link
                                 href={link.href}
@@ -311,7 +333,7 @@ export default function SiteFooter() {
                                 )}
                                 <a
                                   href={`tel:${phone.replace(/[^+\d]/g, "")}`}
-                                  className="text-sm font-medium text-white transition-colors hover:text-blue-300 sm:text-base"
+                                  className="text-sm text-white transition-colors hover:text-blue-300 sm:text-base"
                                 >
                                   {phone}
                                 </a>
@@ -336,7 +358,7 @@ export default function SiteFooter() {
                           <span className="block text-sm text-slate-400">
                             {t("Email")}
                           </span>
-                          <span className="mt-1 block break-words text-sm font-medium text-white transition-colors group-hover:text-blue-300 sm:text-base">
+                          <span className="mt-1 block break-words text-sm text-white transition-colors group-hover:text-blue-300 sm:text-base">
                             {email}
                           </span>
                         </span>
@@ -352,7 +374,7 @@ export default function SiteFooter() {
 
                         <div className="min-w-0 pt-0.5">
                           <p className="text-sm text-slate-400">{t("Address")}</p>
-                          <p className="mt-1 whitespace-pre-line text-sm font-medium leading-6 text-white sm:text-base">
+                          <p className="mt-1 whitespace-pre-line text-sm leading-6 text-white sm:text-base">
                             {address}
                           </p>
                         </div>

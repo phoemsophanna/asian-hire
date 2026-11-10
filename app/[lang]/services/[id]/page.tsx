@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { buildPageMetadata } from "@/util/seo-metadata";
 import { fetchServiceDetail } from "@/services/service-detail-service";
-import { isUrlLocale, DEFAULT_URL_LOCALE, type UrlLocale } from "@/util/i18n";
+import { isUrlLocale, DEFAULT_URL_LOCALE, localizePath, type UrlLocale } from "@/util/i18n";
 import type { ApiLang } from "@/services/homepage-service";
 
 const getContent = cache(fetchServiceDetail);
@@ -23,14 +23,21 @@ export async function generateMetadata({
   params: Promise<{ lang: string; id: string }>;
 }): Promise<Metadata> {
   const { lang, id } = await params;
-  const content = await getContent(id, toApiLang(resolveLang(lang)));
-  if (!content) return {};
+  const urlLocale = resolveLang(lang);
+  const content = await getContent(id, toApiLang(urlLocale));
+  if (!content) return { robots: { index: false, follow: false } };
 
   return buildPageMetadata({
     title: content.seo.title,
     description: content.seo.description,
     keywords: content.seo.keywords,
     image: content.thumbnail,
+    og_image: content.seo.og_image,
+    canonical_url: content.seo.canonical_url,
+    robots_index: content.seo.robots_index,
+    robots_follow: content.seo.robots_follow,
+    path: localizePath(`/services/${id}`, urlLocale),
+    lang: urlLocale,
   });
 }
 

@@ -62,7 +62,7 @@ export default function JobCard ({job}:any) {
                 <div className={`mt-2 ${job.address || job.salary ? "" : "mb-1.5"} flex flex-wrap gap-2`}>
                     {
                         job.types.map((type: any) => (
-                            <span key={type.id} className={`rounded-full px-3 py-1 text-xs font-medium ${getTypeColorClasses(type.title ?? type.title_eng ?? "")}`}>
+                            <span key={type.id} className={`rounded-full px-3 py-1 text-xs font-medium ${getTypeColorClasses(type.title_eng ?? "")}`}>
                                 {type.title ?? type.title_eng}
                             </span>
                         ))

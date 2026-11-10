@@ -1,9 +1,13 @@
 import JobDetail from "@/components/job/job-detail";
+import JsonLd from "@/components/seo/json-ld";
 import { Suspense, cache } from "react";
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { buildPageMetadata } from "@/util/seo-metadata";
+import { absoluteUrl } from "@/util/site-url";
+import { jobPostingJsonLd } from "@/util/structured-data";
 import { fetchPublicJob } from "@/services/job-service";
-import { isUrlLocale, DEFAULT_URL_LOCALE, type UrlLocale } from "@/util/i18n";
+import { isUrlLocale, DEFAULT_URL_LOCALE, localizePath, type UrlLocale } from "@/util/i18n";
 import type { ApiLang } from "@/services/homepage-service";
 
 const getJob = cache(fetchPublicJob);
@@ -22,13 +26,20 @@ export async function generateMetadata({
   params: Promise<{ lang: string; slug: string }>;
 }): Promise<Metadata> {
   const { lang, slug } = await params;
-  const job = await getJob(slug, toApiLang(resolveLang(lang)));
-  if (!job) return {};
+  const urlLocale = resolveLang(lang);
+  const job = await getJob(slug, toApiLang(urlLocale));
+  if (!job) return { robots: { index: false, follow: false } };
 
   return buildPageMetadata({
     title: job.seo.title,
     description: job.seo.description,
     keywords: job.seo.keywords,
+    og_image: job.seo.og_image,
+    canonical_url: job.seo.canonical_url,
+    robots_index: job.seo.robots_index,
+    robots_follow: job.seo.robots_follow,
+    path: localizePath(`/jobs/${slug}`, urlLocale),
+    lang: urlLocale,
   });
 }
 
@@ -49,8 +60,19 @@ async function SlugJobDetail({
 }: {
   params: Promise<{ lang: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { lang, slug } = await params;
+  const urlLocale = resolveLang(lang);
+  const job = await getJob(slug, toApiLang(urlLocale));
+  if (!job) notFound();
 
-  return <JobDetail jobId={slug} />;
+  const pageUrl = absoluteUrl(localizePath(`/jobs/${slug}`, urlLocale));
+
+  return (
+    <>
+      <JsonLd data={jobPostingJsonLd(job, pageUrl)} />
+      <JobDetail jobId={slug} shareUrl={pageUrl} />
+    </>
+  );
 }
+
 

@@ -8,6 +8,8 @@ import { motion } from "motion/react";
 import { Reveal } from "@/util/animations";
 import { HomepageJob } from "@/services/homepage-service";
 
+const FEATURED_JOB_LIMIT = 30;
+
 type JobTab = {
   key: string;
   label: string;
@@ -35,7 +37,7 @@ export default function FeaturedJobs({
   ];
   const [activeKey, setActiveKey] = useState("featured");
   const activeTab = tabs.find((tab) => tab.key === activeKey) ?? tabs[0];
-  const filteredJobs = jobs.filter(activeTab.matches);
+  const filteredJobs = jobs.filter(activeTab.matches).slice(0, FEATURED_JOB_LIMIT);
 
   return (
     <div>

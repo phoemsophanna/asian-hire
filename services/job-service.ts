@@ -1,4 +1,5 @@
 import type { ApiLang } from "./homepage-service";
+import type { ApiSeoExtras } from "@/util/seo-metadata";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api";
 
@@ -62,7 +63,7 @@ export type PublicJobDetail = {
   task_include: string;
   occupations: string;
   other: string;
-  seo: { title: string; description: string; keywords: string };
+  seo: { title: string; description: string; keywords: string } & ApiSeoExtras;
 };
 
 // Returns null for missing, inactive, or unreachable jobs so the page can show a not-found state.

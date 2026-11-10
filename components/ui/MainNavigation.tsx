@@ -141,7 +141,7 @@ export default function MainNavigation({
                   : mobile
                     ? "border-white/20 bg-white/[0.07] text-white hover:border-white/40 hover:bg-white/[0.14]"
                     : "text-[#647084] hover:text-[#485ea8]"
-              }`}
+              } ${locale != "eng" ? "font-semibold text-[14px]" : ""}`}
           >
             {mobile ? (
               <>

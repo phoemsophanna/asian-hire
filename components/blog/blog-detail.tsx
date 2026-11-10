@@ -7,6 +7,7 @@ import PageBanner from "../PageBanner";
 import { Reveal } from "@/util/animations";
 import type { ApiLang } from "@/services/homepage-service";
 import type { NewsDetailContent } from "@/services/news-service";
+import { buildShareLinks } from "@/util/share-links";
 
 const KHMER_MONTHS = [
   "មករា",
@@ -41,34 +42,32 @@ function formatDate(value: string | null, lang: ApiLang) {
 export default function BlogDetail({
   article,
   lang,
+  shareUrl,
 }: {
   article: NewsDetailContent;
   lang: ApiLang;
+  shareUrl: string;
 }) {
-  const shareUrl =
-    typeof window !== "undefined" ? window.location.href : "";
-
-  const encodedUrl = encodeURIComponent(shareUrl);
-  const encodedTitle = encodeURIComponent(article.title);
+  const shareLinkUrls = buildShareLinks(shareUrl, article.title);
 
   const shareLinks = [
     {
       name: "Facebook",
       icon: FaFacebookF,
       color: "hover:bg-blue-50 hover:text-blue-600",
-      url: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+      url: shareLinkUrls.facebook,
     },
     {
       name: "Telegram",
       icon: FaTelegram,
       color: "hover:bg-sky-50 hover:text-sky-600",
-      url: `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`,
+      url: shareLinkUrls.telegram,
     },
     {
       name: "LinkedIn",
       icon: FaLinkedinIn,
       color: "hover:bg-blue-50 hover:text-blue-700",
-      url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+      url: shareLinkUrls.linkedin,
     },
   ];
 

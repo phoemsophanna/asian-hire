@@ -1,4 +1,5 @@
 import type { ApiLang } from "./homepage-service";
+import type { ApiSeoExtras } from "@/util/seo-metadata";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api";
 
@@ -31,7 +32,7 @@ export type NewsDetailContent = {
     date: string | null;
     thumbnail: string | null;
   }[];
-  seo: { title: string; description: string; keywords: string };
+  seo: { title: string; description: string; keywords: string } & ApiSeoExtras;
 };
 
 // Returns null when the article is missing or the API is unreachable.

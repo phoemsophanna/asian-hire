@@ -25,6 +25,7 @@ import { Reveal } from "@/util/animations";
 import { useLanguage } from "../LanguageProvider";
 import { fetchJobPageContent, fetchPublicJob, type JobPageContent, type PublicJobDetail } from "@/services/job-service";
 import { createTranslator, fetchTranslations } from "@/services/translation-service";
+import { buildShareLinks } from "@/util/share-links";
 
 function telegramHref(value: string | null): string | null {
   if (!value) return null;
@@ -32,19 +33,14 @@ function telegramHref(value: string | null): string | null {
   return `https://t.me/${value.replace(/^@/, "")}`;
 }
 
-export default function JobDetail({ jobId }: { jobId: string }) {
+export default function JobDetail({ jobId, shareUrl }: { jobId: string; shareUrl: string }) {
   const { locale } = useLanguage();
   const [job, setJob] = useState<PublicJobDetail | null>(null);
   const [pageContent, setPageContent] = useState<JobPageContent | null>(null);
   const [translations, setTranslations] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [visit, setVisit] = useState(0);
-  const [currentUrl, setCurrentUrl] = useState("");
   const t = createTranslator(translations);
-
-  useEffect(() => {
-    setCurrentUrl(window.location.href);
-  }, []);
 
   useEffect(() => {
     let active = true;
@@ -99,31 +95,29 @@ export default function JobDetail({ jobId }: { jobId: string }) {
   }
 
   const jobTypes = job.types.map((type) => type.title).join(", ");
+  const shareLinkUrls = buildShareLinks(shareUrl, job.title);
   const applyHref = job.link || (job.email ? `mailto:${job.email}` : null);
   const telegramLink = telegramHref(job.telegram);
   const needInfoPhone = pageContent?.need_info.phone ?? "";
   const needInfoEmail = pageContent?.need_info.email ?? "";
 
-  const shareUrl = encodeURIComponent(currentUrl);
-  const shareTitle = encodeURIComponent(job.title);
-
   const shareLinks = [
     {
       name: "Facebook",
       icon: FaFacebookF,
-      href: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
+      href: shareLinkUrls.facebook,
       style: "hover:bg-blue-50 hover:text-blue-600",
     },
     {
       name: "Telegram",
       icon: FaTelegramPlane,
-      href: `https://t.me/share/url?url=${shareUrl}&text=${shareTitle}`,
+      href: shareLinkUrls.telegram,
       style: "hover:bg-sky-50 hover:text-sky-600",
     },
     {
       name: "LinkedIn",
       icon: FaLinkedinIn,
-      href: `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`,
+      href: shareLinkUrls.linkedin,
       style: "hover:bg-blue-50 hover:text-blue-700",
     },
   ];

@@ -20,7 +20,7 @@ import { fetchPublicJobs, fetchJobPageContent, type JobPageContent, type JobSort
 import { createTranslator, fetchTranslations } from "@/services/translation-service";
 import { useLanguage } from "../LanguageProvider";
 
-const PAGE_SIZE = 16;
+const PAGE_SIZE = 40;
 
 type SortOption = JobSort;
 
