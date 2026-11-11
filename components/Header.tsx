@@ -5,6 +5,7 @@ import Link from "@/components/LocaleLink";
 import { Menu, X } from "lucide-react";
 import { useLanguage } from "./LanguageProvider";
 import { createTranslator, fetchTranslations } from "@/services/translation-service";
+import type { ApiLang } from "@/services/homepage-service";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api";
 const STATIC_LOGO = "/images/logo_en.png";
@@ -32,8 +33,9 @@ function Header() {
 
   useEffect(() => {
     let active = true;
+    const apiLang: ApiLang = locale === "km" ? "km" : "eng";
 
-    fetch(`${API_URL}/public/general`, { cache: "no-store" })
+    fetch(`${API_URL}/public/general?lang=${apiLang}`, { cache: "no-store" })
       .then((response) => (response.ok ? response.json() : null))
       .then((payload: { data?: { header_logo?: string | null } } | null) => {
         if (active) setHeaderLogo(payload?.data?.header_logo ?? null);
@@ -45,7 +47,7 @@ function Header() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [locale]);
   const logoSrc = headerLogo ?? STATIC_LOGO;
 
   useEffect(() => {

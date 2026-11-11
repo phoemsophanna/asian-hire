@@ -1,13 +1,15 @@
 import { Suspense, cache } from "react";
 import type { Metadata } from "next";
-import { SITE_NAME, buildPageMetadata } from "@/util/seo-metadata";
-import { fetchHomepage, fetchSeo, type ApiLang } from "@/services/homepage-service";
+import { DEFAULT_SHARE_IMAGE, buildPageMetadata } from "@/util/seo-metadata";
+import { fetchHomepage, type ApiLang } from "@/services/homepage-service";
 import { fetchIndustryPage } from "@/services/industry-service";
 import { fetchTranslations } from "@/services/translation-service";
 import { isUrlLocale, DEFAULT_URL_LOCALE, type UrlLocale } from "@/util/i18n";
 import HomePage from "@/components/home/home-page";
 
-const getSeo = cache(fetchSeo);
+const HOME_TITLE = "Asian Hire | Find Your Next Opportunity";
+const HOME_DESCRIPTION =
+  "Discover job opportunities across Australia and Cambodia. Connect with trusted employers and take your career further with Asian Hire.";
 
 const getHomeContent = cache(async (lang: ApiLang) => {
   const [data, industries, translations] = await Promise.all([
@@ -27,20 +29,20 @@ function toApiLang(urlLocale: UrlLocale): ApiLang {
   return urlLocale === "km" ? "km" : "eng";
 }
 
+// Static OG/SEO values so shared links never depend on the API.
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
   const urlLocale = resolveLang((await params).lang);
-  const seo = await getSeo(toApiLang(urlLocale), "homepage");
-  if (!seo) return {};
 
   return buildPageMetadata({
-    title: seo.title || SITE_NAME,
-    description: seo.description,
-    keywords: seo.keywords,
-    image: seo.image,
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
+    image: DEFAULT_SHARE_IMAGE,
+    path: `/${urlLocale}`,
+    lang: urlLocale === "km" ? "km" : "en",
   });
 }
 

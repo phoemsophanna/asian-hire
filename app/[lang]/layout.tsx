@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import { notFound } from "next/navigation";
 import "remixicon/fonts/remixicon.css";
 import "../globals.css";
@@ -53,6 +54,14 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet" />
+        <Script src="https://www.googletagmanager.com/gtm.js?id=GTM-5WMV45MM" strategy="afterInteractive" />
+        <Script id="google-tag-manager" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+          `}
+        </Script>
       </head>
       <body className="min-h-full flex flex-col">
         <LanguageProvider urlLocale={lang}>
