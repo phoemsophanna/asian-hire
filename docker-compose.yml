@@ -1,18 +1,24 @@
+
 services:
-  app:
+  asianhire:
     build:
       context: .
+      dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://api.asianhire.com.kh/api}
-        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://new.asianhire.com.kh}
-    image: asianhire-app:latest
+        NEXT_PUBLIC_API_URL: https://api.asianhire.com.kh/api
+        NEXT_PUBLIC_SITE_URL: https://asianhire.com.kh
+
     container_name: asianhire-app
+
     ports:
-      - "4200:4200"
+      - "127.0.0.1:4200:4200"
+
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "-q", "-O", "/dev/null", "https://new.asianhire.com.kh/"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 20s
+
+    environment:
+      NODE_ENV: production
+      PORT: 4200
+      HOSTNAME: 0.0.0.0
+
+    mem_limit: 1500m
+    cpus: 2.0
