@@ -3,7 +3,7 @@ import { URL_LOCALES, localizePath, type UrlLocale } from "@/util/i18n";
 import { absoluteUrl } from "@/util/site-url";
 import type { PublicJobPage } from "@/services/job-service";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
 const PAGE_SIZE = 50;
 
 const STATIC_PATHS = [
