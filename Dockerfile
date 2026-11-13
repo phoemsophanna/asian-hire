@@ -10,7 +10,6 @@ WORKDIR /app
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
-
 # =========================
 # 2. DEPENDENCIES
 # =========================
@@ -18,14 +17,7 @@ FROM base AS deps
 
 COPY package.json package-lock.json ./
 
-# Persistent npm cache between Docker builds
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci \
-    --prefer-offline \
-    --no-audit \
-    --no-fund \
-    --fetch-retries=3
-
+RUN npm ci --no-audit --no-fund
 
 # =========================
 # 3. BUILD
@@ -33,7 +25,6 @@ RUN --mount=type=cache,target=/root/.npm \
 FROM base AS builder
 
 COPY --from=deps /app/node_modules ./node_modules
-
 COPY . .
 
 ARG NEXT_PUBLIC_API_URL
@@ -44,7 +35,6 @@ ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
 
 RUN npm run build
 
-
 # =========================
 # 4. PRODUCTION
 # =========================
@@ -54,21 +44,12 @@ ENV NODE_ENV=production
 ENV HOSTNAME=0.0.0.0
 ENV PORT=4200
 
-# Create non-root user
 RUN groupadd --system --gid 1001 nodejs \
-    && useradd --system --uid 1001 \
-       --gid nodejs nextjs
+    && useradd --system --uid 1001 --gid nodejs nextjs
 
-# Public assets
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-
-# Standalone server
-COPY --from=builder --chown=nextjs:nodejs \
-    /app/.next/standalone ./
-
-# Static assets
-COPY --from=builder --chown=nextjs:nodejs \
-    /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
