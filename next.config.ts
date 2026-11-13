@@ -2,7 +2,7 @@
 import type { NextConfig } from "next";
 
 const apiUrl = new URL(
-  process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api"
+  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api"
 );
 
 const nextConfig: NextConfig = {
