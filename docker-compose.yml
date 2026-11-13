@@ -1,6 +1,6 @@
 
 services:
-  asianhire:
+  asian-hire:
     build:
       context: .
       dockerfile: Dockerfile
@@ -8,17 +8,14 @@ services:
         NEXT_PUBLIC_API_URL: https://api.asianhire.com.kh/api
         NEXT_PUBLIC_SITE_URL: https://asianhire.com.kh
 
-    container_name: asianhire-app
-
-    ports:
-      - "127.0.0.1:4200:4200"
+    container_name: asian-hire
 
     restart: unless-stopped
+
+    ports:
+      - "4200:4200"
 
     environment:
       NODE_ENV: production
       PORT: 4200
       HOSTNAME: 0.0.0.0
-
-    mem_limit: 1500m
-    cpus: 2.0
