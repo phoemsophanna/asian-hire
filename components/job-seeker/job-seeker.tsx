@@ -261,7 +261,7 @@ export default function JobSeeker({
                 {content?.opportunities.title || "Industries We Serve"}
               </h2>
 
-              {content?.opportunities.description ? (
+              {/* {content?.opportunities.description ? (
                 <div
                   className="job-rich-text mt-3 max-w-lg leading-7 text-blue-100"
                   dangerouslySetInnerHTML={{ __html: content.opportunities.description }}
@@ -271,7 +271,7 @@ export default function JobSeeker({
                   Explore career opportunities across a range of industries and
                   discover where your skills can make a difference.
                 </p>
-              )}
+              )} */}
 
               <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
                 {(content?.opportunities.items.length ? content.opportunities.items : []).map(
