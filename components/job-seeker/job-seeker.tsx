@@ -124,7 +124,7 @@ export default function JobSeeker({
                 <div className="relative overflow-hidden rounded-[28px] border border-white bg-white p-2 shadow-2xl shadow-slate-300/50">
                   <div className="relative aspect-[4/4.2] overflow-hidden rounded-[22px]">
                     <Image
-                      src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85"
+                      src={content?.hero.image || "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85"}
                       alt="Professionals collaborating in a modern workplace"
                       fill
                       priority

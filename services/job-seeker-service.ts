@@ -5,7 +5,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api";
 export type JobSeekerPageContent = {
   seo: { title: string; description: string; keywords: string };
   banner: string | null;
-  hero: { subtitle: string; title: string; quote: string; description: string };
+  hero: { subtitle: string; title: string; quote: string; description: string; image: string | null };
   process: {
     title: string;
     items: { summary: string }[];
