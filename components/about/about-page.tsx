@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -26,7 +25,7 @@ import Image from "next/image";
 import WhyChooseUs from "../ui/WhyChoose";
 import { Reveal, Stagger, StaggerItem } from "@/util/animations";
 import type { AboutPageContent } from "@/services/about-service";
-
+import { usePathname } from "next/navigation";
 const BLUE = "#485ea8";
 
 const workIcons = ["ri-briefcase-line", "ri-group-line", "ri-graduation-cap-line"];
@@ -120,6 +119,7 @@ export default function AboutPage({
   const activePrinciple =
     principles.find((item) => item.id === activeTab) ?? principles[0];
 
+  const isKm = usePathname().startsWith("/km");
   return (
     <main className="overflow-hidden bg-white text-slate-900">
         {/* Page Banner */}
@@ -207,7 +207,7 @@ export default function AboutPage({
           
           <Reveal direction="right">
             <div className="pt-1 lg:pt-0">
-              <p className="mb-3 md:mb-4 text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
+              <p className={`mb-3 md:mb-4 ${isKm ? "text-base" : "text-sm"} font-bold uppercase ${isKm ? "" : "tracking-[0.18em]"} text-[#485ea8]`}>
                 {t("Who we are")}
               </p>
 
@@ -229,7 +229,7 @@ export default function AboutPage({
         <div className="mx-auto max-w-7xl px-5 sm:px-8 ">
           <Reveal direction="up">
             <div className="mx-auto max-w-2xl text-center">
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
+              <p className={`mb-3 ${isKm ? "text-base" : "text-sm"} font-bold uppercase ${isKm ? "" : "tracking-[0.18em]"} text-[#485ea8]`}>
                 {t("What we do")}
               </p>
               <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-4xl">
@@ -278,7 +278,7 @@ export default function AboutPage({
         <div className="mx-auto max-w-7xl px-5 sm:px-8 ">
           <Reveal direction="up">
             <div className="mx-auto max-w-2xl text-center">
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
+              <p className={`mb-3 ${isKm ? "text-base" : "text-sm"} font-bold uppercase ${isKm ? "" : "tracking-[0.18em]"} text-[#485ea8]`}>
                 {t("What guides us")}
               </p>
               <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-4xl">
@@ -425,7 +425,7 @@ export default function AboutPage({
                 <Reveal direction="up">
                   <div className="mb-6 md:mb-10 flex flex-col text-center justify-center gap-4 sm:mb-14 sm:flex-row sm:items-end">
                       <div className="max-w-2xl">
-                          <span className="text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
+                          <span className={`mb-3 ${isKm ? "text-base" : "text-sm"} font-bold uppercase ${isKm ? "" : "tracking-[0.18em]"} text-[#485ea8]`}>
                               {t("People behind Asian Hire")}
                           </span>
                           <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-4xl">

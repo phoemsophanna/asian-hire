@@ -26,8 +26,10 @@ type SortOption = JobSort;
 
 export default function JobPage({
   initialFilters,
+  initialTranslations = {},
 }: {
   initialFilters: JobSearchFilters;
+  initialTranslations?: Record<string, string>;
 }) {
   const [filters, setFilters] = useState<JobSearchFilters>(initialFilters);
   // Filters used for requests; only updated when the user clicks Search Job.
@@ -43,7 +45,7 @@ export default function JobPage({
   const [lastPage, setLastPage] = useState(1);
   const [resultVersion, setResultVersion] = useState(0);
   const [pageContent, setPageContent] = useState<JobPageContent | null>(null);
-  const [translations, setTranslations] = useState<Record<string, string>>({});
+  const [translations, setTranslations] = useState<Record<string, string>>(initialTranslations);
   const t = createTranslator(translations);
 
   useEffect(() => {
@@ -295,6 +297,7 @@ export default function JobPage({
               onKeywordChange={(keyword) => updateFilter("keyword", keyword)}
               onIndustryChange={(industry) => updateFilter("industry", industry)}
               onSearch={applySearch}
+              t={t}
             />
           </Reveal>
         </div>

@@ -1,6 +1,9 @@
+"use client";
+
 import { Reveal } from "@/util/animations";
 import { ArrowRight, TrendingUp, type LucideIcon } from "lucide-react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export default function WhyChooseUs({
   benefits,
@@ -15,6 +18,8 @@ export default function WhyChooseUs({
   thumbnail?: string | null;
   t?: (key: string) => string;
 }) {
+  const isKm = usePathname().startsWith("/km");
+
   return (
     <section className="overflow-hidden bg-[#f7f9fc] py-10 sm:py-16" id="why-asian-hire">
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-[1fr_0.95fr] lg:gap-20">
@@ -25,7 +30,7 @@ export default function WhyChooseUs({
         </Reveal>
         <Reveal direction="right">
           <div className="pt-3 lg:pt-0">
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#485ea8]">
+            <p className={`mb-3 ${isKm ? "text-base" : "text-sm"} font-bold uppercase ${isKm ? "" : "tracking-[0.2em]"} text-[#485ea8]`}>
               {t("Whychoose us")}
             </p>
             <h2 className="max-w-xl text-2xl font-bold leading-[1.4] tracking-[-0.045em] text-[#172b4d] sm:text-3xl">

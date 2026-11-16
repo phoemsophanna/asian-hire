@@ -318,7 +318,7 @@ export default function JobDetail({ jobId, shareUrl }: { jobId: string; shareUrl
                 <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
                   <h2 className="flex items-center gap-2 font-bold text-slate-900">
                     <FaUserTie className="text-[#485ea8]" size={20} />
-                    {pageContent?.need_info.title || t("Need more information?")}
+                    {pageContent?.need_info.title}
                   </h2>
 
                   {pageContent?.need_info.summary && (

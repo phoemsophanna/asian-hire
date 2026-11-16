@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import Link from "@/components/LocaleLink";
 import { createTranslator, fetchTranslations } from "@/services/translation-service";
+
 
 export default function PageBanner({title, image}:{title:any; image?: string | null}){
     const pathname = usePathname();
@@ -26,22 +28,25 @@ export default function PageBanner({title, image}:{title:any; image?: string | n
     return <>
         <section className="relative isolate overflow-hidden bg-[#101b46]">
             {/* Background image */}
-            <div
-                className="absolute inset-0 -z-20 bg-cover bg-center"
-                style={{
-                backgroundImage: `url('${image || "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=2000&q=90"}')`,
-                }}
+            <Image
+                src={image || "/images/slider/slider.jpg"}
+                alt="Banner"
+                width={0}
+                height={0}
+                sizes="100vw"
+                className="block h-auto w-full"
+                priority
             />
 
             {/* Dark overlay */}
-            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#101b46]/60 via-[#101b46]/45 to-[#101b46]/30" />
+            <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#101b46]/60 via-[#101b46]/45 to-[#101b46]/30" />
 
             {/* Decorative circles */}
-            <div className="absolute -right-24 -top-32 -z-10 size-96 rounded-full border border-white/10" />
-            <div className="absolute -right-10 -top-16 -z-10 size-72 rounded-full border border-white/10" />
+            <div className="absolute -right-24 -top-32 z-0 size-96 rounded-full border border-white/10" />
+            <div className="absolute -right-10 -top-16 z-0 size-72 rounded-full border border-white/10" />
 
             {/* Banner content */}
-            <div className="mx-auto flex min-h-[220px] max-w-7xl items-center px-5 py-12 sm:min-h-[280px] sm:px-8 sm:py-40 lg:px-10">
+            <div className="absolute inset-0 z-10 mx-auto flex max-w-7xl items-center px-5 py-12 sm:px-8 sm:py-40 lg:px-10">
                 <div>
                 {/* Breadcrumb */}
                 <nav

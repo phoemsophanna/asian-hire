@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import Link from "@/components/LocaleLink";
 import { useEffect, useState } from "react";
 import {
@@ -43,7 +44,7 @@ export default function JobSeeker({
 }) {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [translations, setTranslations] = useState<Record<string, string>>({});
-
+  const isKm = usePathname().startsWith("/km");
   useEffect(() => {
     let active = true;
 
@@ -207,7 +208,7 @@ export default function JobSeeker({
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-2 lg:items-stretch">
           <Reveal direction="left">
             <div className="flex flex-col justify-center rounded-3xl border border-slate-200 bg-[#f7f9fc]/80 p-7 sm:p-10 lg:p-12">
-              <span className="text-sm font-bold uppercase tracking-[0.18em] text-[#485ea8]">
+              <span className={`${isKm ? "text-base" : "text-sm"} font-bold uppercase ${isKm ? "" : "tracking-[0.2em]"} text-[#485ea8]`}>
                 {content?.support.subtitle || "Support at every step"}
               </span>
 
@@ -240,7 +241,7 @@ export default function JobSeeker({
 
           {/* Blue industries panel with online background image */}
           <Reveal direction="right">
-            <div className="relative isolate overflow-hidden rounded-3xl bg-[#485ea8] p-4 text-white sm:p-6 lg:p-7">
+            <div className="relative isolate overflow-hidden rounded-3xl bg-[#485ea8] p-4 text-white sm:pb-4 sm:p-6 lg:p-7 lg:pb-4">
               <img
                 src={
                   content?.opportunities.background ??
@@ -256,28 +257,28 @@ export default function JobSeeker({
                 {content?.opportunities.subtitle || "Opportunities across Australia"}
               </span>
 
-              <h2 className="mt-6 text-3xl font-extrabold tracking-tight sm:text-4xl">
+              <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
                 {content?.opportunities.title || "Industries We Serve"}
               </h2>
 
               {content?.opportunities.description ? (
                 <div
-                  className="job-rich-text mt-4 max-w-lg leading-7 text-blue-100"
+                  className="job-rich-text mt-3 max-w-lg leading-7 text-blue-100"
                   dangerouslySetInnerHTML={{ __html: content.opportunities.description }}
                 />
               ) : (
-                <p className="mt-4 max-w-lg leading-7 text-blue-100">
+                <p className="mt-3 max-w-lg leading-7 text-blue-100">
                   Explore career opportunities across a range of industries and
                   discover where your skills can make a difference.
                 </p>
               )}
 
-              <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
                 {(content?.opportunities.items.length ? content.opportunities.items : []).map(
                   (industry) => (
                     <div
                       key={industry}
-                      className="group flex items-start gap-3 rounded-xl border border-white/15 bg-white/[0.10] p-4 backdrop-blur-sm transition hover:border-white/40 hover:bg-white/[0.17]"
+                      className="group flex items-start gap-2 rounded-xl border border-white/15 bg-white/[0.10] p-2 backdrop-blur-sm transition hover:border-white/40 hover:bg-white/[0.17]"
                     >
                       <FaCheckCircle className="mt-1 shrink-0 text-blue-200" />
                       <span className="text-sm font-medium leading-6 text-white">
@@ -288,7 +289,7 @@ export default function JobSeeker({
                 )}
               </div>
 
-              <p className="mt-7 text-xs leading-5 text-blue-100/90">
+              <p className="mt-4 text-xs leading-5 text-blue-100/90">
                 {t("Available roles and industry")}
               </p>
             </div>
