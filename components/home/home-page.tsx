@@ -115,7 +115,7 @@ function Hero({
 }
 
 function PopularIndustries({ data, t = (key: string) => key }: { data: HomepageData["industries"], t?: (key: string) => string }) {
-  const items = data.items.slice(0, 9);
+  const items = data.items.slice(0, 15);
 
   return (
     <section className="bg-white py-10 sm:py-16">
