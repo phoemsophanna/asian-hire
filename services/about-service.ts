@@ -4,6 +4,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api";
 
 export type AboutPageContent = {
   seo: { title: string; description: string; keywords: string };
+  banner: string | null;
   hero: { title: string; description: string; image: string | null };
   who_we_are: { title: string; description: string; image: string | null };
   what_we_do: { title: string; description: string; items: { icon: string | null; title: string; summary: string }[] };

@@ -123,7 +123,7 @@ export default function AboutPage({
   return (
     <main className="overflow-hidden bg-white text-slate-900">
         {/* Page Banner */}
-        <PageBanner title={"About Us"} />
+        <PageBanner title={"About Us"} image={content.banner} />
 
         <section className="relative isolate overflow-hidden bg-slate-50 py-10 sm:py-16">
             {/* Subtle map background */}
