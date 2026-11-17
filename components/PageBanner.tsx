@@ -10,16 +10,17 @@ export default function PageBanner({title, image}:{title:any; image?: string | n
     const t = createTranslator(translations);
 
     return <>
-        <section className="relative isolate overflow-hidden bg-[#101b46]">
-            {/* Background image */}
+        <section className="relative isolate aspect-[1920/700] overflow-hidden bg-[#101b46]">
+            {/* Background image; loaded directly (already WebP from the API) so the server image optimizer adds no delay */}
             <Image
                 src={image || "/images/slider/slider.jpg"}
                 alt="Banner"
-                width={0}
-                height={0}
+                fill
                 sizes="100vw"
-                className="block h-auto w-full"
-                priority
+                className="object-cover"
+                preload
+                fetchPriority="high"
+                unoptimized
             />
 
             {/* Dark overlay */}

@@ -39,6 +39,8 @@ function Hero({
 
   return (
     <section className="relative isolate bg-[#112b57]">
+      {/* The hero is a CSS background, which the browser discovers late, so ask for it up front. */}
+      <link rel="preload" as="image" href={heroImage} fetchPriority="high" />
       {/* Background image */}
       <div
         aria-hidden="true"

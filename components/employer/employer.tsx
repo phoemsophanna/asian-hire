@@ -112,7 +112,8 @@ export default function EmployersPage({
                       src={content?.hero.image || "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85"}
                       alt="Professionals collaborating in a modern workplace"
                       fill
-                      priority
+                      preload
+                      unoptimized={Boolean(content?.hero.image)}
                       sizes="(max-width: 1024px) 100vw, 50vw"
                       className="object-cover"
                     />
