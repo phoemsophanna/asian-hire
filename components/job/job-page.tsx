@@ -15,28 +15,30 @@ import HeroSearch from "@/components/home/hero-search";
 import type { JobSearchFilters } from "@/components/home/job-data";
 import PageBanner from "../PageBanner";
 import { Reveal, Stagger, StaggerItem } from "@/util/animations";
-import { fetchIndustryPage } from "@/services/industry-service";
-import { fetchPublicJobs, fetchJobPageContent, type JobPageContent, type JobSort, type PublicJob } from "@/services/job-service";
-import { createTranslator, fetchTranslations } from "@/services/translation-service";
+import { fetchPublicJobs, type JobPageContent, type JobSort, type PublicJob } from "@/services/job-service";
+import { createTranslator } from "@/services/translation-service";
 import { useLanguage } from "../LanguageProvider";
 
 const PAGE_SIZE = 40;
+const NO_INDUSTRIES: { id: number; title: string }[] = [];
 
 type SortOption = JobSort;
 
 export default function JobPage({
   initialFilters,
-  initialTranslations = {},
+  initialPageContent = null,
+  initialIndustries = NO_INDUSTRIES,
 }: {
   initialFilters: JobSearchFilters;
-  initialTranslations?: Record<string, string>;
+  initialPageContent?: JobPageContent | null;
+  initialIndustries?: { id: number; title: string }[];
 }) {
   const [filters, setFilters] = useState<JobSearchFilters>(initialFilters);
   // Filters used for requests; only updated when the user clicks Search Job.
   const [appliedFilters, setAppliedFilters] = useState<JobSearchFilters>(initialFilters);
-  const { locale, localizeHref } = useLanguage();
+  const { locale, localizeHref, translations } = useLanguage();
   const router = useRouter();
-  const [industryOptions, setIndustryOptions] = useState<{ id: number; title: string }[]>([]);
+  const industryOptions = initialIndustries;
 
   const [sortBy, setSortBy] = useState<SortOption>("newest");
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,49 +46,8 @@ export default function JobPage({
   const [totalJobs, setTotalJobs] = useState(0);
   const [lastPage, setLastPage] = useState(1);
   const [resultVersion, setResultVersion] = useState(0);
-  const [pageContent, setPageContent] = useState<JobPageContent | null>(null);
-  const [translations, setTranslations] = useState<Record<string, string>>(initialTranslations);
+  const pageContent = initialPageContent;
   const t = createTranslator(translations);
-
-  useEffect(() => {
-    let active = true;
-
-    fetchTranslations(locale).then((result) => {
-      if (active) setTranslations(result);
-    });
-
-    return () => {
-      active = false;
-    };
-  }, [locale]);
-
-  useEffect(() => {
-    let active = true;
-
-    fetchJobPageContent(locale).then((result) => {
-      if (active) setPageContent(result);
-    });
-
-    return () => {
-      active = false;
-    };
-  }, [locale]);
-
-  useEffect(() => {
-    let active = true;
-
-    fetchIndustryPage(locale).then((result) => {
-      if (active && result) {
-        setIndustryOptions(
-          result.items.map((industry) => ({ id: industry.id, title: industry.title })),
-        );
-      }
-    });
-
-    return () => {
-      active = false;
-    };
-  }, [locale]);
 
   const industryIds = useMemo(
     () => Object.fromEntries(industryOptions.map((industry) => [industry.title, industry.id])),

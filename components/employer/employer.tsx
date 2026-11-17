@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import Link from "@/components/LocaleLink";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import type { EmployerPageContent } from "@/services/employer-service";
 import {
   createTranslator,
-  fetchTranslations,
   type TranslationApiLang,
 } from "@/services/translation-service";
 import {
@@ -42,19 +42,7 @@ export default function EmployersPage({
   lang?: TranslationApiLang;
 }) {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [translations, setTranslations] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    let active = true;
-
-    fetchTranslations(lang).then((result) => {
-      if (active) setTranslations(result);
-    });
-
-    return () => {
-      active = false;
-    };
-  }, [lang]);
+  const { translations } = useLanguage();
 
   const t = createTranslator(translations);
 

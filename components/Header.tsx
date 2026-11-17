@@ -4,51 +4,18 @@ import { useEffect, useRef, useState } from "react";
 import Link from "@/components/LocaleLink";
 import { Menu, X } from "lucide-react";
 import { useLanguage } from "./LanguageProvider";
-import { createTranslator, fetchTranslations } from "@/services/translation-service";
-import type { ApiLang } from "@/services/homepage-service";
+import { createTranslator } from "@/services/translation-service";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
 const STATIC_LOGO = "/images/logo_en.png";
 
 function Header() {
-  const { locale, setLocale } = useLanguage();
-  const [translations, setTranslations] = useState<Record<string, string>>({});
+  const { locale, setLocale, translations, general } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [headerLogo, setHeaderLogo] = useState<string | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const t = createTranslator(translations);
 
-  useEffect(() => {
-    let active = true;
-
-    fetchTranslations(locale).then((result) => {
-      if (active) setTranslations(result);
-    });
-
-    return () => {
-      active = false;
-    };
-  }, [locale]);
-
-  useEffect(() => {
-    let active = true;
-    const apiLang: ApiLang = locale === "km" ? "km" : "eng";
-
-    fetch(`${API_URL}/public/general?lang=${apiLang}`, { cache: "no-store" })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((payload: { data?: { header_logo?: string | null } } | null) => {
-        if (active) setHeaderLogo(payload?.data?.header_logo ?? null);
-      })
-      .catch(() => {
-        if (active) setHeaderLogo(null);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [locale]);
-  const logoSrc = headerLogo ?? STATIC_LOGO;
+  const logoSrc = general?.header_logo ?? STATIC_LOGO;
 
   useEffect(() => {
     const handleScroll = () => {

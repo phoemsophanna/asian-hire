@@ -1,29 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "@/components/LocaleLink";
-import { createTranslator, fetchTranslations } from "@/services/translation-service";
-
+import { useLanguage } from "@/components/LanguageProvider";
+import { createTranslator } from "@/services/translation-service";
 
 export default function PageBanner({title, image}:{title:any; image?: string | null}){
-    const pathname = usePathname();
-    const lang = pathname.startsWith("/km") ? "km" : "eng";
-    const [translations, setTranslations] = useState<Record<string, string>>({});
+    const { translations } = useLanguage();
     const t = createTranslator(translations);
-
-    useEffect(() => {
-        let active = true;
-
-        fetchTranslations(lang).then((data) => {
-            if (active) setTranslations(data);
-        });
-
-        return () => {
-            active = false;
-        };
-    }, [lang]);
 
     return <>
         <section className="relative isolate overflow-hidden bg-[#101b46]">

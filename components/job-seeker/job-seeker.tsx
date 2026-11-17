@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "@/components/LocaleLink";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   FaArrowRight,
   FaBriefcase,
@@ -25,7 +26,6 @@ import { Reveal } from "@/util/animations";
 import type { JobSeekerPageContent } from "@/services/job-seeker-service";
 import {
   createTranslator,
-  fetchTranslations,
   type TranslationApiLang,
 } from "@/services/translation-service";
 
@@ -43,19 +43,8 @@ export default function JobSeeker({
   lang?: TranslationApiLang;
 }) {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [translations, setTranslations] = useState<Record<string, string>>({});
+  const { translations } = useLanguage();
   const isKm = usePathname().startsWith("/km");
-  useEffect(() => {
-    let active = true;
-
-    fetchTranslations(lang).then((result) => {
-      if (active) setTranslations(result);
-    });
-
-    return () => {
-      active = false;
-    };
-  }, [lang]);
 
   const t = createTranslator(translations);
 

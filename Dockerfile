@@ -43,6 +43,7 @@ RUN --mount=type=cache,target=/app/.next/cache \
 FROM base AS runner
 
 ENV NODE_ENV=production
+ENV NODE_OPTIONS=--dns-result-order=ipv4first
 ENV HOSTNAME=0.0.0.0
 ENV PORT=4200
 

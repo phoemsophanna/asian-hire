@@ -10,6 +10,12 @@ import { LanguageProvider } from "@/components/LanguageProvider";
 import ScrollPositionRestoration from "@/components/ScrollPositionRestoration";
 import { Suspense } from "react";
 import { URL_LOCALES, isUrlLocale } from "@/util/i18n";
+import {
+  getActiveMenus,
+  getContactPage,
+  getGeneralSettings,
+  getTranslations,
+} from "@/services/server-content";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,6 +51,14 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   const { lang } = await params;
   if (!isUrlLocale(lang)) notFound();
 
+  const apiLang = lang === "km" ? "km" : "eng";
+  const [translations, general, menus, contact] = await Promise.all([
+    getTranslations(apiLang),
+    getGeneralSettings(apiLang),
+    getActiveMenus(),
+    getContactPage(apiLang),
+  ]);
+
   return (
     <html
       lang={lang}
@@ -64,7 +78,10 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
         </Script>
       </head>
       <body className="min-h-full flex flex-col">
-        <LanguageProvider urlLocale={lang}>
+        <LanguageProvider
+          urlLocale={lang}
+          siteData={{ translations, general, menus, contact }}
+        >
           <ScrollPositionRestoration />
           <Suspense>
             <Header />

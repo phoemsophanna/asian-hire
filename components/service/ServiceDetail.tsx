@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "@/components/LocaleLink";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import PageBanner from "../PageBanner";
 import { Reveal } from "@/util/animations";
 import {
   createTranslator,
-  fetchTranslations,
   type TranslationApiLang,
 } from "@/services/translation-service";
 
@@ -20,19 +20,7 @@ export default function ServiceDetail({
   lang?: TranslationApiLang;
 }) {
   const hasRelated = service.related.length > 0;
-  const [translations, setTranslations] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    let active = true;
-
-    fetchTranslations(lang).then((result) => {
-      if (active) setTranslations(result);
-    });
-
-    return () => {
-      active = false;
-    };
-  }, [lang]);
+  const { translations } = useLanguage();
 
   const t = createTranslator(translations);
 

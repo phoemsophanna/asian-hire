@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Link from "@/components/LocaleLink";
-import { createTranslator, fetchTranslations } from "@/services/translation-service";
+import { useLanguage } from "@/components/LanguageProvider";
+import { createTranslator } from "@/services/translation-service";
 
 type BlogSpotlight = {
   id: number;
@@ -21,18 +21,9 @@ export default function BlogCard({
   spotlight: BlogSpotlight;
   lang: "en" | "km";
 }) {
-  const [translations, setTranslations] = useState<Record<string, string>>({});
+  const { translations } = useLanguage();
   const t = createTranslator(translations);
 
-  useEffect(() => {
-    let active = true;
-    fetchTranslations(lang === "km" ? "km" : "eng").then((data) => {
-      if (active) setTranslations(data);
-    });
-    return () => {
-      active = false;
-    };
-  }, [lang]);
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-blue-100 hover:shadow-xl hover:shadow-slate-900/[0.06]">
       {/* Blog image */}

@@ -3,11 +3,11 @@ import { Suspense, cache } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { buildPageMetadata } from "@/util/seo-metadata";
-import { fetchServiceDetail } from "@/services/service-detail-service";
+import { getServiceDetail } from "@/services/server-content";
 import { isUrlLocale, DEFAULT_URL_LOCALE, localizePath, type UrlLocale } from "@/util/i18n";
 import type { ApiLang } from "@/services/homepage-service";
 
-const getContent = cache(fetchServiceDetail);
+const getContent = cache(getServiceDetail);
 
 function resolveLang(lang: string): UrlLocale {
   return isUrlLocale(lang) ? lang : DEFAULT_URL_LOCALE;
@@ -47,7 +47,7 @@ export default function Page({
   params: Promise<{ lang: string; id: string }>;
 }) {
   return (
-    <Suspense fallback={<div className="h-16" />}>
+    <Suspense fallback={<div className="min-h-screen" />}>
       <ServicePage params={params} />
     </Suspense>
   );

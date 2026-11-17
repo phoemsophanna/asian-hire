@@ -6,11 +6,11 @@ import type { Metadata } from "next";
 import { buildPageMetadata } from "@/util/seo-metadata";
 import { absoluteUrl } from "@/util/site-url";
 import { jobPostingJsonLd } from "@/util/structured-data";
-import { fetchPublicJob } from "@/services/job-service";
+import { getJobPageContent, getPublicJob } from "@/services/server-content";
 import { isUrlLocale, DEFAULT_URL_LOCALE, localizePath, type UrlLocale } from "@/util/i18n";
 import type { ApiLang } from "@/services/homepage-service";
 
-const getJob = cache(fetchPublicJob);
+const getJob = cache(getPublicJob);
 
 function resolveLang(lang: string): UrlLocale {
   return isUrlLocale(lang) ? lang : DEFAULT_URL_LOCALE;
@@ -49,7 +49,7 @@ export default function Page({
   params: Promise<{ lang: string; slug: string }>;
 }) {
   return (
-    <Suspense fallback={<div className="h-16" />}>
+    <Suspense fallback={<div className="min-h-screen" />}>
       <SlugJobDetail params={params} />
     </Suspense>
   );
@@ -65,12 +65,13 @@ async function SlugJobDetail({
   const job = await getJob(slug, toApiLang(urlLocale));
   if (!job) notFound();
 
+  const pageContent = await getJobPageContent(toApiLang(urlLocale));
   const pageUrl = absoluteUrl(localizePath(`/jobs/${slug}`, urlLocale));
 
   return (
     <>
       <JsonLd data={jobPostingJsonLd(job, pageUrl)} />
-      <JobDetail jobId={slug} shareUrl={pageUrl} />
+      <JobDetail job={job} pageContent={pageContent} shareUrl={pageUrl} />
     </>
   );
 }

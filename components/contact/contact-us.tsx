@@ -11,12 +11,13 @@ import {
   MapPinned,
   PhoneCall,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PageBanner from "../PageBanner";
 import { Reveal } from "@/util/animations";
 import { FaHeadset } from "react-icons/fa";
 import type { ContactPageContent } from "@/services/contact-service";
-import { createTranslator, fetchTranslations } from "@/services/translation-service";
+import { useLanguage } from "@/components/LanguageProvider";
+import { createTranslator } from "@/services/translation-service";
 
 const MAIN_COLOR = "#485ea8";
 
@@ -27,18 +28,9 @@ export default function ContactUs({
   content: ContactPageContent;
   lang: "en" | "km";
 }) {
-  const [translations, setTranslations] = useState<Record<string, string>>({});
+  const { translations } = useLanguage();
   const t = createTranslator(translations);
 
-  useEffect(() => {
-    let active = true;
-    fetchTranslations(lang === "km" ? "km" : "eng").then((data) => {
-      if (active) setTranslations(data);
-    });
-    return () => {
-      active = false;
-    };
-  }, [lang]);
 
   const { consultation, contact } = content;
   const mapQuery = encodeURIComponent(contact.address);

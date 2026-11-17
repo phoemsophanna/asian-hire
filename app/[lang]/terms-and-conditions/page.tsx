@@ -3,11 +3,11 @@ import { Suspense, cache } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { buildPageMetadata } from "@/util/seo-metadata";
-import { fetchTermsConditionsPage } from "@/services/terms-conditions-service";
+import { getTermsConditionsPage } from "@/services/server-content";
 import { isUrlLocale, DEFAULT_URL_LOCALE, type UrlLocale } from "@/util/i18n";
 import type { ApiLang } from "@/services/homepage-service";
 
-const getContent = cache(fetchTermsConditionsPage);
+const getContent = cache(getTermsConditionsPage);
 
 function resolveLang(lang: string): UrlLocale {
   return isUrlLocale(lang) ? lang : DEFAULT_URL_LOCALE;
@@ -39,7 +39,7 @@ export default function Page({
   params: Promise<{ lang: string }>;
 }) {
   return (
-    <Suspense fallback={<div className="h-16" />}>
+    <Suspense fallback={<div className="min-h-screen" />}>
       <TermsContent params={params} />
     </Suspense>
   );

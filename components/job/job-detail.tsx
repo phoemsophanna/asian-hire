@@ -19,12 +19,12 @@ import {
 } from "react-icons/fa";
 import PageBanner from "../PageBanner";
 import JobContentTabs from "./job-content";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "motion/react";
 import { Reveal } from "@/util/animations";
 import { useLanguage } from "../LanguageProvider";
-import { fetchJobPageContent, fetchPublicJob, type JobPageContent, type PublicJobDetail } from "@/services/job-service";
-import { createTranslator, fetchTranslations } from "@/services/translation-service";
+import type { JobPageContent, PublicJobDetail } from "@/services/job-service";
+import { createTranslator } from "@/services/translation-service";
 import { buildShareLinks } from "@/util/share-links";
 
 function telegramHref(value: string | null): string | null {
@@ -33,66 +33,17 @@ function telegramHref(value: string | null): string | null {
   return `https://t.me/${value.replace(/^@/, "")}`;
 }
 
-export default function JobDetail({ jobId, shareUrl }: { jobId: string; shareUrl: string }) {
-  const { locale } = useLanguage();
-  const [job, setJob] = useState<PublicJobDetail | null>(null);
-  const [pageContent, setPageContent] = useState<JobPageContent | null>(null);
-  const [translations, setTranslations] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(true);
-  const [visit, setVisit] = useState(0);
+export default function JobDetail({
+  job,
+  pageContent,
+  shareUrl,
+}: {
+  job: PublicJobDetail;
+  pageContent: JobPageContent | null;
+  shareUrl: string;
+}) {
+  const { translations } = useLanguage();
   const t = createTranslator(translations);
-
-  useEffect(() => {
-    let active = true;
-
-    fetchTranslations(locale).then((result) => {
-      if (active) setTranslations(result);
-    });
-
-    return () => {
-      active = false;
-    };
-  }, [locale]);
-
-  useEffect(() => {
-    let active = true;
-    setLoading(true);
-    // Runs on every visit, so the page remounts and its entrance animations play again.
-    setVisit((value) => value + 1);
-
-    Promise.all([fetchPublicJob(jobId, locale), fetchJobPageContent(locale)]).then(([jobResult, pageResult]) => {
-      if (!active) return;
-      setJob(jobResult);
-      setPageContent(pageResult);
-      setLoading(false);
-    });
-
-    return () => {
-      active = false;
-    };
-  }, [jobId, locale]);
-
-  if (loading && !job) {
-    return <main className="min-h-[60vh] bg-white" aria-busy="true" />;
-  }
-
-  if (!job) {
-    return (
-      <main className="overflow-hidden bg-white text-slate-900">
-        <PageBanner title={t("Job Details")} image={pageContent?.thumbnail} />
-        <div className="mx-auto max-w-3xl px-5 py-20 text-center">
-          <h1 className="text-2xl font-bold text-slate-900">{t("Job not found")}</h1>
-          <p className="mt-3 text-slate-500">{t("This job may have been removed or is no longer available.")}</p>
-          <Link
-            href="/jobs"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#485ea8] px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-700"
-          >
-            {t("Browse Jobs")}
-          </Link>
-        </div>
-      </main>
-    );
-  }
 
   const jobTypes = job.types.map((type) => type.title).join(", ");
   const shareLinkUrls = buildShareLinks(shareUrl, job.title);
@@ -123,7 +74,7 @@ export default function JobDetail({ jobId, shareUrl }: { jobId: string; shareUrl
   ];
 
   return (
-    <main key={visit} className="overflow-hidden bg-white text-slate-900">
+    <main className="overflow-hidden bg-white text-slate-900">
       <PageBanner title={t("Job Details")} image={pageContent?.thumbnail} />
 
       <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-16">

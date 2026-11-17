@@ -2,11 +2,11 @@ import JobSeeker from "@/components/job-seeker/job-seeker";
 import { Suspense, cache } from "react";
 import type { Metadata } from "next";
 import { buildPageMetadata } from "@/util/seo-metadata";
-import { fetchJobSeekerPage } from "@/services/job-seeker-service";
+import { getJobSeekerPage } from "@/services/server-content";
 import { isUrlLocale, DEFAULT_URL_LOCALE, type UrlLocale } from "@/util/i18n";
 import type { ApiLang } from "@/services/homepage-service";
 
-const getContent = cache(fetchJobSeekerPage);
+const getContent = cache(getJobSeekerPage);
 
 function resolveLang(lang: string): UrlLocale {
   return isUrlLocale(lang) ? lang : DEFAULT_URL_LOCALE;
@@ -38,7 +38,7 @@ export default function Page({
   params: Promise<{ lang: string }>;
 }) {
   return (
-    <Suspense>
+    <Suspense fallback={<div className="min-h-screen" />}>
       <JobSeekerPage params={params} />
     </Suspense>
   );

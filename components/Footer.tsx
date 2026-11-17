@@ -8,7 +8,7 @@ import {
   Minus,
   Plus,
 } from "lucide-react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import Link from "@/components/LocaleLink";
 
 import {
@@ -20,22 +20,10 @@ import {
 
 import { Reveal } from "@/util/animations";
 import { useLanguage } from "./LanguageProvider";
-import { fetchContactPage, type ContactPageContent } from "@/services/contact-service";
-import type { ApiLang } from "@/services/homepage-service";
-import { createTranslator, fetchTranslations } from "@/services/translation-service";
+import { createTranslator } from "@/services/translation-service";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
 const STATIC_LOGO = "/images/logo_en.png";
 
-type GeneralSettings = {
-  footer_logo: string | null;
-  description: string;
-};
-
-type MenuRow = {
-  href: string;
-  is_active: boolean;
-};
 
 const footerLinks = [
   { label: "About Us", href: "/about-us" },
@@ -73,49 +61,10 @@ const socialLinks = [
 ] as const;
 
 export default function SiteFooter() {
-  const { locale } = useLanguage();
+  const { translations, general, menus: menuRows, contact } = useLanguage();
   const [isQuickLinksOpen, setIsQuickLinksOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
-  const [translations, setTranslations] = useState<Record<string, string>>({});
-  const [contact, setContact] = useState<ContactPageContent | null>(null);
-  const [general, setGeneral] = useState<GeneralSettings | null>(null);
-  const [menuRows, setMenuRows] = useState<MenuRow[] | null>(null);
   const t = createTranslator(translations);
-
-  useEffect(() => {
-    let active = true;
-    const apiLang: ApiLang = locale === "km" ? "km" : "eng";
-
-    fetchTranslations(locale).then((result) => {
-      if (active) setTranslations(result);
-    });
-
-    fetchContactPage(apiLang).then((result) => {
-      if (active) setContact(result);
-    });
-
-    fetch(`${API_URL}/public/general?lang=${apiLang}`, { cache: "no-store" })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((payload: { data?: GeneralSettings } | null) => {
-        if (active) setGeneral(payload?.data ?? null);
-      })
-      .catch(() => {
-        if (active) setGeneral(null);
-      });
-
-    fetch(`${API_URL}/menus/active`, { cache: "no-store" })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((payload: { data?: MenuRow[] } | null) => {
-        if (active) setMenuRows(payload?.data ?? null);
-      })
-      .catch(() => {
-        if (active) setMenuRows(null);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [locale]);
 
   // Hide a footer link only when its matching menu row is inactive. Links with no menu row (legal pages) stay visible.
   const visibleFooterLinks = footerLinks.filter((link) => {

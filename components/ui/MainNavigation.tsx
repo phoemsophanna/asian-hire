@@ -1,10 +1,9 @@
 "use client";
 import Link from "@/components/LocaleLink";
-import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { stripUrlLocale } from "@/util/i18n";
 import { useLanguage } from "@/components/LanguageProvider";
-import { createTranslator, fetchTranslations } from "@/services/translation-service";
+import { createTranslator } from "@/services/translation-service";
 import {
   Building2,
   ChevronRight,
@@ -15,6 +14,7 @@ import {
   Search,
   UserRound,
 } from "lucide-react";
+import type { MenuRow } from "@/services/site-service";
 import type { LucideIcon } from "lucide-react";
 
 type NavigationItem = {
@@ -23,16 +23,6 @@ type NavigationItem = {
   icon?: LucideIcon;
 };
 
-type MenuRow = {
-  key: string;
-  label: string;
-  href: string;
-  show_in_header: boolean;
-  show_in_mobile: boolean;
-  is_active: boolean;
-};
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -59,42 +49,8 @@ export default function MainNavigation({
   onNavigate?: () => void;
 }) {
   const pathname = stripUrlLocale(usePathname());
-  const { locale } = useLanguage();
-  const [menuRows, setMenuRows] = useState<MenuRow[] | null>(null);
-  const [translations, setTranslations] = useState<Record<string, string>>({});
+  const { locale, translations, menus: menuRows } = useLanguage();
   const t = createTranslator(translations);
-
-  useEffect(() => {
-    let active = true;
-
-    fetchTranslations(locale).then((result) => {
-      if (active) setTranslations(result);
-    });
-
-    return () => {
-      active = false;
-    };
-  }, [locale]);
-
-  useEffect(() => {
-    let isCurrentRequest = true;
-
-    fetch(`${API_URL}/menus/active`, { cache: "no-store" })
-      .then((response) => {
-        if (!response.ok) throw new Error("Menu request failed");
-        return response.json() as Promise<{ data: MenuRow[] }>;
-      })
-      .then((json) => {
-        if (isCurrentRequest) setMenuRows(json.data);
-      })
-      .catch(() => {
-        // Keep the fallback list when the API is unavailable.
-      });
-
-    return () => {
-      isCurrentRequest = false;
-    };
-  }, []);
 
   const staticItems: NavigationItem[] = mobile ? mobileNavItems : navItems;
   const items: NavigationItem[] = menuRows

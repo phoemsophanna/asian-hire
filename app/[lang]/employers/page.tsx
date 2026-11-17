@@ -2,11 +2,11 @@ import EmployersPage from "@/components/employer/employer";
 import { Suspense, cache } from "react";
 import type { Metadata } from "next";
 import { buildPageMetadata } from "@/util/seo-metadata";
-import { fetchEmployerPage } from "@/services/employer-service";
+import { getEmployerPage } from "@/services/server-content";
 import { isUrlLocale, DEFAULT_URL_LOCALE, type UrlLocale } from "@/util/i18n";
 import type { ApiLang } from "@/services/homepage-service";
 
-const getContent = cache(fetchEmployerPage);
+const getContent = cache(getEmployerPage);
 
 function resolveLang(lang: string): UrlLocale {
   return isUrlLocale(lang) ? lang : DEFAULT_URL_LOCALE;
@@ -38,7 +38,7 @@ export default function Page({
   params: Promise<{ lang: string }>;
 }) {
   return (
-    <Suspense>
+    <Suspense fallback={<div className="min-h-screen" />}>
       <EmployersPageContent params={params} />
     </Suspense>
   );

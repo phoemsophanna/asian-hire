@@ -4,7 +4,8 @@ import { ArrowRight, ChevronRight } from "lucide-react";
 import FeaturedJobs from "@/components/home/featured-jobs";
 import HeroSearch from "@/components/home/hero-search";
 import type { Job, JobSearchFilters } from "@/components/home/job-data";
-import { createTranslator, fetchTranslations } from "@/services/translation-service";
+import { createTranslator } from "@/services/translation-service";
+import { useLanguage } from "@/components/LanguageProvider";
 import { fetchHomepage, type ApiLang, type HomepageData, type HomepageJob } from "@/services/homepage-service";
 import { fetchIndustryPage } from "@/services/industry-service";
 import SectionHeading from "../ui/SectionHeader";
@@ -357,7 +358,6 @@ export default function HomePage({
   initialContent?: {
     data: HomepageData | null;
     industries: { items: { id: number; title: string }[] } | null;
-    translations: Record<string, string>;
   };
 }) {
   const initialLang = useRef(lang);
@@ -365,7 +365,7 @@ export default function HomePage({
   const [allIndustries, setAllIndustries] = useState<{ id: number; title: string }[]>(
     initialContent?.industries?.items.map((industry) => ({ id: industry.id, title: industry.title })) ?? [],
   );
-  const [translations, setTranslations] = useState<Record<string, string>>(initialContent?.translations ?? {});
+  const { translations } = useLanguage();
 
   useEffect(() => {
     // Server-rendered content already matches this language, so skip the first client fetch.
@@ -380,9 +380,6 @@ export default function HomePage({
       if (active && result) {
         setAllIndustries(result.items.map((industry) => ({ id: industry.id, title: industry.title })));
       }
-    });
-    fetchTranslations(lang).then((result) => {
-      if (active) setTranslations(result);
     });
 
     return () => {

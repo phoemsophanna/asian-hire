@@ -1,11 +1,11 @@
 import ServicePage from "@/components/service/service-page";
 import { Suspense, cache } from "react";
 import { notFound } from "next/navigation";
-import { fetchServiceList } from "@/services/service-list-service";
+import { getServiceList } from "@/services/server-content";
 import { isUrlLocale, DEFAULT_URL_LOCALE, type UrlLocale } from "@/util/i18n";
 import type { ApiLang } from "@/services/homepage-service";
 
-const getContent = cache(fetchServiceList);
+const getContent = cache(getServiceList);
 
 function resolveLang(lang: string): UrlLocale {
   return isUrlLocale(lang) ? lang : DEFAULT_URL_LOCALE;
@@ -21,7 +21,7 @@ export default function Page({
   params: Promise<{ lang: string }>;
 }) {
   return (
-    <Suspense fallback={<div className="h-16" />}>
+    <Suspense fallback={<div className="min-h-screen" />}>
       <ServiceListContent params={params} />
     </Suspense>
   );

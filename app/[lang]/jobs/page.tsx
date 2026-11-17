@@ -4,11 +4,23 @@ import { SITE_NAME, buildPageMetadata } from "@/util/seo-metadata";
 import JobPage from "@/components/job/job-page";
 import type { JobSearchFilters } from "@/components/home/job-data";
 import { fetchSeo, type ApiLang } from "@/services/homepage-service";
-import { fetchTranslations } from "@/services/translation-service";
+import { getIndustryPage, getJobPageContent } from "@/services/server-content";
 import { isUrlLocale, DEFAULT_URL_LOCALE, type UrlLocale } from "@/util/i18n";
 
 const getSeo = cache(fetchSeo);
-const getTranslations = cache(fetchTranslations);
+
+async function loadJobPageData(urlLocale: UrlLocale) {
+  const apiLang = toApiLang(urlLocale);
+  const [pageContent, industryPage] = await Promise.all([
+    getJobPageContent(apiLang),
+    getIndustryPage(apiLang),
+  ]);
+
+  return {
+    pageContent,
+    industries: (industryPage?.items ?? []).map(({ id, title }) => ({ id, title })),
+  };
+}
 
 function resolveLang(lang: string): UrlLocale {
   return isUrlLocale(lang) ? lang : DEFAULT_URL_LOCALE;
@@ -52,9 +64,15 @@ async function SearchableJobPage({
     industry: getFilterValue(params.industry),
     location: getFilterValue(params.location),
   };
-  const initialTranslations = await getTranslations(toApiLang(urlLocale));
+  const { pageContent, industries } = await loadJobPageData(urlLocale);
 
-  return <JobPage initialFilters={initialFilters} initialTranslations={initialTranslations} />;
+  return (
+    <JobPage
+      initialFilters={initialFilters}
+      initialPageContent={pageContent}
+      initialIndustries={industries}
+    />
+  );
 }
 
 export default async function Page({
@@ -65,11 +83,15 @@ export default async function Page({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const { lang } = await params;
+  const { pageContent, industries } = await loadJobPageData(resolveLang(lang));
+
   return (
     <Suspense
       fallback={
         <JobPage
           initialFilters={{ keyword: "", industry: "", location: "" }}
+          initialPageContent={pageContent}
+          initialIndustries={industries}
         />
       }
     >

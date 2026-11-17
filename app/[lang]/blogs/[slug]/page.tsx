@@ -3,7 +3,7 @@ import JsonLd from "@/components/seo/json-ld";
 import { Suspense, cache } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { fetchNewsDetail } from "@/services/news-service";
+import { getNewsDetail } from "@/services/server-content";
 import { isUrlLocale, DEFAULT_URL_LOCALE, localizePath, type UrlLocale } from "@/util/i18n";
 import type { ApiLang } from "@/services/homepage-service";
 import { buildPageMetadata } from "@/util/seo-metadata";
@@ -13,7 +13,7 @@ import { articleJsonLd } from "@/util/structured-data";
 // The folder is named [slug], but blog links carry the numeric news id.
 type RouteParams = Promise<{ lang: string; slug: string }>;
 
-const getContent = cache(fetchNewsDetail);
+const getContent = cache(getNewsDetail);
 
 function resolveLang(lang: string): UrlLocale {
   return isUrlLocale(lang) ? lang : DEFAULT_URL_LOCALE;
@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
 
 export default function Page({ params }: { params: RouteParams }) {
   return (
-    <Suspense fallback={<div className="h-16" />}>
+    <Suspense fallback={<div className="min-h-screen" />}>
       <BlogContent params={params} />
     </Suspense>
   );

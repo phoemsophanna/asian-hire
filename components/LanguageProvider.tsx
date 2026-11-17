@@ -4,12 +4,12 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
-  useState,
   type ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
+import type { ContactPageContent } from "@/services/contact-service";
+import type { GeneralSettings, MenuRow } from "@/services/site-service";
 import { rememberScrollForLocaleSwitch } from "@/components/ScrollPositionRestoration";
 import {
   LOCALE_COOKIE,
@@ -21,9 +21,14 @@ import {
   type UrlLocale,
 } from "@/util/i18n";
 
-type Messages = Record<string, string>;
+export type SiteData = {
+  translations: Record<string, string>;
+  general: GeneralSettings | null;
+  menus: MenuRow[] | null;
+  contact: ContactPageContent | null;
+};
 
-type LanguageContextValue = {
+type LanguageContextValue = SiteData & {
   locale: LocaleCode;
   urlLocale: UrlLocale;
   setLocale: (locale: LocaleCode) => void;
@@ -31,36 +36,22 @@ type LanguageContextValue = {
   t: (key: string) => string;
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
-
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
+// Site-wide data (translations, logos, menus, contact) is loaded once on the server
+// by the layout, so shared components render complete on the first paint.
 export function LanguageProvider({
   children,
   urlLocale,
+  siteData,
 }: {
   children: ReactNode;
   urlLocale: UrlLocale;
+  siteData: SiteData;
 }) {
   const locale = toLocaleCode(urlLocale);
   const router = useRouter();
-  const [messages, setMessages] = useState<Partial<Record<LocaleCode, Messages>>>({});
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    fetch(`${API_URL}/translations/${locale}`, {
-      cache: "no-store",
-      signal: controller.signal,
-    })
-      .then((response) => (response.ok ? response.json() : {}))
-      .then((data: Messages) => {
-        setMessages((current) => ({ ...current, [locale]: data }));
-      })
-      .catch(() => {});
-
-    return () => controller.abort();
-  }, [locale]);
+  const { translations, general, menus, contact } = siteData;
 
   const setLocale = useCallback(
     (next: LocaleCode) => {
@@ -79,14 +70,11 @@ export function LanguageProvider({
     [urlLocale],
   );
 
-  const t = useCallback(
-    (key: string) => messages[locale]?.[key] ?? "",
-    [messages, locale],
-  );
+  const t = useCallback((key: string) => translations[key] ?? key, [translations]);
 
   const value = useMemo(
-    () => ({ locale, urlLocale, setLocale, localizeHref, t }),
-    [locale, urlLocale, setLocale, localizeHref, t],
+    () => ({ locale, urlLocale, setLocale, localizeHref, t, translations, general, menus, contact }),
+    [locale, urlLocale, setLocale, localizeHref, t, translations, general, menus, contact],
   );
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;

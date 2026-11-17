@@ -1,9 +1,8 @@
 import { Suspense, cache } from "react";
 import type { Metadata } from "next";
 import { DEFAULT_SHARE_IMAGE, buildPageMetadata } from "@/util/seo-metadata";
-import { fetchHomepage, type ApiLang } from "@/services/homepage-service";
-import { fetchIndustryPage } from "@/services/industry-service";
-import { fetchTranslations } from "@/services/translation-service";
+import type { ApiLang } from "@/services/homepage-service";
+import { getHomepage, getIndustryPage } from "@/services/server-content";
 import { isUrlLocale, DEFAULT_URL_LOCALE, type UrlLocale } from "@/util/i18n";
 import HomePage from "@/components/home/home-page";
 
@@ -12,13 +11,12 @@ const HOME_DESCRIPTION =
   "Discover job opportunities across Australia and Cambodia. Connect with trusted employers and take your career further with Asian Hire.";
 
 const getHomeContent = cache(async (lang: ApiLang) => {
-  const [data, industries, translations] = await Promise.all([
-    fetchHomepage(lang),
-    fetchIndustryPage(lang),
-    fetchTranslations(lang),
+  const [data, industries] = await Promise.all([
+    getHomepage(lang),
+    getIndustryPage(lang),
   ]);
 
-  return { data, industries, translations };
+  return { data, industries };
 });
 
 function resolveLang(lang: string): UrlLocale {
@@ -52,7 +50,7 @@ export default function Page({
   params: Promise<{ lang: string }>;
 }) {
   return (
-    <Suspense fallback={<div className="h-16" />}>
+    <Suspense fallback={<div className="min-h-screen" />}>
       <HomeContent params={params} />
     </Suspense>
   );

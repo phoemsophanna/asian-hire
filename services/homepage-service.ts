@@ -77,7 +77,7 @@ function toList<T>(value: unknown): T[] {
   return [];
 }
 
-function normalizeHomepage(data: HomepageData): HomepageData {
+export function normalizeHomepage(data: HomepageData): HomepageData {
   return {
     ...data,
     find_job: {
